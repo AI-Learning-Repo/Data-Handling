@@ -10,7 +10,7 @@ Each Tuesday is divided into two parts.
 
 | Week  | Topics                                                                 |
 | ----- | ---------------------------------------------------------------------- |
-| **1** | Course Orientation, Python review,                                     |
+| **1** | Course Orientation, Python review, Colab                                  |
 | **2** | Data processing, feature engineering, data handling                    |
 | **3** | Classical ML overview, Classification, evaluation, EDA, Underfitting/ overfitting                                        |
 | **4** | Linear and polynomial regression, decision tree regression, evaluation |
@@ -25,7 +25,7 @@ Each Tuesday is divided into two parts.
 
 | Week  | Topics                                                              |
 | ----- | ------------------------------------------------------------------- |
-| **1** | Autonomous: project ideas, group presenatation                      |
+| **1** | Autonomous: project ideas, Prepare presentation                      |
 | **2** | Streamlit, Hugging Face datasets, synthetic data, data curation     |
 | **3** | Data representation, JSON/JSONL, tokenization, BPE                  |
 | **4** | Qwen , PEFT, QLoRA, high-level fine-tuning                          |
