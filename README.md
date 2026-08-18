@@ -47,7 +47,7 @@ We'll follow a 5-step learning cycle as shown in the figure below:
 
 ----
 
-### Part 1: Why This 3-Course Package Matters
+## Morning: Why This 3-Course Package Matters
 
 - [From Data to AI Agents](./material/part1-state-ai-txt.md)
 - [The AI Package](./material/img/ai-package.png)
@@ -59,19 +59,18 @@ We'll follow a 5-step learning cycle as shown in the figure below:
 
 ----
 
-### Part 2: 
+## Afternoon:
 
-
-- [Brainstorming & Planning Your Mini-Project](./material/Brainstorming.md)
-- Development tooling
 - [Activity 2](./material/activity2.md)
+- [Group Activity: Brainstorming & Planning Your Mini-Project](./material/Brainstorming.md)
+- Development tooling
+- [Group Homework](./material/Homework-gr.md)
 
 
 ----
 
 ## Recap
 
-- Today, we only have a morning session.
 - If you are unable to access the Zoom recording, please send me an email.
 - **Homework:**
   - [Individual Homework Before Next Session](./material/Homework.md)
