@@ -1,7 +1,9 @@
 # This Week in Brief
 
 > [!IMPORTANT]  
-> - [Homework Before Next Session](./material/Homework.md).
+> - Homework Before Next Session:
+>   - [Individual Homework](./material/Homework.md)
+>   - [Group Homework](./material/Homework-gr.md)
 > - About Privacy
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
 > - [9 Proven Time Management Techniques and Tools](https://www.usa.edu/blog/time-management-techniques/)
@@ -72,8 +74,8 @@ We'll follow a 5-step learning cycle as shown in the figure below:
 ## Recap
 
 - If you are unable to access the Zoom recording, please send me an email.
-- **Homework:**
-  - [Individual Homework Before Next Session](./material/Homework.md)
+- **Homework Before Next Session:**
+  - [Individual Homework](./material/Homework.md)
   - [Group Homework](./material/Homework-gr.md)
 - **Potential Exam Questions**: You will also receive potential exam questions throughout the course. These will help you identify key concepts and guide your independent study as we progress toward the exam in Week 8.
 
