@@ -2,7 +2,7 @@
 
 > [!NOTE]  
 > - We will use [Google Colab](https://colab.research.google.com/) for browser-based Python notebooks and access to cloud compute resources.
-> - We will also use [Google AI Studio](https://aistudio.google.com/) for free API experiments, so please register with a **personal** Gmail account. Otherwise, you may not be able to obtain the API key needed later in the course.
+> - We will also use [Google AI Studio](https://aistudio.google.com/) for free API experiments, so please register with a **personal** Gmail account, **NOT** your Metropolia account. Otherwise, you may not be able to obtain the API key needed later in the course.
 > - If you have a dedicated GPU and are interested in a local setup using VS Code, please send me an email.
 
 ----
