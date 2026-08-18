@@ -33,9 +33,17 @@ We'll follow a 5-step learning cycle as shown in the figure below:
 
 ## Topics
 
-- Why This 3-Course Package?
-- Development tooling
-- Brainstorming & Planning Your Mini-Project
+- Why?
+- How?
+- What? 
+- WHere? When?
+
+----
+
+> [!NOTE]  
+> Please put a message in the Zoom chat if you would like to discuss either of the topics below:
+> * **Group Placement (Especially for International Students):** Since many students already know each other, we can discuss whether you would prefer to form a new group or join an existing one. 
+> * **Alternative Grading Options:** If you are interested in discussing alternative grading pathways to pass the course.
 
 ----
 
@@ -43,42 +51,33 @@ We'll follow a 5-step learning cycle as shown in the figure below:
 
 - [From Data to AI Agents](./material/part1-state-ai-txt.md)
 - [The AI Package](./material/img/ai-package.png)
-
-
-### Part 2: About the Course
-
-- [Course Description](./material/part2-about-course.md)
-- [High-Level Overview (Diagram)](./material/img/dh-course.png)
+- About the Course
+  - [Schedule](./material/schedule.md)
+  - [Course Description](./material/part1-about-course.md)
+  - [High-Level Overview (Diagram)](./material/img/dh-course.png)
 - [Activity 1: Getting Started](./material/activity1.md)
-<!-- 
-### Part 3: 
 
-- 
-- vscode locally (if gpu)
+----
+
+### Part 2: 
+
+
+- [Brainstorming & Planning Your Mini-Project](./material/Brainstorming.md)
+- Development tooling
 - [Activity 2](./material/activity2.md)
 
-### Part 4: 
-
-- 
-- [Activity 4](./material/activity4.md)
- -->
-
-
-<!-- 
-## Morning: 
 
 ----
 
-## Afternoon: Autonomous 
--->
+## Recap
 
+- Today, we only have a morning session.
+- If you are unable to access the Zoom recording, please send me an email.
+- **Homework:**
+  - [Individual Homework Before Next Session](./material/Homework.md)
+  - [Group Homework](./material/Homework-gr.md)
+- **Potential Exam Questions**: You will also receive potential exam questions throughout the course. These will help you identify key concepts and guide your independent study as we progress toward the exam in Week 8.
 
-----
-
-## Misc.
-
-- [Homework Before Next Session](./material/Homework.md).
-- **Potential Exam Questions**: You will also receive potential exam questions throughout the course. These will help you identify the key concepts and guide your independent study as we progress toward the exam in Week 8.
 
 
 

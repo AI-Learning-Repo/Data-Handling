@@ -192,13 +192,13 @@ Each Tuesday is divided into two parts.
 
 | Week  | Topics                                                                 |
 | ----- | ---------------------------------------------------------------------- |
-| **1** | Classical ML overview, Python review, pandas basics                    |
+| **1** | Course Orientation, Python review,                                     |
 | **2** | Data processing, feature engineering, data handling                    |
-| **3** | Classification, evaluation, EDA, Underfitting/ overfitting                                        |
+| **3** | Classical ML overview, Classification, evaluation, EDA, Underfitting/ overfitting                                        |
 | **4** | Linear and polynomial regression, decision tree regression, evaluation |
 | **5** | Clustering and Big Data with DuckDB                                    |
-| **6** | Association analysis, **classification web application**                   |
-| **7** | Ethics, complete ML workflow, **regression web application**               |
+| **6** | Association analysis, **classification web application**               |
+| **7** | Ethics, complete ML workflow, **regression web application**           |
 | **8** | **Exam**                                                               |
 
 ### Afternoon — Data for Modern AI Systems
@@ -207,10 +207,10 @@ Each Tuesday is divided into two parts.
 
 | Week  | Topics                                                              |
 | ----- | ------------------------------------------------------------------- |
-| **1** | Tools, mini project, project ideas                                  |
-| **2** | Hugging Face datasets, synthetic data, data curation                |
+| **1** | Autonomous: project ideas, group presenatation                      |
+| **2** | Streamlit, Hugging Face datasets, synthetic data, data curation     |
 | **3** | Data representation, JSON/JSONL, tokenization, BPE                  |
-| **4** | Qwen 1B, PEFT, QLoRA, high-level fine-tuning                        |
+| **4** | Qwen , PEFT, QLoRA, high-level fine-tuning                          |
 | **5** | **Sprint 1 presentations — fine-tuned model**                       |
 | **6** | Semantic embeddings                                                 |
 | **7** | Vector databases and RAG                                            |
