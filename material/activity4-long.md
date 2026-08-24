@@ -1,6 +1,6 @@
 # Activity: Training Data Engineering for Small Language Models
 
-> **How to use this lab:** Complete the visible core workflow in order: **Specify -> Inspect -> Clean -> Protect -> Audit -> Identify gaps -> Generate a small batch -> Verify -> Document.** Sections labelled **Optional Advanced Extension** preserve additional explanations and implementation examples for groups that finish early or need them for their projects.
+> **How to use this lab:** Complete the visible core workflow in order: Dataset Specification -> real-data profiling and cleaning -> privacy and audit -> coverage analysis -> grounded synthetic generation -> validation -> lineage and documentation. Sections labelled **Optional Advanced Extension** preserve additional explanations and implementation examples for groups that finish early or need them for their projects.
 
 
 # Part 0: Laboratory Overview, Foundational Principles, and Dataset Specification
@@ -306,15 +306,8 @@ Deduplication is not a binary operation. Different duplication patterns require 
    * *Signature:* Identical `instruction`, but distinct `responses`.
    * *Action:* **Do not delete automatically.** These may represent alternate valid solutions, different perspectives, or contradictory answers. Inspect and arbitrate: merge into a comprehensive answer, select the highest-quality response, or discard if contradictory.
 3. **Near-Duplicates (Paraphrasing):**
-    * *Signature:* Structurally similar instructions with minor phrasing shifts (*"How do I restart pods?"* vs *"How to restart a pod?"*).
-    * *Core handling:* Flag obvious cases for human review; do not make near-duplicate detection a mandatory implementation task.
-
-<details>
-<summary><strong>Optional Advanced Extension: Near-Duplicate Detection with MinHash and LSH</strong></summary>
-
-MinHash and Locality-Sensitive Hashing (LSH) can identify near-duplicate prompts at scale and help distinguish authentic linguistic diversity from redundant paraphrasing. Use them only when your dataset is large enough to make manual review impractical, and validate their matches before deleting any record.
-
-</details>
+   * *Signature:* Structurally similar instructions with minor phrasing shifts (*"How do I restart pods?"* vs *"How to restart a pod?"*).
+   * *Handling (Advanced Extension):* Identified using MinHash and Locality-Sensitive Hashing (LSH) to assess whether linguistic diversity is authentic or redundant.
 
 ---
 
@@ -407,20 +400,13 @@ cleaned_records = profile_and_deduplicate(raw_dataset)
 ### High-Level Concepts
 * **PII Detection $\neq$ Privacy Compliance:** Running a basic regex for emails does not make a dataset privacy-compliant. Private information encompasses direct identifiers (names, Social Security numbers, IP addresses) and quasi-identifiers (unique combinations of role, location, and timestamps that allow re-identification).
 * **The 3-Step Privacy Framework:**
-    1. **Detect:** For the core lab, scan structured patterns using regexes (for example, email addresses, IP addresses, phone numbers, and keys).
+  1. **Detect:** Scan across structured patterns (regex) and semantic entities using Named Entity Recognition (NER) models (e.g., [Microsoft Presidio](https://microsoft.github.io/presidio/), spaCy).
   2. **Transform:** Apply a deterministic privacy strategy:
      * *Placeholder Masking:* Swap sensitive entities with structural tags (e.g., `[EMAIL_ADDRESS]`, `[IP_ADDRESS]`). Highly secure and explicit.
      * *Synthetic Surrogate Replacement (Faker):* Replace real names with synthetic names. Preserves natural conversational flow.
      * *Generalization:* Coarsen exact values (e.g., replacing exact timestamps with `[Q3-2023]`).
   3. **Verify:** Perform secondary validation scans on transformed outputs to confirm that placeholders did not misalign and that no unmasked entities survived.
 * **Separation of Source:** Never perform in-place PII modification on your source files. Keep raw, masked, and surrogate datasets strictly separated and access-controlled.
-
-<details>
-<summary><strong>Optional Advanced Extension: Semantic PII Detection with NER</strong></summary>
-
-Regexes are useful for structured identifiers but may miss names and other contextual identifiers. For projects needing broader detection, evaluate Named Entity Recognition (NER) tools such as [Microsoft Presidio](https://microsoft.github.io/presidio/) or spaCy. Synthetic surrogate replacement with Faker and more aggressive generalization can preserve natural language, but require additional verification.
-
-</details>
 
 ```
                          THE 3-STEP PRIVACY FRAMEWORK
@@ -530,7 +516,7 @@ Sample records from your cleaned pool, inspect them against your Dataset Specifi
 ```python
 import random
 
-def extract_audit_sample(dataset_pool, sample_size=20):
+def extract_audit_sample(dataset_pool, sample_size=5):
     """Samples records and attaches an evaluation schema for manual review."""
     random.seed(42)
     sample = random.sample(dataset_pool, min(sample_size, len(dataset_pool)))
@@ -547,7 +533,7 @@ def extract_audit_sample(dataset_pool, sample_size=20):
         audit_sheet.append(audit_entry)
     return audit_sheet
 
-audit_batch = extract_audit_sample(cleaned_records, sample_size=20)
+audit_batch = extract_audit_sample(cleaned_records, sample_size=5)
 
 for record in audit_batch:
     print(f"\n================ AUDIT RECORD #{record['audit_id']} ================")
@@ -576,8 +562,6 @@ Review the printed records with your team and record your findings in the struct
 ```json
 {
   "record_id": "REAL_DOLLY_00412",
-    "source": "real",
-    "source_id": "databricks/dolly-15k:train:412",
   "instruction": "How do I check Kubernetes pod logs for a failed deployment?",
   "context": "",
   "response": "Use `kubectl logs deployment/<deployment-name> --all-containers=true` to inspect logs across all pods.",
@@ -611,8 +595,6 @@ def format_intermediate_pool(clean_records, source_name="dolly-15k", license_tag
         
         entry = {
             "record_id": record_id,
-            "source": "real",
-            "source_id": row.get("source_id", "unassigned"),
             "instruction": row["instruction"],
             "context": row.get("context", ""),
             "response": row["response"],
@@ -672,11 +654,11 @@ Synthetic data generation is not an automated shortcut to inflate dataset size a
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │                              PHASE 2 OPERATIONAL PIPELINE                              │
 │                                                                                        │
-│  [Real Data Profile] ──► [Coverage Matrix] ──► [Teacher Generation] ──► [Optional: Evol]│
+│  [Real Data Profile] ──► [Coverage Matrix] ──► [Teacher Generation] ──► [Evol-Instruct]│
 │   (Identify Gaps)         (Multi-Dim Grid)      (Positive & Refusal)     (Realism-Bound)│
 │                                                                                │       │
 │                                                                                ▼       │
-│  [Verified Synth Pool] ◄── [Optional: Lexical] ◄── [Three-Layer Validation] ◄┘         │
+│  [Verified Synth Pool] ◄── [Lexical Diagnostics] ◄── [Three-Layer Validation] ◄┘       │
 │   (Lineage Tagged)          (Trigram Profiling)       (Programmatic/Domain/Human)      │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -736,7 +718,7 @@ def sample_coverage_seeds(axes_dict, num_samples=6):
         seeds.append(dict(zip(keys, combo)))
     return seeds
 
-sample_seeds = sample_coverage_seeds(coverage_axes, num_samples=20)
+sample_seeds = sample_coverage_seeds(coverage_axes, num_samples=4)
 for idx, seed in enumerate(sample_seeds, 1):
     print(f"Seed {idx}: {seed}")
 ```
@@ -751,8 +733,6 @@ for idx, seed in enumerate(sample_seeds, 1):
   * *Standard Instruction Pairs:* Demonstrations of complete, accurate solutions.
   * *Negative / Boundary / Refusal Pairs:* Explicit demonstrations of how the model should behave when input is ambiguous, incomplete, dangerous, or out-of-scope (e.g., *"I cannot execute this script because it includes destructive `DROP DATABASE` commands without backup safeguards"*).
 * **API Cost and Batching Optimization:** Requesting structured batches amortizes prompt token costs while enforcing machine-readable JSON schemas.
-
-For this introductory lab, generate **20-30 candidate examples**, then inspect and reject weak records. Generating data is easy; generating defensible data is the learning goal.
 
 ---
 
@@ -928,15 +908,7 @@ if synthetic_batch:
 ## 2.4 Task 4: The Three-Layer Validation Architecture
 
 ### High-Level Concepts
-* **The Core Validation Model:** Use programmatic schema checks, domain-appropriate deterministic checks, and human inspection. The required student outcome is evidence that each retained record meets the Dataset Specification.
-
-<details>
-<summary><strong>Optional Advanced Extension: LLM-as-a-Judge</strong></summary>
-
-**The Circular Validation Trap:** Relying solely on an "LLM Judge" creates a circular dependency ($\text{LLM generates} \rightarrow \text{LLM validates} \rightarrow \text{Human blindly accepts}$). If the teacher hallucinates an invalid CLI flag, the LLM judge frequently approves the same hallucination. Use an LLM judge only as an additional signal, never as a replacement for deterministic checks and human review.
-
-</details>
-
+* **The Circular Validation Trap:** Relying solely on an "LLM Judge" creates a circular dependency ($\text{LLM generates} \rightarrow \text{LLM validates} \rightarrow \text{Human blindly accepts}$). If the teacher hallucinates an invalid CLI flag, the LLM judge frequently approves the same hallucination.
 * **The Three-Layer Validation Model:**
 
 ```
@@ -1120,8 +1092,6 @@ def format_synthetic_lineage_pool(validated_records, teacher_tag="gemini-2.5-fla
         rec_id = f"SYNTH_{teacher_tag.upper()[:6]}_{uuid.uuid4().hex[:6]}"
         entry = {
             "record_id": rec_id,
-            "source": "synthetic",
-            "source_id": row.get("seed_id", "unassigned"),
             "instruction": row["instruction"],
             "context": row.get("context", ""),
             "response": row["response"],
@@ -1157,7 +1127,9 @@ print(f"Exported {len(synthetic_data_pool)} verified synthetic records to {outpu
 
 ## 3.0 Overview of Phase 3
 
-In this phase, you will combine your sanitized real-world data and verified synthetic data into an audited training asset for your specific semester project. The core outcome is a traceable dataset package; the held-out golden evaluation set remains an optional advanced extension for teams ready to prepare next session's benchmark.
+In this phase, you will combine your sanitized real-world data and verified synthetic data into an audited training asset for your specific semester project. 
+
+Crucially, you will also construct a **Held-Out Golden Evaluation Set** to assess your model's true downstream performance in the next session.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
@@ -1185,7 +1157,7 @@ Use the blueprint matching your project vertical to configure your coverage axes
 ┌────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
 │                                             DOMAIN IMPLEMENTATION BLUEPRINTS                                                   │
 ├───────────────────┬────────────────────────────────┬───────────────────────────────┬───────────────────────────────────────────┤
-│ Project Domain    │ Coverage Matrix Axes           │ Optional Evolution Pattern    │ Domain Validation & Negative Cases        │
+│ Project Domain    │ Coverage Matrix Axes           │ Evol-Instruct Pattern         │ Domain Validation & Negative Cases        │
 ├───────────────────┼────────────────────────────────┼───────────────────────────────┼───────────────────────────────────────────┤
 │ 1. Healthcare &   │ • Topic: Oncology, Cardiology  │ • Comorbidity Constraint: Add │ • Verifier: Drug dosage & contraindic.    │
 │    Clinical Q&A   │ • Symptom: Drug interaction    │   pregnancy or kidney failure │ • Refusal Case: Refuse to diagnose or     │
@@ -1347,7 +1319,7 @@ profiling_and_normalization:
 
 deduplication_and_privacy:
   exact_dedup_level: "instruction_and_response_hash"
-    multi_response_arbitration: "manual_review_required"
+  multi_response_arbitration: "retain_richest_response"
   pii_scrubbing_strategy: "explicit_masking"
   redacted_entities: ["IPV4", "EMAIL", "PHONE", "API_KEYS"]
 
@@ -1383,7 +1355,7 @@ Following documentation standards from open-source benchmarks, summarize your da
 
 ## 3. Sanitization & Privacy Audit
 - **Encoding & Debris:** 100% repaired with `ftfy` and canonical Unicode NFC. HTML tags removed while preserving YAML indentation.
-- **Deduplication:** Purged exact record duplicates; flagged multi-answer collisions for manual review.
+- **Deduplication:** Purged exact record duplicates; arbitrated multi-answer collisions.
 - **PII Scrubbing:** Zero internal IP addresses, API secrets, or emails in finalized pool.
 
 ## 4. Multi-Layer Validation & Diversity
@@ -1408,12 +1380,12 @@ For every significant data transformation, record the decision in your project r
 │                        DATA ENGINEERING DECISION LOG TEMPLATE                          │
 ├────────────────────────────────────────────────────────────────────────────────────────┤
 │ • Decision Identifier: D-001 (e.g., Deduplication Collisions)                          │
-│ • Action Taken: Flagged duplicate prompts with different answers for manual review.    │
-│ • Underlying Rationale: Different answers may be complementary, contradictory, or      │
-│   differently suited to the target persona; length alone is not a quality criterion.   │
-│ • Quantitative Impact: Flagged 14 multi-answer groups; final choices recorded.         │
-│ • Risk of Information Loss: Reduced by retaining all variants until review is complete.│
-│ • Verification Method: Manually audited reviewed groups during Task 5 spot check.      │
+│ • Action Taken: Arbitrated duplicate prompts by selecting the longest response.        │
+│ • Underlying Rationale: Identical questions with different answers represented varying │
+│   levels of detail. Keeping the most complete response prevents contradictory answers. │
+│ • Quantitative Impact: Resolved 14 multi-answer groups; 0 valid prompts lost.          │
+│ • Risk of Information Loss: Minor risk of losing concise variant answers.              │
+│ • Verification Method: Manually audited arbitrated samples during Task 5 spot check.   │
 └────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1427,19 +1399,6 @@ The core submission consists of four artifacts:
 2. **Clean, Lineage-Tagged Dataset:** Real and synthetic records with provenance and validation fields.
 3. **Data Audit Report:** Before/after counts, the most important findings, and the rationale for major data decisions.
 4. **Dataset Card:** A concise description of provenance, license, transformations, validation, intended use, and limitations.
-
-Keep the dataset package organized so its lineage is visible:
-
-```text
-project/
-├── raw/
-├── cleaned/
-├── synthetic/
-├── final/
-├── pipeline_config.yaml
-├── decision_log.md
-└── README.md
-```
 
 <details>
 <summary><strong>Optional Extended Deliverables and Full Assessment Rubric</strong></summary>

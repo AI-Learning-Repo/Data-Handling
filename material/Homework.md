@@ -12,9 +12,18 @@
 
  <!-- [2025 Spring Introduction to Classical Machine Learning: Supervised ML: Classification Algorithms](https://www.youtube.com/watch?v=n4rl8yjdMlM) -->
 
-----
+--------
+## Links
 
-## Suggested Tasks
+* [Seaborn Crash Course - Data Visualization in Python (16min)](https://www.youtube.com/watch?v=rLVCSmtoA7U)
+* [Exploratory Data Analysis (45 minutes only)](https://youtu.be/1MGG75oUK7o)
+* [Python for Data Analysis, 3rd Edition - Wes McKinney](https://metropolia.finna.fi/Record/nelli15.5590000000474271)
+* [AI Engineering - Chip Huyen](https://metropolia.finna.fi/Record/nelli15.39388935400041)
+* [Data Science for Beginners - Microsoft](https://github.com/microsoft/Data-Science-For-Beginners)
+* [ML for Beginners - Microsoft](https://github.com/microsoft/ML-For-Beginners)
+
+<details>
+<summary>Suggested Tasks</summary>
 
 Here are three hands-on tasks using real-world datasets from Kaggle. Each task reinforces the lecture workflow: **Inspect → Explore → Clean → Engineer → Prepare**.
 
@@ -77,16 +86,7 @@ Here are three hands-on tasks using real-world datasets from Kaggle. Each task r
 5. **Iterative EDA & Validation (§7):**
    - Re-plot distributions before and after imputation/cleaning to confirm that no artificial distortion was introduced.
 
-----
-
-## Links
-
-* [Seaborn Crash Course - Data Visualization in Python (16min)](https://www.youtube.com/watch?v=rLVCSmtoA7U)
-* [Exploratory Data Analysis (45 minutes only)](https://youtu.be/1MGG75oUK7o)
-* [Python for Data Analysis, 3rd Edition - Wes McKinney](https://metropolia.finna.fi/Record/nelli15.5590000000474271)
-* [AI Engineering - Chip Huyen](https://metropolia.finna.fi/Record/nelli15.39388935400041)
-* [Data Science for Beginners - Microsoft](https://github.com/microsoft/Data-Science-For-Beginners)
-* [ML for Beginners - Microsoft](https://github.com/microsoft/ML-For-Beginners)
+</details>
 
 
 
