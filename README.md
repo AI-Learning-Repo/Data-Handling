@@ -45,7 +45,7 @@
 - Assignments: OMA/GitHub/Google Drive? Difficulty
 - Please be aware that a strike may take place at the university on September 1st and September 8th. 
 - [*Situational Awareness: The Decade Ahead* (2024), Leopold Aschenbrenner](https://situational-awareness.ai/)
-- [Importance of Data: Industry Use Case](./material/industry-use-case.md)
+<!-- - [Importance of Data: Industry Use Case](./material/industry-use-case.md) -->
 
 ### Part 3: 
 
