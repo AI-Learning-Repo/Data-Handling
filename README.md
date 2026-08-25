@@ -27,8 +27,8 @@
 
 ## Morning:
 
-- [Importance of Data when Building ML Systems](./material/img/ml_vs_traditional_paradigm.png)
 - Theory:
+  - [Importance of Data when Building ML Systems](./material/img/ml_vs_traditional_paradigm.png)
   - [Data and Datasets for Classical Machine Learning](./material/part1-EDA.md)
   - [Mapping of Theory, and Activities to Core Topics](./material/part2-mapping.md)
 - Activities:
