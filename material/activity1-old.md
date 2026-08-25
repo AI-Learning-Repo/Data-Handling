@@ -529,8 +529,6 @@ Ask:
 
 > **Key principle:** An outlier is not automatically an error.
 
-</details>
-
 ---
 
 # 3. Identify Data-Quality Problems
@@ -621,12 +619,13 @@ print(df_titanic.isnull().sum())
 ```
 
 You should see missing values in several columns.
-<!--
+
 The original activity focused on:
+
 * `age`
 * `deck`
-We will keep that exercise, but now we understand **why** we are doing it. 
--->
+
+We will keep that exercise, but now we understand **why** we are doing it.
 
 ---
 
@@ -671,10 +670,9 @@ print(df_titanic["deck"].isnull().sum())
 print(df_titanic["deck"].notnull().sum())
 ```
 
-<!-- 
 The original activity drops this column.
-We will keep that decision for the exercise. 
--->
+
+We will keep that decision for the exercise.
 
 ### Working Code
 
@@ -1108,7 +1106,7 @@ The Iris dataset is already relatively clean.
 > * **Sepal:** The outer part of the flower, measured using `sepal_length` and `sepal_width`.
 > * **Petal:** The inner, colorful part of the flower, measured using `petal_length` and `petal_width`.
 
-<img src="./img/iris.png" width="50%">
+<img src="./iris.png" width="50%">
 
 ---
 
@@ -1294,8 +1292,6 @@ Some variables appear particularly useful for distinguishing the species.
 > **Important:** This is an EDA finding.
 >
 > We are not yet training a model or claiming a particular model accuracy.
-
-</details>
 
 ---
 
@@ -1788,7 +1784,6 @@ You learned that data may eventually need:
 * additional preprocessing.
 
 These topics become particularly important when building supervised-learning models.
-
 
 > [!NOTE]
 > **Next Lecture: Supervised Learning**

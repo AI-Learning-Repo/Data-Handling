@@ -100,7 +100,7 @@ df_encoded = pd.get_dummies(df, columns=["sex", "embarked"], drop_first=True, dt
 
 ---
 
-## Solutions & Marking Guide
+## Solutions
 
 1. **B** — GIGO means algorithm sophistication cannot overcome flawed input data.
 2. **C** — Ordinal, because there is an intrinsic educational hierarchy ($\text{High School} < \text{Bachelor} < \text{Master} < \text{PhD}$).
