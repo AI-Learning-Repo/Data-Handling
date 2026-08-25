@@ -4,7 +4,7 @@
 > - [Homework Before Next Session](./material/Homework.md) for this Week.
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
 > - We'll follow a [**5-step learning cycle**](./material/img/learning-phases.png)
-> - [Potential Exam Questions](./material/exam-qa.md)
+
 
 ---
 
@@ -27,26 +27,14 @@
 
 ## Morning:
 
-## Misc.
-
-- Week1-Activity2: Task 1C, Tasks GPU
-- Assignments 
-  - OMA/GitHub/Google Drive?
-  - Difficulty
-- PPT in the afternoon
-
-
-### Part 1: 
-
 - [Importance of Data when Building ML Systems](./material/img/ml_vs_traditional_paradigm.png)
-- [Data and Datasets for Classical Machine Learning](./material/part1-EDA.md)
-- [Activity 1](./material/activity1.md)
-
-### Part 2: Data and Datasets for Classical Machine Learning ...
-
-- [Importance of Data: Industry Use Case](./material/industry-use-case.md)
-- [Mapping of Theory, and Activities to Core Topics](./material/part2-mapping.md)
-- [Activity 2](./material/activity2.md)
+- Theory:
+  - [Data and Datasets for Classical Machine Learning](./material/part1-EDA.md)
+  - [Mapping of Theory, and Activities to Core Topics](./material/part2-mapping.md)
+- Activities:
+  - [Activity 1](./material/activity1.md)
+  - [Activity 2](./material/activity2.md)
+- [Potential Exam Questions](./material/exam-qa.md)
 
 ----
 
@@ -54,9 +42,10 @@
 
 ## Misc.
 
-- Homework
+- Assignments: OMA/GitHub/Google Drive? Difficulty
 - Please be aware that a strike may take place at the university on September 1st and September 8th. 
 - [*Situational Awareness: The Decade Ahead* (2024), Leopold Aschenbrenner](https://situational-awareness.ai/)
+- [Importance of Data: Industry Use Case](./material/industry-use-case.md)
 
 ### Part 3: 
 
