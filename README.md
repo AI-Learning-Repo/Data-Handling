@@ -52,10 +52,10 @@
 - [Building Interactive Web Applications with Streamlit in Google Colab](./material/part3-Streamlit.md)
 - [Activity 3](./material/activity3.md)
 
-### Part 4: 
+<!-- ### Part 4: 
 
 - [Principles of Training Data Engineering for Language Model Specialization](./material/part4-Data-for-LLMs.md)
-- [Activity 4](./material/activity4.md)
+- [Activity 4](./material/activity4.md) -->
 
 
 
