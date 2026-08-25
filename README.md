@@ -42,20 +42,14 @@
 
 ## Misc.
 
-- Assignments: OMA/GitHub/Google Drive? Difficulty
-- Please be aware that a strike may take place at the university on September 1st and September 8th. 
 - [*Situational Awareness: The Decade Ahead* (2024), Leopold Aschenbrenner](https://situational-awareness.ai/)
-<!-- - [Importance of Data: Industry Use Case](./material/industry-use-case.md) -->
 
 ### Part 3: 
 
 - [Building Interactive Web Applications with Streamlit in Google Colab](./material/part3-Streamlit.md)
 - [Activity 3](./material/activity3.md)
 
-<!-- ### Part 4: 
 
-- [Principles of Training Data Engineering for Language Model Specialization](./material/part4-Data-for-LLMs.md)
-- [Activity 4](./material/activity4.md) -->
 
 
 
