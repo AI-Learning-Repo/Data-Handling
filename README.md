@@ -33,7 +33,7 @@
   - [Mapping of Theory, and Activities to Core Topics](./material/part2-mapping.md)
 - Activities:
   - [Activity 1](./material/activity1.md)
-  - [Activity 2](./material/activity2.md)
+  - [Activity 2 (Optional)](./material/activity2.md)
 - [Potential Exam Questions](./material/exam-qa.md)
 
 ----
