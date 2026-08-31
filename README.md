@@ -37,8 +37,8 @@
 ### Part 3: 
 
 - Tokenization & BPE
-  - [Summary](./material/part3.md)
   - [Demo](./material/part3-demo.md)
+  - [Summary](./material/part3.md)
 - [Activity 3](./material/activity3.md)
 
 ### Part 4: 
