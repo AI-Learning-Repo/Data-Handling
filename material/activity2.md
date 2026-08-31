@@ -1,14 +1,14 @@
-# Lab 2: Iris Multiclass Classification
+# Lab 2: Multiclass Classification with the Iris Dataset
 
-**Classifying Iris Species with Multiclass Classification**
+## Predicting Iris Flower Species
 
 ---
 
 # Lab Purpose
 
-In Lab 1, we used the Titanic dataset to introduce **binary classification**.
+In Lab 1, we used the Titanic dataset to learn about **binary classification**.
 
-The Titanic task had two possible outcomes:
+The Titanic model had two possible outcomes:
 
 ```text
 0 → Did not survive
@@ -17,41 +17,41 @@ The Titanic task had two possible outcomes:
 
 In this lab, we move to a classification problem with **more than two possible classes**.
 
-We will use the Iris dataset to predict the species of an iris flower:
+We will use the famous **Iris dataset** to predict the species of an iris flower.
+
+There are three possible species:
 
 ```text
-setosa
-versicolor
-virginica
+Iris setosa
+Iris versicolor
+Iris virginica
 ```
 
-Because there are three possible classes, this is a:
+Because there are three possible classes, this is called:
 
-> **multiclass classification problem**
+> **multiclass classification**
 
-The important idea is that the overall machine-learning workflow has not changed.
+The main goal of this lab is to understand what changes when we move from **two classes to three classes**.
+
+The overall workflow is still familiar:
 
 ```text
-Lab 1: Titanic                  Lab 2: Iris
-
-Binary classification           Multiclass classification
-        ↓                                ↓
-Define X and y                  Define X and y
-        ↓                                ↓
-Split the data                  Split the data
-        ↓                                ↓
-Preprocess                       Preprocess
-        ↓                                ↓
-Train classifier                 Train classifier
-        ↓                                ↓
-Evaluate                         Evaluate
-        ↓                                ↓
-Compare models                   Compare models
-        ↓                                ↓
-Tune                             Tune
+Define X and y
+      ↓
+Split the data
+      ↓
+Prepare the data
+      ↓
+Establish a baseline
+      ↓
+Train a classifier
+      ↓
+Make predictions
+      ↓
+Evaluate the model
+      ↓
+Compare models
 ```
-
-The main difference is the **number of possible classes**.
 
 ---
 
@@ -60,262 +60,91 @@ The main difference is the **number of possible classes**.
 By the end of this lab, you should be able to:
 
 * explain the difference between binary and multiclass classification
-* identify the target and features in the Iris dataset
-* explain why Iris is a multiclass classification problem
-* establish a simple multiclass baseline
-* understand the basic idea behind K-nearest neighbors (KNN)
-* explain why KNN can be affected by feature scale
+* identify features and target variables in the Iris dataset
+* explain what a multiclass classifier does
+* establish a simple baseline
+* explain the basic idea of K-nearest neighbors (KNN)
 * train a KNN classifier
-* evaluate a multiclass classifier using:
-
-  * accuracy
-  * confusion matrix
-  * precision
-  * recall
-  * F1 score
+* evaluate a multiclass classifier
 * interpret a multiclass confusion matrix
-* understand per-class evaluation
+* understand precision, recall, and F1 for individual classes
 * explain macro and weighted averages
-* use cross-validation for model evaluation
 * use logistic regression for multiclass classification
-* compare two different classifiers
-* investigate classification errors
-* tune KNN hyperparameters
-* evaluate a final model on a held-out test set
-* explain how multiclass classification differs from binary classification
+* compare two classifiers
 
 ---
 
-# 1. Connect Lab 1 and Lab 2
+# 1. From Binary to Multiclass Classification
 
-Before working with the Iris dataset, compare the two classification problems.
-
-|                       | Lab 1: Titanic                      | Lab 2: Iris                                                    |
-| --------------------- | ----------------------------------- | -------------------------------------------------------------- |
-| Task                  | Survival prediction                 | Species prediction                                             |
-| Type                  | Binary classification               | Multiclass classification                                      |
-| Number of classes     | 2                                   | 3                                                              |
-| Features              | Numerical + categorical             | Numerical                                                      |
-| Missing values        | Present                             | Essentially none                                               |
-| Main preprocessing    | Imputation + encoding               | Minimal preprocessing                                          |
-| Baseline              | Most frequent class                 | Most frequent class                                            |
-| First classifier      | Logistic regression                 | KNN                                                            |
-| Model comparison      | Logistic regression + decision tree | KNN + logistic regression                                      |
-| Main evaluation focus | Precision, recall, F1               | Per-class metrics + confusion matrix + macro/weighted averages |
-
-The purpose of this lab is **not** to learn a completely different machine-learning workflow.
-
-Instead, we are extending what you learned in Lab 1.
-
-### The key question
-
-> What changes when a classification problem has **three classes instead of two**?
-
----
-
-# 2. What Is Multiclass Classification?
-
-In binary classification, there are two possible classes.
-
-For Titanic:
+In Lab 1, we had two possible classes:
 
 ```text
+Titanic
+
 0 → Did not survive
 1 → Survived
 ```
 
-In multiclass classification, there are more than two possible classes.
+This was **binary classification**.
 
-For Iris:
+In this lab, we have three possible classes:
 
 ```text
+Iris
+
 0 → setosa
 1 → versicolor
 2 → virginica
 ```
 
-The model must choose one of three possible classes.
+This is **multiclass classification**.
 
-Conceptually:
+The important point is:
 
-```text
-Flower measurements
-        ↓
-    Classifier
-        ↓
- ┌──────┼────────┐
- ↓      ↓        ↓
-setosa  versicolor  virginica
-```
+> The basic classification workflow does not change. The main difference is that the model now has more than two classes to choose from.
 
-This is different from binary classification because there is no single positive and negative class in the same sense as Titanic.
-
-In Titanic we could say:
+### Binary classification
 
 ```text
-positive = survived
-negative = did not survive
+        Features
+           ↓
+      Classifier
+           ↓
+      ┌────┴────┐
+      ↓         ↓
+   Class 0    Class 1
 ```
 
-With Iris, every species is a class that can be predicted.
+### Multiclass classification
+
+```text
+        Features
+           ↓
+      Classifier
+           ↓
+   ┌────┼────┐
+   ↓    ↓    ↓
+Class 0 Class 1 Class 2
+```
+
+### Question
+
+What is the main difference between binary and multiclass classification?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+Binary classification has two possible classes, while multiclass classification has more than two possible classes. Titanic survival prediction is binary because there are two outcomes, while Iris species prediction is multiclass because there are three species.
+
+</details>
 
 ---
 
-# 3. The Iris Dataset
+# 2. The Iris Dataset
 
 The Iris dataset contains measurements of iris flowers.
 
-Each observation contains four measurements:
-
-* sepal length
-* sepal width
-* petal length
-* petal width
-
-The target is the flower species.
-
-There are three species:
-
-```text
-setosa
-versicolor
-virginica
-```
-
-The classic Iris dataset contains 150 observations:
-
-```text
-50 setosa
-50 versicolor
-50 virginica
-```
-
-The classes are therefore balanced.
-
-This is useful when learning classification because accuracy is less likely to be misleading due to a large difference in class sizes.
-
----
-
-# 4. Environment Setup
-
-If necessary, install the required libraries:
-
-```python
-!pip install pandas scikit-learn matplotlib seaborn -q
-```
-
-Import the libraries:
-
-```python
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-
-from sklearn.datasets import load_iris
-from sklearn.dummy import DummyClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    accuracy_score,
-    classification_report,
-    confusion_matrix,
-    f1_score,
-    precision_score,
-    recall_score,
-)
-from sklearn.model_selection import (
-    GridSearchCV,
-    cross_val_score,
-    train_test_split,
-)
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.pipeline import Pipeline
-```
-
----
-
-# 5. Load the Dataset
-
-Load Iris from scikit-learn.
-
-```python
-iris = load_iris()
-
-X = pd.DataFrame(
-    iris.data,
-    columns=iris.feature_names
-)
-
-y = pd.Series(
-    iris.target,
-    name="species"
-)
-
-display(X.head())
-display(y.head())
-
-print("X shape:", X.shape)
-print("y shape:", y.shape)
-```
-
-We can also display the class names:
-
-```python
-print("Target classes:")
-print(iris.target_names)
-```
-
-The numerical target values correspond to:
-
-```text
-0 → setosa
-1 → versicolor
-2 → virginica
-```
-
----
-
-# 6. Briefly Validate the Dataset
-
-As in Lab 1, we should perform a small validation check before modeling.
-
-Run:
-
-```python
-print("Feature columns:")
-print(X.columns.tolist())
-
-print("\nData types:")
-print(X.dtypes)
-
-print("\nMissing values:")
-print(X.isnull().sum())
-
-print("\nClass distribution:")
-print(y.value_counts().sort_index())
-
-print("\nFeature summary:")
-display(X.describe())
-```
-
-### What should you notice?
-
-You should find that:
-
-* there are four features
-* all four features are numerical
-* there are 150 observations
-* there are three target classes
-* each class has 50 observations
-* there are no important missing values
-
-This is considerably simpler than the Titanic dataset.
-
----
-
-# 7. Understand the Features
-
-The four measurements are:
+For each flower, we have four measurements:
 
 ```text
 sepal length
@@ -324,186 +153,359 @@ petal length
 petal width
 ```
 
-Unlike Titanic, there are no categorical variables that need one-hot encoding.
+We want to use these measurements to predict the species.
 
-We therefore do not need the more complicated `ColumnTransformer` used in Lab 1.
+Conceptually:
 
-This is an important lesson:
+```text
+Flower measurements
+        ↓
+    Classifier
+        ↓
+Iris species
+```
 
-> **Preprocessing should depend on the data and the model. We do not automatically apply every preprocessing technique to every dataset.**
+The dataset contains three species:
 
-### Questions
+```text
+setosa
+versicolor
+virginica
+```
 
-1. How many observations are in the dataset?
-2. How many features are there?
-3. How many classes are there?
-4. Are the features numerical or categorical?
-5. Are there important missing values?
-6. Is the target balanced?
+Each species has 50 observations, so the dataset contains 150 flowers in total.
+
+Because the three classes have the same number of observations, the classes are **balanced**.
 
 ---
 
-# 8. Understand the Classification Task
+# 3. Load the Dataset
 
-Our features are:
+We can load Iris directly from scikit-learn.
+
+```python id="2w4y9s"
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+```
+
+The `load_iris()` function gives us the dataset together with information about the features and target.
+
+Let's look at the feature names:
+
+```python id="k3f7q2"
+print(iris.feature_names)
+```
+
+And the class names:
+
+```python id="5z8m1p"
+print(iris.target_names)
+```
+
+We can also check the shape:
+
+```python id="j9x4sc"
+print("Features:", iris.data.shape)
+print("Target:", iris.target.shape)
+```
+
+We should get:
+
+```text
+Features: (150, 4)
+Target: (150,)
+```
+
+This means:
+
+* 150 flowers
+* 4 features for each flower
+
+---
+
+# 4. Features and Target
+
+As in Lab 1, we separate the **features** from the **target**.
+
+The features are the flower measurements:
+
+```python id="9m2r8k"
+X = iris.data
+```
+
+The target is the species:
+
+```python id="4t7n6v"
+y = iris.target
+```
+
+So:
 
 ```text
 X → flower measurements
+
+y → flower species
 ```
 
-Our target is:
+The target values are:
 
 ```text
-y → flower species
+0 → setosa
+1 → versicolor
+2 → virginica
+```
+
+We can check the first few observations:
+
+```python id="6p4x2d"
+print(X[:5])
+print(y[:5])
+```
+
+### Question
+
+What does `X` represent, and what does `y` represent in the Iris problem?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+`X` contains the four measurements of each flower and is used as input to the classifier. `y` contains the species of each flower and is the target that the model is trying to predict.
+
+</details>
+
+---
+
+# 5. What Does the Classification Problem Look Like?
+
+For one flower, we might have:
+
+```text
+Sepal length = 5.1
+Sepal width  = 3.5
+Petal length = 1.4
+Petal width  = 0.2
+```
+
+The correct species is:
+
+```text
+setosa
+```
+
+The classifier learns from many examples like this.
+
+Eventually, we want to give it the measurements of a flower whose species is unknown:
+
+```text
+Flower measurements
+        ↓
+      Model
+        ↓
+Predicted species
 ```
 
 For example:
 
 ```text
-sepal length = 5.1
-sepal width  = 3.5
-petal length = 1.4
-petal width  = 0.2
-        ↓
-   Classifier
+5.1, 3.5, 1.4, 0.2
         ↓
      setosa
 ```
 
-### Task
-
-Write one sentence explaining what `X` and `y` represent in this problem.
-
-Then answer:
-
-> Why is Iris a multiclass classification problem rather than a binary classification problem?
-
 ---
 
-# 9. Split the Data
+# 6. Split the Data
 
-As in Lab 1, we need to separate training data from test data.
+As in Lab 1, we should not train and evaluate our model using exactly the same observations.
 
-```python
+We split the dataset into:
+
+* training data
+* test data
+
+```python id="q8m3nv"
+from sklearn.model_selection import train_test_split
+
 X_train, X_test, y_train, y_test = train_test_split(
     X,
     y,
     test_size=0.2,
     random_state=42,
-    stratify=y,
+    stratify=y
 )
-
-print("Training set shape:", X_train.shape)
-print("Test set shape:", X_test.shape)
-
-print("\nTraining class distribution:")
-print(y_train.value_counts(normalize=True).sort_index())
-
-print("\nTest class distribution:")
-print(y_test.value_counts(normalize=True).sort_index())
 ```
 
-We use:
+### What does this code do?
 
-```python
+```python id="n7v2la"
+test_size=0.2
+```
+
+means that 20% of the flowers are placed in the test set.
+
+```python id="x5b8cd"
+random_state=42
+```
+
+makes the split reproducible.
+
+```python id="j6q9te"
 stratify=y
 ```
 
-so that the three classes remain approximately equally represented in the training and test sets.
+helps keep the three species represented in similar proportions in both the training and test sets.
 
-### Questions
+Check the sizes:
 
-1. Why do we split the data before training?
-2. Why is stratification useful here?
-3. Why should the test set remain untouched during model development?
+```python id="r1z7qp"
+print("Training set:", X_train.shape)
+print("Test set:", X_test.shape)
+```
 
 ---
 
-# 10. Establish a Multiclass Baseline
+# 7. Do We Need Much Preprocessing?
 
-Before training a real classifier, establish a simple baseline.
+This is much simpler than the Titanic dataset.
 
-```python
-dummy_model = DummyClassifier(
-    strategy="most_frequent"
+The Iris features are already numerical:
+
+```text
+sepal length
+sepal width
+petal length
+petal width
+```
+
+There are also essentially no missing values in this dataset.
+
+Therefore, we do **not** need the imputation and categorical encoding that we used in Lab 1.
+
+We can work directly with the numerical features.
+
+However, there is one important issue we need to understand when using KNN:
+
+> **Feature scale can affect distance-based models.**
+
+We will return to this later.
+
+---
+
+# 8. What Is a Baseline?
+
+Before training a real classifier, it is useful to establish a simple reference point.
+
+This is called a **baseline**.
+
+A baseline is a simple strategy that does not try to learn useful relationships between the features and target.
+
+For example, we could always predict the most common species.
+
+Because Iris has three equally represented species:
+
+```text
+setosa       → 50
+versicolor   → 50
+virginica    → 50
+```
+
+there is no single majority class.
+
+A simple baseline can therefore randomly predict one of the three classes.
+
+For this lab, we will use a simple **stratified random baseline**.
+
+```python id="t8y5km"
+from sklearn.dummy import DummyClassifier
+
+baseline = DummyClassifier(
+    strategy="stratified",
+    random_state=42
 )
 
-dummy_model.fit(
+baseline.fit(
     X_train,
     y_train
 )
+```
 
-y_dummy_pred = dummy_model.predict(X_test)
+The baseline learns only the class distribution.
+
+It does not learn relationships such as:
+
+```text
+large petals → possibly virginica
+small petals → possibly setosa
+```
+
+Make predictions:
+
+```python id="w4p8ns"
+y_baseline = baseline.predict(X_test)
+```
+
+Calculate accuracy:
+
+```python id="q6k2mf"
+from sklearn.metrics import accuracy_score
 
 baseline_accuracy = accuracy_score(
     y_test,
-    y_dummy_pred
+    y_baseline
 )
 
 print("Baseline accuracy:", baseline_accuracy)
 ```
 
-Because the Iris classes are balanced, a classifier that always predicts one class will achieve approximately:
+### Why use a baseline?
 
-```text
-1 / 3 ≈ 33%
-```
+Suppose a real classifier achieves 95% accuracy.
 
-accuracy.
+That sounds good.
 
-The exact value can vary slightly depending on the split.
+But we still want to know:
 
-### Why is the baseline useful?
-
-Suppose:
-
-```text
-Baseline accuracy = 0.33
-Model accuracy    = 0.96
-```
-
-The real classifier has made a substantial improvement over the simple strategy.
+> **How much better is it than a simple strategy?**
 
 The baseline gives us a reference point.
 
-### Important
+### Question
 
-A real classifier does **not** have to outperform the baseline on every individual metric or every random test split.
+What is the purpose of a baseline?
 
-Instead, we ask:
+<details>
+<summary><strong>Sample answer</strong></summary>
 
-> Does the model provide meaningful improvement over a simple strategy, and is that improvement supported by appropriate evaluation?
+A baseline provides a simple reference point against which we can compare a real classifier. It helps us determine whether the model has learned useful patterns rather than simply producing predictions that could be achieved by a simple strategy.
 
-### Questions
-
-1. What is the baseline classifier doing?
-2. Why is its accuracy approximately one-third?
-3. Why is a baseline useful?
-4. Why should we not simply say that the real model "must" beat the baseline in every situation?
+</details>
 
 ---
 
-# 11. First Classifier: K-Nearest Neighbors
+# 9. K-Nearest Neighbors (KNN)
 
-Our first real classifier will be **K-nearest neighbors**, or KNN.
+Our first real classifier will be **K-nearest neighbors**, usually called **KNN**.
 
-The basic idea is simple:
+## The basic idea
 
-> A new observation is classified according to the classes of nearby observations.
+KNN makes a prediction by looking at observations that are **similar** to the new observation.
 
-Suppose we have a new flower.
+Imagine that we have a new flower.
 
-KNN looks for the nearest flowers in the training data and examines their species.
+KNN asks:
 
-For example, with:
+> Which flowers in the training data are closest to this flower?
+
+Suppose we use:
 
 ```text
 k = 5
 ```
 
-the algorithm looks at the five nearest training observations.
+The model looks at the five nearest flowers.
 
-If the nearest five flowers are:
+Imagine their species are:
 
 ```text
 setosa
@@ -513,286 +515,457 @@ versicolor
 setosa
 ```
 
-then the predicted class would be:
+The majority is:
 
 ```text
 setosa
 ```
 
-because it is the majority class among the nearest neighbors.
-
----
-
-# 12. Why KNN Is Useful for Iris
-
-KNN is a useful first model for Iris because:
-
-* the dataset is small
-* the features are numerical
-* the observations can be compared using distances
-* the species have measurable differences in their flower dimensions
-* the algorithm is relatively easy to understand
-
-KNN also provides a useful contrast with logistic regression.
-
----
-
-# 13. A Note About Feature Scaling
-
-KNN is a **distance-based** algorithm.
-
-This means that the numerical scale of the features can affect its predictions.
-
-For example, imagine two features:
+So KNN predicts:
 
 ```text
-Feature A → values between 0 and 5
-Feature B → values between 0 and 500
+setosa
 ```
 
-Feature B could have a much larger influence on the distance simply because its numerical values are larger.
+Conceptually:
 
-Standardization is one common solution.
-
-However, in this introductory lab, we will **not use `StandardScaler()` in the main workflow**.
-
-The Iris measurements are all reasonably interpretable numerical measurements, and we want to keep the focus on multiclass classification.
-
-This is a deliberate simplification, not a statement that scaling is never useful.
-
-### Optional experiment
-
-If you want to investigate preprocessing, try adding `StandardScaler()` later and compare the results.
-
-The question to investigate is:
-
-> Does scaling change KNN's performance on Iris?
+```text
+New flower
+     ↓
+Find nearest flowers
+     ↓
+Look at their classes
+     ↓
+Majority vote
+     ↓
+Predicted class
+```
 
 ---
 
-# 14. Train the KNN Classifier
+# 10. Why Is KNN Called "K-Nearest Neighbors"?
 
-We will begin with:
+The name tells us how the algorithm works.
+
+### K
+
+`K` is the number of neighbors we look at.
+
+For example:
 
 ```text
-k = 5
+K = 3
 ```
 
-```python
-knn_model = KNeighborsClassifier(
+means:
+
+> Look at the three nearest training observations.
+
+### Nearest
+
+We need some way to measure how close two flowers are.
+
+Because Iris contains numerical measurements, we can use distance.
+
+### Neighbors
+
+The observations closest to our new observation are its neighbors.
+
+---
+
+# 11. An Important Issue: Feature Scale
+
+KNN uses distances.
+
+Suppose one feature has values between:
+
+```text
+1 and 5
+```
+
+while another has values between:
+
+```text
+1 and 100
+```
+
+The larger-scale feature can have a much stronger effect on the distance.
+
+For example:
+
+```text
+Feature A difference = 2
+
+Feature B difference = 40
+```
+
+The second feature contributes much more to the distance.
+
+This is why **scaling can be important for KNN**.
+
+In the Iris dataset, the four features are measured in the same unit and have relatively similar ranges, so we will first keep the workflow simple and use the original values.
+
+---
+
+# 12. Train a KNN Classifier
+
+Import KNN:
+
+```python id="d6m2qa"
+from sklearn.neighbors import KNeighborsClassifier
+```
+
+Create the classifier:
+
+```python id="v9r4kc"
+knn = KNeighborsClassifier(
     n_neighbors=5
 )
+```
 
-knn_model.fit(
+The parameter:
+
+```python id="q2s8jd"
+n_neighbors=5
+```
+
+means that the classifier will look at the five nearest training observations.
+
+Now train the classifier:
+
+```python id="b7w3fp"
+knn.fit(
     X_train,
     y_train
 )
+```
 
-y_knn_pred = knn_model.predict(
+### What does `fit()` mean?
+
+As in Lab 1:
+
+> `fit()` means that we are giving the model the training data so it can prepare itself for making predictions.
+
+For KNN, there is an important difference from some other models.
+
+KNN does not learn a complicated mathematical equation in the same way logistic regression does.
+
+Instead, it keeps the training observations and uses them when a new observation needs to be classified.
+
+---
+
+# 13. Make Predictions
+
+Use the trained KNN classifier to predict the test flowers:
+
+```python id="z5n2kx"
+y_pred = knn.predict(
     X_test
 )
 ```
 
+Look at some predictions:
+
+```python id="w1c8sd"
+print("Predicted:")
+print(y_pred[:15])
+
+print("\nActual:")
+print(y_test[:15])
+```
+
+Remember:
+
+```text
+0 → setosa
+1 → versicolor
+2 → virginica
+```
+
+The model has now produced one of three possible classes for each test flower.
+
 ---
 
-# 15. Evaluate KNN Accuracy
+# 14. Accuracy in Multiclass Classification
 
-Start with accuracy.
+Accuracy works in the same basic way as in binary classification.
 
-```python
-knn_accuracy = accuracy_score(
+It answers:
+
+> **What proportion of all predictions were correct?**
+
+```python id="e7k4ps"
+accuracy = accuracy_score(
     y_test,
-    y_knn_pred
+    y_pred
 )
 
-print("KNN accuracy:", knn_accuracy)
+print("Accuracy:", accuracy)
 ```
-
-Accuracy is reasonable here because the three Iris classes are balanced.
-
-However, we should not stop with accuracy.
-
-A multiclass classifier can have high overall accuracy while performing differently for different classes.
-
----
-
-# 16. Evaluate Precision, Recall, and F1
-
-Calculate the metrics for each class.
-
-```python
-print(
-    classification_report(
-        y_test,
-        y_knn_pred,
-        target_names=iris.target_names
-    )
-)
-```
-
-The classification report provides metrics for:
-
-```text
-setosa
-versicolor
-virginica
-```
-
-as well as summary averages.
-
----
-
-# 17. Understand Per-Class Metrics
-
-In Lab 1, we talked about:
-
-```text
-positive class = survived
-negative class = did not survive
-```
-
-With Iris, we do not have just one positive class.
-
-Instead, we can evaluate each species separately.
 
 For example:
 
-> How well does the classifier identify **setosa**?
-
-Then:
-
-> How well does it identify **versicolor**?
-
-And:
-
-> How well does it identify **virginica**?
-
-For each class, precision, recall, and F1 can be calculated by treating that class as the class of interest and the other classes as the alternatives.
-
-For example, when evaluating `setosa`:
-
 ```text
-setosa       → class of interest
-versicolor   → other class
-virginica    → other class
+Accuracy = 0.93
 ```
 
-### Questions
+means that approximately 93% of the test flowers were classified correctly.
 
-1. Which species has the highest precision?
-2. Which species has the highest recall?
-3. Which species has the highest F1 score?
-4. Are the three classes performing equally well?
-5. Why might one species be easier to classify than another?
+However, accuracy does not tell us:
+
+> Which species did the model get wrong?
+
+For that, we need a confusion matrix.
 
 ---
 
-# 18. Multiclass Confusion Matrix
+# 15. The Multiclass Confusion Matrix
 
-In Lab 1, the confusion matrix was:
-
-```text
-2 × 2
-```
-
-because there were two classes.
-
-For Iris, there are three classes, so the confusion matrix is:
+In Lab 1, the confusion matrix had two classes:
 
 ```text
-3 × 3
+0
+1
 ```
 
-Create it:
+Therefore, it was a 2 × 2 matrix.
 
-```python
+Here we have three classes:
+
+```text
+0 → setosa
+1 → versicolor
+2 → virginica
+```
+
+So the confusion matrix becomes a 3 × 3 matrix.
+
+```python id="p9h5xv"
+from sklearn.metrics import confusion_matrix
+
 cm = confusion_matrix(
     y_test,
-    y_knn_pred
+    y_pred
 )
 
 print(cm)
 ```
 
-Visualize it with class names:
+Visualize it:
 
-```python
-plt.figure(figsize=(6, 5))
-
+```python id="a3q7nf"
 sns.heatmap(
     cm,
     annot=True,
     fmt="d",
-    cmap="Blues",
     xticklabels=iris.target_names,
     yticklabels=iris.target_names
 )
 
-plt.title("Confusion Matrix: KNN on Iris")
-plt.xlabel("Predicted species")
-plt.ylabel("Actual species")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Iris Confusion Matrix")
 plt.show()
 ```
 
-The structure is:
+---
+
+# 16. How to Read the Confusion Matrix
+
+The rows represent the **actual** species.
+
+The columns represent the **predicted** species.
+
+For example:
 
 ```text
                     Predicted
-              setosa  versicolor  virginica
 
-Actual
+                 setosa  versicolor  virginica
+
+Actual setosa
+Actual versicolor
+Actual virginica
+```
+
+The diagonal contains correct predictions.
+
+```text
+setosa     → setosa
+versicolor → versicolor
+virginica  → virginica
+```
+
+Values away from the diagonal represent errors.
+
+For example:
+
+```text
+Actual: versicolor
+Predicted: virginica
+```
+
+means:
+
+> The flower was actually versicolor, but the model predicted virginica.
+
+---
+
+# 17. Why Is the Multiclass Confusion Matrix Useful?
+
+Imagine the model has:
+
+```text
+Accuracy = 95%
+```
+
+That sounds excellent.
+
+But suppose almost all errors involve:
+
+```text
+versicolor ↔ virginica
+```
+
+while setosa is almost always classified correctly.
+
+The confusion matrix shows us this.
+
+This is important because:
+
+> A model can perform very well overall while still having difficulty distinguishing particular classes.
+
+### Question
+
+What does a value away from the diagonal of the confusion matrix represent?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+A value away from the diagonal represents an incorrect prediction. For example, if the actual class is versicolor but the predicted class is virginica, the observation appears outside the diagonal.
+
+</details>
+
+---
+
+# 18. Precision, Recall, and F1 in Multiclass Classification
+
+In Lab 1, we talked about:
+
+* precision
+* recall
+* F1
+
+The same ideas can be used for multiclass classification.
+
+The difference is that we can calculate them **for each class**.
+
+For example, we can ask:
+
+> How well does the model identify setosa?
+
+Then:
+
+> How well does it identify versicolor?
+
+And:
+
+> How well does it identify virginica?
+
+Scikit-learn can calculate these values for us.
+
+```python id="k6x9pt"
+from sklearn.metrics import classification_report
+
+print(
+    classification_report(
+        y_test,
+        y_pred,
+        target_names=iris.target_names
+    )
+)
+```
+
+You should see something similar to:
+
+```text
+              precision    recall    f1-score    support
+
+setosa           ...
+versicolor       ...
+virginica        ...
+
+accuracy         ...
+
+macro avg        ...
+weighted avg     ...
+```
+
+---
+
+# 19. What Do the Per-Class Metrics Mean?
+
+Consider **setosa**.
+
+### Precision for setosa
+
+> Of the flowers predicted to be setosa, how many actually were setosa?
+
+### Recall for setosa
+
+> Of all the flowers that actually were setosa, how many did the model correctly identify?
+
+### F1 for setosa
+
+> How well does the model balance precision and recall for setosa?
+
+The same questions can be asked separately for:
+
+```text
 setosa
 versicolor
 virginica
 ```
 
-The diagonal represents correct predictions.
+This is one of the important differences between binary and multiclass evaluation.
 
-The off-diagonal cells represent mistakes.
+### Question
 
----
+Why is it useful to look at metrics for each species rather than only overall accuracy?
 
-# 19. Interpret the Confusion Matrix
+<details>
+<summary><strong>Sample answer</strong></summary>
 
-Look carefully at the confusion matrix.
+Overall accuracy tells us how well the model performs across all flowers, but it does not show whether one particular species is harder to classify. Per-class precision, recall, and F1 allow us to see how well the model performs for each species.
 
-Answer:
-
-1. How many `setosa` flowers were correctly classified?
-2. How many `versicolor` flowers were correctly classified?
-3. How many `virginica` flowers were correctly classified?
-4. Which species is most frequently confused with another?
-5. Is `setosa` easier to distinguish than the other species?
-6. Which two species appear to overlap more?
-
-### Important idea
-
-A confusion matrix tells us **where the model makes mistakes**.
-
-Accuracy tells us:
-
-> How many predictions were correct overall?
-
-The confusion matrix tells us:
-
-> **Which classes are being confused?**
-
-This becomes particularly important in multiclass classification.
+</details>
 
 ---
 
 # 20. Macro Average vs Weighted Average
 
-The classification report includes summary averages.
+The classification report also gives us:
 
-Two important ones are:
+```text
+macro avg
+weighted avg
+```
 
-* macro average
-* weighted average
+These are ways of combining the metrics from the three classes into a single value.
 
-## Macro Average
+## Macro average
 
-The macro average gives every class equal importance.
+The macro average gives each class equal importance.
+
+For example:
+
+```text
+setosa F1       = 0.98
+versicolor F1   = 0.92
+virginica F1    = 0.94
+```
+
+The macro F1 is simply the average of these three class-level F1 scores.
 
 Conceptually:
 
@@ -801,33 +974,36 @@ Macro F1 =
 (F1 setosa + F1 versicolor + F1 virginica) / 3
 ```
 
-Each class receives equal weight.
+Every species has equal importance.
 
 ---
 
-## Weighted Average
+## Weighted average
 
-The weighted average takes the number of observations in each class into account.
+The weighted average also combines the class-level metrics, but gives more weight to classes that contain more observations.
 
-A class with more observations has more influence on the final score.
+For the Iris dataset, each class has 50 observations.
 
-Because Iris has:
+Therefore, macro and weighted averages should be quite similar.
 
-```text
-50 setosa
-50 versicolor
-50 virginica
-```
+This is because the classes are balanced.
 
-the classes are balanced.
+### Question
 
-Therefore, macro and weighted averages should be relatively similar.
+Why are macro and weighted averages similar for the Iris dataset?
 
-### Why does this matter?
+<details>
+<summary><strong>Sample answer</strong></summary>
 
-On an imbalanced dataset, the two averages can be noticeably different.
+The Iris dataset contains the same number of observations for each of the three species. Because the classes are balanced, giving every class equal weight or weighting them according to their size produces very similar results.
 
-For example:
+</details>
+
+---
+
+# 21. What Happens When Classes Are Imbalanced?
+
+Imagine a different dataset:
 
 ```text
 Class A → 90 observations
@@ -835,611 +1011,27 @@ Class B → 8 observations
 Class C → 2 observations
 ```
 
-A weighted average will be strongly influenced by Class A.
+A weighted average would be strongly influenced by Class A because it contains most of the observations.
 
 A macro average gives all three classes equal importance.
 
-### Questions
+Therefore:
 
-1. What does the macro average represent?
-2. What does the weighted average represent?
-3. Why are the two averages relatively similar for Iris?
-4. On an imbalanced dataset, why might macro average be useful?
+> **Macro averages are particularly useful when we want to treat every class as equally important, especially when the classes are imbalanced.**
 
----
-
-# 21. Cross-Validation
-
-As in Lab 1, we should not rely only on one train/test split.
-
-We can use cross-validation on the training data.
-
-Because the Iris classes are balanced, we will use accuracy as the scoring metric.
-
-```python
-cv_scores = cross_val_score(
-    knn_model,
-    X_train,
-    y_train,
-    cv=5,
-    scoring="accuracy"
-)
-
-print("Cross-validation accuracy scores:")
-print(cv_scores)
-
-print("\nMean CV accuracy:")
-print(cv_scores.mean())
-
-print("\nStandard deviation:")
-print(cv_scores.std())
-```
-
-### Connection to Lab 1
-
-In Lab 1, we used F1 for cross-validation.
-
-Here we use accuracy because:
-
-* Iris has balanced classes
-* accuracy is easy to interpret
-* we want to focus on the multiclass workflow
-
-The choice of evaluation metric should depend on the problem.
-
-### Questions
-
-1. Why is cross-validation useful?
-2. Why might the mean CV accuracy differ from the test accuracy?
-3. What does the standard deviation tell us?
-4. Why are we using accuracy here instead of F1?
+For Iris, the difference is small because the classes are balanced.
 
 ---
 
-# 22. Logistic Regression: The Name Can Be Confusing
+# 22. Logistic Regression Can Also Do Multiclass Classification
 
-Now we will use another classifier:
+In Lab 1, we used logistic regression for binary classification.
 
-**Logistic Regression**
+Here we can use logistic regression again, but now there are three classes.
 
-The name can be confusing.
+This is an important idea:
 
-You might see the word:
-
-> regression
-
-and assume that the algorithm is used to predict a continuous numerical value such as:
-
-```text
-house price
-temperature
-salary
-```
-
-That is **not** what logistic regression is doing here.
-
-### Important
-
-> **Logistic regression is a classification algorithm.**
-
-It is commonly used to estimate the probability that an observation belongs to a class and then use those probabilities to make a classification decision.
-
-In Lab 1, we used logistic regression for:
-
-```text
-2 classes
-↓
-binary classification
-```
-
-In this lab, logistic regression can be used for:
-
-```text
-3 classes
-↓
-multiclass classification
-```
-
-So the important lesson is:
-
-> The name "logistic regression" contains the word regression, but the algorithm is widely used for classification.
-
----
-
-# 23. Train Logistic Regression on Iris
-
-We can train logistic regression directly on the Iris data.
-
-```python
-logreg_model = LogisticRegression(
-    max_iter=1000
-)
-
-logreg_model.fit(
-    X_train,
-    y_train
-)
-
-y_logreg_pred = logreg_model.predict(
-    X_test
-)
-```
-
-Notice that we did not have to change the target into a binary problem.
-
-The classifier can work with all three Iris classes.
-
----
-
-# 24. Evaluate Logistic Regression
-
-Calculate accuracy:
-
-```python
-logreg_accuracy = accuracy_score(
-    y_test,
-    y_logreg_pred
-)
-
-print("Logistic regression accuracy:", logreg_accuracy)
-```
-
-Now examine the classification report:
-
-```python
-print(
-    classification_report(
-        y_test,
-        y_logreg_pred,
-        target_names=iris.target_names
-    )
-)
-```
-
-### Questions
-
-1. Which species does logistic regression classify best?
-2. Which species is most difficult?
-3. How does logistic regression compare with KNN?
-4. Are the errors made by the two models identical?
-
----
-
-# 25. Compare KNN and Logistic Regression
-
-Create a simple comparison table.
-
-```python
-comparison = pd.DataFrame({
-    "Model": [
-        "Baseline",
-        "KNN",
-        "Logistic Regression"
-    ],
-    "Accuracy": [
-        baseline_accuracy,
-        knn_accuracy,
-        logreg_accuracy
-    ]
-})
-
-display(comparison)
-```
-
-### Questions
-
-1. Which model has the highest accuracy?
-2. How much better is each real model than the baseline?
-3. Do KNN and logistic regression perform similarly?
-4. Is accuracy alone enough to explain the difference between the models?
-5. Which model would you choose at this stage, and why?
-
----
-
-# 26. Compare the Confusion Matrices
-
-Create a confusion matrix for logistic regression.
-
-```python
-cm_logreg = confusion_matrix(
-    y_test,
-    y_logreg_pred
-)
-
-plt.figure(figsize=(6, 5))
-
-sns.heatmap(
-    cm_logreg,
-    annot=True,
-    fmt="d",
-    cmap="Blues",
-    xticklabels=iris.target_names,
-    yticklabels=iris.target_names
-)
-
-plt.title("Confusion Matrix: Logistic Regression on Iris")
-plt.xlabel("Predicted species")
-plt.ylabel("Actual species")
-plt.show()
-```
-
-Compare this with the KNN confusion matrix.
-
-### Questions
-
-1. Do the two models make the same errors?
-2. Which species is most frequently confused?
-3. Does one model appear to separate any particular pair of species better?
-4. What does the confusion matrix tell you that accuracy does not?
-
----
-
-# 27. Error Analysis
-
-A useful machine-learning habit is to examine the observations that the model classified incorrectly.
-
-Let's find KNN's errors.
-
-```python
-incorrect = X_test[
-    y_knn_pred != y_test
-].copy()
-
-incorrect["actual"] = y_test[
-    y_knn_pred != y_test
-].map(
-    dict(enumerate(iris.target_names))
-)
-
-incorrect["predicted"] = pd.Series(
-    y_knn_pred[
-        y_knn_pred != y_test
-    ],
-    index=incorrect.index
-).map(
-    dict(enumerate(iris.target_names))
-)
-
-display(incorrect)
-```
-
-Now examine how many errors occurred for each actual/predicted combination:
-
-```python
-errors = pd.crosstab(
-    incorrect["actual"],
-    incorrect["predicted"]
-)
-
-display(errors)
-```
-
-### Questions
-
-1. How many flowers were misclassified?
-2. Which species was most frequently misclassified?
-3. Which species was it confused with?
-4. Look at the measurements of some incorrectly classified flowers. Why might they be difficult to classify?
-5. Do the measurements of `versicolor` and `virginica` appear more similar than those of `setosa`?
-
-### Important idea
-
-Model evaluation should not stop at:
-
-> "The accuracy is 96%."
-
-We can also ask:
-
-> **Where does the model struggle, and why?**
-
-Errors can help us understand both the dataset and the model.
-
----
-
-# 28. KNN Hyperparameters
-
-KNN has several hyperparameters.
-
-One important parameter is:
-
-```python
-n_neighbors
-```
-
-This determines how many nearby observations are considered when making a prediction.
-
-For example:
-
-```text
-n_neighbors = 3
-```
-
-means that KNN looks at the three nearest observations.
-
-```text
-n_neighbors = 9
-```
-
-means that it looks at the nine nearest observations.
-
-A smaller value can make the model more sensitive to local patterns.
-
-A larger value can produce smoother decisions.
-
----
-
-## Uniform vs Distance Weighting
-
-KNN can also decide how much influence each neighbor has.
-
-### Uniform weighting
-
-```text
-weights="uniform"
-```
-
-Every neighbor contributes equally.
-
-### Distance weighting
-
-```text
-weights="distance"
-```
-
-Closer neighbors have more influence than farther neighbors.
-
----
-
-# 29. Tune KNN
-
-We will test a small number of combinations.
-
-```python
-param_grid = {
-    "n_neighbors": [
-        3,
-        5,
-        7,
-        9
-    ],
-    "weights": [
-        "uniform",
-        "distance"
-    ]
-}
-```
-
-Use cross-validation on the training data:
-
-```python
-grid_search = GridSearchCV(
-    KNeighborsClassifier(),
-    param_grid=param_grid,
-    cv=5,
-    scoring="accuracy"
-)
-
-grid_search.fit(
-    X_train,
-    y_train
-)
-```
-
-Inspect the best result:
-
-```python
-print("Best parameters:")
-print(grid_search.best_params_)
-
-print("\nBest cross-validation accuracy:")
-print(grid_search.best_score_)
-```
-
-### Questions
-
-1. What value of `n_neighbors` was selected?
-2. Was `uniform` or `distance` weighting selected?
-3. Did tuning improve the cross-validation result?
-4. Why should the test set not be used to choose these parameters?
-
----
-
-# 30. Examine the Tuning Results
-
-We can inspect all tested combinations.
-
-```python
-results = pd.DataFrame(
-    grid_search.cv_results_
-)
-
-display(
-    results[
-        [
-            "param_n_neighbors",
-            "param_weights",
-            "mean_test_score",
-            "std_test_score",
-            "rank_test_score"
-        ]
-    ].sort_values("rank_test_score")
-)
-```
-
-This allows us to see not only the best combination but also how the other combinations performed.
-
-### Question
-
-Do several hyperparameter settings perform similarly?
-
-If so, what does that suggest about how sensitive KNN is to these settings on this dataset?
-
----
-
-# 31. Final Evaluation
-
-Now use the best KNN model selected using cross-validation.
-
-```python
-best_knn = grid_search.best_estimator_
-
-y_final_pred = best_knn.predict(
-    X_test
-)
-```
-
-Calculate the final accuracy:
-
-```python
-final_accuracy = accuracy_score(
-    y_test,
-    y_final_pred
-)
-
-print("Final KNN accuracy:", final_accuracy)
-```
-
-Now examine the full classification report:
-
-```python
-print(
-    classification_report(
-        y_test,
-        y_final_pred,
-        target_names=iris.target_names
-    )
-)
-```
-
-Finally, create the confusion matrix:
-
-```python
-final_cm = confusion_matrix(
-    y_test,
-    y_final_pred
-)
-
-plt.figure(figsize=(6, 5))
-
-sns.heatmap(
-    final_cm,
-    annot=True,
-    fmt="d",
-    cmap="Blues",
-    xticklabels=iris.target_names,
-    yticklabels=iris.target_names
-)
-
-plt.title("Final Confusion Matrix: Tuned KNN on Iris")
-plt.xlabel("Predicted species")
-plt.ylabel("Actual species")
-plt.show()
-```
-
----
-
-# 32. Final Model Comparison
-
-Create a final comparison.
-
-```python
-final_comparison = pd.DataFrame({
-    "Model": [
-        "Baseline",
-        "Initial KNN",
-        "Logistic Regression",
-        "Tuned KNN"
-    ],
-    "Accuracy": [
-        baseline_accuracy,
-        knn_accuracy,
-        logreg_accuracy,
-        final_accuracy
-    ]
-})
-
-display(final_comparison)
-```
-
-For a fuller comparison, you can also calculate the macro F1 score for the real classifiers:
-
-```python
-knn_macro_f1 = f1_score(
-    y_test,
-    y_knn_pred,
-    average="macro"
-)
-
-logreg_macro_f1 = f1_score(
-    y_test,
-    y_logreg_pred,
-    average="macro"
-)
-
-final_macro_f1 = f1_score(
-    y_test,
-    y_final_pred,
-    average="macro"
-)
-
-macro_comparison = pd.DataFrame({
-    "Model": [
-        "KNN",
-        "Logistic Regression",
-        "Tuned KNN"
-    ],
-    "Accuracy": [
-        knn_accuracy,
-        logreg_accuracy,
-        final_accuracy
-    ],
-    "Macro F1": [
-        knn_macro_f1,
-        logreg_macro_f1,
-        final_macro_f1
-    ]
-})
-
-display(macro_comparison)
-```
-
-### Questions
-
-1. Which model has the highest accuracy?
-2. Which model has the highest macro F1?
-3. Did tuning meaningfully improve KNN?
-4. Are the model differences large or small?
-5. Would you choose the model with the highest accuracy automatically?
-6. What other factors could influence your choice?
-
----
-
-# 33. Binary vs Multiclass Classification
-
-Complete the following comparison.
-
-| Concept                    | Titanic | Iris |
-| -------------------------- | ------- | ---- |
-| Number of classes          | ___     | ___  |
-| Classification type        | ___     | ___  |
-| Target                     | ___     | ___  |
-| Positive class             | ___     | ___  |
-| Main confusion matrix size | ___     | ___  |
-| Main evaluation challenge  | ___     | ___  |
-
-### Questions
-
-1. What is the main difference between binary and multiclass classification?
-2. Why does the confusion matrix become larger in a multiclass problem?
-3. Why is there no single positive class in the Iris problem?
-4. Why do per-class metrics become particularly useful in multiclass classification?
-5. How can a classifier perform well overall but still perform poorly for one class?
-
----
-
-# 34. Logistic Regression Across the Two Labs
-
-Think back to Lab 1.
+> **The same classification algorithm can often be used for both binary and multiclass classification.**
 
 In Lab 1:
 
@@ -1448,9 +1040,7 @@ Titanic
    ↓
 2 classes
    ↓
-Logistic Regression
-   ↓
-Binary classification
+Logistic regression
 ```
 
 In Lab 2:
@@ -1460,74 +1050,357 @@ Iris
    ↓
 3 classes
    ↓
-Logistic Regression
-   ↓
-Multiclass classification
+Logistic regression
 ```
 
-### Reflection
+The name can be confusing because it contains the word "regression."
 
-Complete this statement:
+But remember:
 
-> Logistic regression is called "regression," but in these labs it is being used for classification because ____________________________.
-
-Then answer:
-
-> What does this example show about the relationship between an algorithm and the type of classification problem?
+> **Logistic regression is a classification algorithm.**
 
 ---
 
-# 35. Final Reflection
+# 23. Train Logistic Regression
 
-Answer the following questions in complete sentences.
+Import the model:
 
-### 1. Binary vs multiclass
+```python id="u2m8qc"
+from sklearn.linear_model import LogisticRegression
+```
+
+Create the classifier:
+
+```python id="f7w3kj"
+logreg = LogisticRegression(
+    max_iter=1000
+)
+```
+
+The `max_iter=1000` setting gives the algorithm enough iterations to find a solution.
+
+Train the model:
+
+```python id="s9c5bn"
+logreg.fit(
+    X_train,
+    y_train
+)
+```
+
+Again:
+
+```text
+fit()
+```
+
+means:
+
+> Learn from the training data.
+
+---
+
+# 24. Make Logistic Regression Predictions
+
+```python id="r4v8qd"
+y_logreg_pred = logreg.predict(
+    X_test
+)
+```
+
+Calculate accuracy:
+
+```python id="p6n2kx"
+logreg_accuracy = accuracy_score(
+    y_test,
+    y_logreg_pred
+)
+
+print("Logistic Regression accuracy:",
+      logreg_accuracy)
+```
+
+Now calculate the classification report:
+
+```python id="e8w1qm"
+print(
+    classification_report(
+        y_test,
+        y_logreg_pred,
+        target_names=iris.target_names
+    )
+)
+```
+
+---
+
+# 25. Compare KNN and Logistic Regression
+
+We now have two classifiers:
+
+```text
+KNN
+↓
+Uses nearby observations
+
+Logistic Regression
+↓
+Learns relationships between features and class
+```
+
+Let's compare their accuracy:
+
+```python id="n4x7ps"
+print("KNN accuracy:",
+      accuracy)
+
+print("Logistic Regression accuracy:",
+      logreg_accuracy)
+```
+
+We can also create a small comparison table:
+
+```python id="h5k9rc"
+comparison = pd.DataFrame({
+    "Model": [
+        "Baseline",
+        "KNN",
+        "Logistic Regression"
+    ],
+
+    "Accuracy": [
+        baseline_accuracy,
+        accuracy,
+        logreg_accuracy
+    ]
+})
+
+display(comparison)
+```
+
+---
+
+# 26. Which Model Is Better?
+
+Do not assume that one algorithm is always better.
+
+A model should be judged using the results of the evaluation.
+
+For this dataset, we can consider:
+
+* accuracy
+* per-class precision
+* per-class recall
+* per-class F1
+* confusion matrix
+
+Because the Iris dataset is balanced, accuracy is a particularly easy metric to interpret.
+
+However, the confusion matrix and per-class results tell us more about **where the model makes mistakes**.
+
+### Questions
+
+1. Which classifier achieved the higher accuracy?
+2. Which species appears to be the most difficult to classify?
+3. What evidence from the confusion matrix or classification report supports your answer?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+The classifier with the higher accuracy was **[model]**.
+
+The most difficult species appears to be **[species]**, because it has the lowest recall/F1 score or because it is involved in more incorrect predictions in the confusion matrix.
+
+The confusion matrix shows that the main errors occur between **[species A]** and **[species B]**.
+
+</details>
+
+---
+
+# 27. Connecting Iris to Titanic
+
+We can now compare the two labs.
+
+|                | Titanic                 | Iris                      |
+| -------------- | ----------------------- | ------------------------- |
+| Task           | Predict survival        | Predict species           |
+| Type           | Binary classification   | Multiclass classification |
+| Classes        | 2                       | 3                         |
+| Features       | Numerical + categorical | Numerical                 |
+| Missing values | Present                 | Essentially none          |
+| First model    | Logistic regression     | KNN                       |
+| Other model    | Decision tree           | Logistic regression       |
+
+The most important point is that the overall workflow is still the same.
+
+```text
+Titanic                         Iris
+
+X and y                         X and y
+   ↓                               ↓
+Train/test split                Train/test split
+   ↓                               ↓
+Preprocessing                   Minimal preprocessing
+   ↓                               ↓
+Classifier                      Classifier
+   ↓                               ↓
+Predictions                     Predictions
+   ↓                               ↓
+Evaluation                      Evaluation
+```
+
+The major change is:
+
+```text
+Titanic
+2 classes
+
+        ↓
+
+Iris
+3 classes
+```
+
+---
+
+# 28. Binary vs Multiclass Evaluation
+
+In Lab 1, we could talk about:
+
+```text
+positive class
+negative class
+```
+
+For example:
+
+```text
+Survived
+Did not survive
+```
+
+With three Iris species, there is no single natural positive class.
+
+Instead, we can evaluate each class separately.
+
+For example, when evaluating setosa:
+
+```text
+setosa
+vs
+not setosa
+```
+
+Then when evaluating versicolor:
+
+```text
+versicolor
+vs
+not versicolor
+```
+
+And similarly for virginica.
+
+This is why the classification report gives us separate precision, recall, and F1 values for each class.
+
+---
+
+# 29. Why Can Iris Be Easier to Classify Than Titanic?
+
+Compare the two datasets.
+
+Titanic contains:
+
+* missing values
+* categorical variables
+* numerical variables
+* noisy historical information
+* a complex real-world outcome
+
+Iris is much simpler.
+
+It contains:
+
+* four numerical measurements
+* three well-defined species
+* balanced classes
+* very little missing data
+
+This means that a classifier can often achieve very high accuracy on Iris.
+
+That does **not** mean that classification is always easy.
+
+Iris is a useful teaching dataset because it allows us to focus on the classification concepts without dealing with a large amount of preprocessing.
+
+---
+
+# 30. Final Reflection
+
+Answer the following four questions.
+
+## Question 1 — Binary vs Multiclass
 
 Explain the difference between binary and multiclass classification using Titanic and Iris as examples.
 
-### 2. Baseline
+<details>
+<summary><strong>Sample answer</strong></summary>
 
-Why is a baseline important even when the real classifier performs very well?
+Binary classification has two possible classes. Titanic survival prediction is binary because the passenger either survived or did not survive.
 
-### 3. KNN
+Multiclass classification has more than two possible classes. Iris species prediction is multiclass because the model chooses between setosa, versicolor, and virginica.
 
-Explain KNN in your own words.
-
-### 4. Confusion matrix
-
-What does the Iris confusion matrix tell you about the model's errors?
-
-### 5. Per-class performance
-
-Why is it useful to examine precision, recall, and F1 for each Iris species rather than looking only at overall accuracy?
-
-### 6. Macro vs weighted
-
-Why are macro and weighted averages relatively similar for Iris?
-
-### 7. Model comparison
-
-Which model would you choose:
-
-* KNN
-* logistic regression
-* tuned KNN
-
-Explain your choice using evidence from the results.
-
-### 8. Error analysis
-
-Which species was most difficult for the model to classify, and why might that be?
-
-### 9. Preprocessing
-
-Why did we not use `StandardScaler()` in the main workflow?
-
-What potential benefit could scaling have for KNN?
+</details>
 
 ---
 
-# 36. Key Takeaways
+## Question 2 — Baseline
+
+Why is it useful to compare a classifier with a baseline?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+A baseline provides a simple reference point. It helps us determine whether the classifier has learned useful patterns and performs better than a simple prediction strategy.
+
+</details>
+
+---
+
+## Question 3 — Confusion Matrix
+
+Look at your Iris confusion matrix.
+
+Which species was most often confused with another species?
+
+<details>
+<summary><strong>Sample answer structure</strong></summary>
+
+The species most often confused with another species was **[species]**. The confusion matrix shows **[number]** cases where the actual species was **[species]** but the model predicted **[other species]**.
+
+</details>
+
+---
+
+## Question 4 — Model Comparison
+
+Which model would you choose for this dataset: KNN or logistic regression?
+
+Use at least two pieces of evidence from your results.
+
+<details>
+<summary><strong>Sample answer structure</strong></summary>
+
+I would choose **[model]**.
+
+Its accuracy was **[value]**, compared with **[value]** for the other model. Its per-class results also show **[better F1 / better recall / fewer errors for a particular species]**.
+
+Therefore, based on the results, I would prefer **[model]** for this dataset.
+
+</details>
+
+---
+
+# 31. Key Takeaways
 
 The most important ideas from this lab are:
 
@@ -1541,13 +1414,11 @@ versicolor
 virginica
 ```
 
-Therefore, it is a multiclass classification problem.
+Therefore, Iris species prediction is a **multiclass classification** problem.
 
 ---
 
-### 2. The workflow remains the same
-
-The move from binary to multiclass classification does not require an entirely new machine-learning workflow.
+### 2. The workflow is familiar
 
 We still:
 
@@ -1556,242 +1427,119 @@ Define X and y
       ↓
 Split the data
       ↓
-Train the model
+Prepare the data
+      ↓
+Establish a baseline
+      ↓
+Train a classifier
+      ↓
+Make predictions
       ↓
 Evaluate
       ↓
 Compare
-      ↓
-Tune
-      ↓
-Final evaluation
 ```
 
----
-
-### 3. Evaluation becomes more detailed
-
-With multiple classes, we should ask:
-
-> How well does the model perform for **each class**?
-
-This makes:
-
-* per-class precision
-* per-class recall
-* per-class F1
-* confusion matrices
-* macro averages
-
-particularly useful.
+The workflow did not fundamentally change from Lab 1.
 
 ---
 
-### 4. Logistic regression is a classification algorithm
+### 3. The confusion matrix gets larger
 
-The name can be misleading.
-
-> **Logistic regression is commonly used for classification, not just regression.**
-
-It can be used in both:
+Binary classification:
 
 ```text
-Binary classification
+2 classes
+→ 2 × 2 confusion matrix
 ```
 
-and:
+Multiclass classification:
 
 ```text
-Multiclass classification
+3 classes
+→ 3 × 3 confusion matrix
 ```
 
----
-
-### 5. KNN is based on similarity
-
-KNN predicts a class using nearby observations.
-
-Because it relies on distances, feature scale can matter.
-
-In this introductory lab, we deliberately avoided adding `StandardScaler()` so that the focus remains on classification.
+With more classes, the confusion matrix shows which classes are being confused with each other.
 
 ---
 
-### 6. Model errors are informative
+### 4. Evaluation can be done per class
 
-A good evaluation does more than report:
+Instead of evaluating only overall performance, we can ask:
 
 ```text
-Accuracy = 96%
+How well does the model classify setosa?
+
+How well does it classify versicolor?
+
+How well does it classify virginica?
 ```
 
-We should also ask:
-
-> Which classes does the model confuse?
-
-and:
-
-> Why might those observations be difficult to classify?
+This gives us a more detailed picture of model performance.
 
 ---
 
-# 37. Optional Self-Study
+### 5. Macro and weighted averages
 
-The following topics are **not required** for the main lab, but they are useful if you want to explore further.
+Macro average:
 
-## A. StandardScaler and KNN
+> Gives every class equal importance.
 
-Try adding `StandardScaler()` before KNN.
+Weighted average:
 
-Compare:
+> Gives more influence to classes with more observations.
 
-```text
-KNN without scaling
-```
-
-with:
-
-```text
-StandardScaler + KNN
-```
-
-Questions:
-
-* Does accuracy change?
-* Do the predictions change?
-* Does the confusion matrix change?
-* Why might scaling affect a distance-based model?
+Because Iris has balanced classes, the two averages are similar.
 
 ---
 
-## B. Different Values of K
+### 6. Different classifiers can solve the same problem
 
-Try:
+KNN and logistic regression are different algorithms, but both can be used to classify Iris flowers.
 
-```text
-k = 1
-k = 3
-k = 5
-k = 10
-k = 20
-```
+The important question is not:
 
-Observe how the model changes.
+> Which algorithm is always best?
 
-Consider:
+Instead, ask:
 
-> What happens when K is very small?
-
-and:
-
-> What happens when K becomes very large?
+> **Which model performs well for this particular problem, and what evidence supports that conclusion?**
 
 ---
 
-## C. One-vs-Rest and One-vs-One
+# 32. Final Classification Workflow
 
-Some classification algorithms handle multiclass classification directly.
-
-Other approaches can transform a multiclass problem into several binary classification problems.
-
-Two common strategies are:
-
-* **one-vs-rest (OvR)**
-* **one-vs-one (OvO)**
-
-At a high level:
-
-### One-vs-rest
-
-For three classes:
-
-```text
-setosa vs everything else
-versicolor vs everything else
-virginica vs everything else
-```
-
-### One-vs-one
-
-Create pairwise classifiers:
-
-```text
-setosa vs versicolor
-setosa vs virginica
-versicolor vs virginica
-```
-
-You do not need to implement these strategies for this lab.
-
-The important point is simply that **multiclass classification can be handled in different ways depending on the algorithm**.
-
----
-
-## D. ROC and AUC
-
-ROC curves and ROC AUC were introduced as optional self-study in Lab 1.
-
-You can explore them further if you are interested in how classifier performance can be examined across different thresholds.
-
-For multiclass classification, ROC analysis becomes more complicated because there are multiple classes.
-
-This is therefore an **optional advanced topic**, not part of the required Lab 2 workflow.
-
----
-
-# Deliverables
-
-Submit:
-
-1. **A completed notebook or Python script**
-2. **Short written answers** to the interpretation questions
-3. **The baseline, KNN, logistic regression, and tuned KNN results**
-4. **At least one multiclass confusion matrix**
-5. **The final model comparison**
-6. **One paragraph explaining which model you would choose and why**
-7. **A short explanation of the difference between binary and multiclass classification**
-
-Your final model choice should be supported by evidence from:
-
-* accuracy
-* per-class performance
-* macro F1
-* confusion matrix
-* cross-validation
-* model simplicity
-
----
-
-# Final Message
-
-Lab 1 introduced:
-
-> **Binary classification**
-
-Lab 2 extends the same workflow to:
-
-> **Multiclass classification**
-
-The most important progression is:
+You have now seen both binary and multiclass classification.
 
 ```text
                  CLASSIFICATION
                        │
-          ┌────────────┴────────────┐
-          ↓                         ↓
-       Binary                   Multiclass
-          │                         │
-       Titanic                     Iris
-          │                         │
-       2 classes                 3 classes
-          │                         │
-   Precision/Recall/F1       Per-class metrics
-          │                         │
-    2 × 2 confusion matrix    3 × 3 confusion matrix
-          │                         │
-     Thresholds             Macro / weighted averages
+             ┌─────────┴─────────┐
+             ↓                   ↓
+          Binary              Multiclass
+             ↓                   ↓
+         Titanic                Iris
+             ↓                   ↓
+        2 classes             3 classes
+             ↓                   ↓
+       Train classifier     Train classifier
+             ↓                   ↓
+          Predict              Predict
+             ↓                   ↓
+         Evaluate            Evaluate
+             ↓                   ↓
+      Confusion matrix    Confusion matrix
+             ↓                   ↓
+       Compare models     Compare models
 ```
 
-The goal is not simply to learn another classifier.
+The central idea is:
 
-The goal is to understand how the **same supervised-learning workflow extends from two classes to multiple classes**, and how evaluation must become more detailed as the number of classes increases.
+> **Classification means using features to predict which class an observation belongs to.**
+
+In Lab 1, there were two possible classes.
+
+In Lab 2, there are three.
+
+The underlying machine-learning workflow remains largely the same.
