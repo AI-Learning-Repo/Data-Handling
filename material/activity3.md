@@ -201,7 +201,8 @@ list(...)
 
 ---
 
-## Answer
+<details>
+<summary>Answer</summary>
 
 ```python
 def text_to_bytes(text):
@@ -211,6 +212,10 @@ def text_to_bytes(text):
     # Convert the byte values into a list of integers.
     return list(byte_array)
 ```
+
+</details>
+
+
 
 ### Explanation
 
@@ -439,7 +444,8 @@ The function should:
 
 ---
 
-## Answer
+<details>
+<summary>Answer</summary>
 
 ```python
 from collections import Counter
@@ -458,6 +464,9 @@ def get_frequent_pair(tokens):
     # Return the most frequent pair.
     return pair_counts.most_common(1)[0][0]
 ```
+</details>
+
+
 
 ---
 
@@ -813,7 +822,8 @@ The function should:
 
 ---
 
-## Answer
+<details>
+<summary>Answer</summary>
 
 ```python
 def train_bpe(tokens, num_merges):
@@ -841,6 +851,10 @@ def train_bpe(tokens, num_merges):
 
     return merges
 ```
+
+</details>
+
+
 
 ---
 
@@ -1095,7 +1109,8 @@ merges, vocab
 
 ---
 
-## Answer
+<details>
+<summary>Answer</summary>
 
 ```python
 def train_bpe(tokens, num_merges):
@@ -1136,6 +1151,10 @@ def train_bpe(tokens, num_merges):
 
     return merges, vocab
 ```
+
+</details>
+
+
 
 ---
 
@@ -1299,7 +1318,8 @@ The function should:
 
 ---
 
-## Answer
+<details>
+<summary>Answer</summary>
 
 ```python
 def encode(text, merges):
@@ -1318,6 +1338,10 @@ def encode(text, merges):
 
     return tokens
 ```
+
+</details>
+
+
 
 ---
 
@@ -1450,7 +1474,8 @@ The function should:
 
 ---
 
-## Answer
+<details>
+<summary>Answer</summary>
 
 ```python
 def decode(token_ids, vocab):
@@ -1466,6 +1491,10 @@ def decode(token_ids, vocab):
     # Convert the final bytes back into text.
     return result.decode("utf-8")
 ```
+
+</details>
+
+
 
 ---
 
