@@ -36,8 +36,9 @@
 
 ### Part 3: 
 
-- [Tokenization & BPE](./material/part3.md)
-- [Demo](./material/part3-demo.md)
+- Tokenization & BPE
+  - [Summary](./material/part3.md)
+  - [Demo](./material/part3-demo.md)
 - [Activity 3: Implementing A Byte Pair Encoding (BPE) Tokenizer From Scratch](https://sebastianraschka.com/blog/2025/bpe-from-scratch.html)
 
 ### Part 4: 

@@ -104,6 +104,61 @@ For this example:
 l + o → lo
 ```
 
+<details>
+<summary>About the Code</summary>
+
+This Python code calculates the frequency of adjacent character pairs (bigrams) in a given text. This specific operation—finding the most common pair of characters—is the foundational first step of the **Byte Pair Encoding (BPE)** algorithm.
+
+* **`text.replace("\n", "")`**: This removes all the invisible newline characters, mashing all the words into one continuous string: `"lowlowerlowestlowlower"`.
+* **`list(...)`**: This takes that continuous string and splits it into a list of individual characters. 
+* **State of `tokens`:** 
+  `['l', 'o', 'w', 'l', 'o', 'w', 'e', 'r', 'l', 'o', 'w', 'e', 's', 't', 'l', 'o', 'w', 'l', 'o', 'w', 'e', 'r']`
+
+**Creating Adjacent Pairs (Bigrams)**
+
+```python
+zip(tokens, tokens[1:])
+```
+This is a classic Python trick to create overlapping pairs from a list.
+* `tokens` is the full list starting at index 0.
+* `tokens[1:]` is a copy of the list shifted by one position (starting at index 1).
+* `zip()` pairs them up side-by-side.
+
+It essentially does this:
+```text
+List 1:  ['l', 'o', 'w', 'l', 'o', 'w', ...]
+List 2:  ['o', 'w', 'l', 'o', 'w', 'e', ...]
+Zipped:  [('l', 'o'), ('o', 'w'), ('w', 'l'), ('l', 'o'), ('o', 'w'), ('w', 'e'), ...]
+```
+*(Notice how it creates cross-word pairs like `('w', 'l')` because the newline characters were removed and the words were mashed together).*
+
+**Counting the Pairs**
+
+```python
+from collections import Counter
+...
+pairs = Counter(...)
+```
+`Counter` takes the zipped list of pairs and tallies them up into a frequency dictionary. It counts how many times every specific tuple appears.
+
+**Getting the Top Results**
+
+```python
+print(pairs.most_common(5))
+```
+The `.most_common(5)` method sorts the dictionary by frequency and returns the top 5 results as a list of tuples (where each tuple contains the character pair and its count).
+
+**What is the Output?**
+```python
+[(('l', 'o'), 5), (('o', 'w'), 5), (('w', 'e'), 3), (('w', 'l'), 2), (('e', 'r'), 2)]
+```
+
+**Note on BPE accuracy:** 
+
+In a real LLM tokenizer, words are usually separated by a space or a pre-tokenization boundary before this step. Because this specific code removed the `\n` without replacing it with spaces, it accidentally creates merged pairs across word boundaries (like the `('w', 'l')` which bridges the end of "lo**w**" and the beginning of "**l**ower"). Modern tokenizers use Regex to prevent these cross-word merges.
+
+</details>
+
 ---
 
 ## 3. The first merge
@@ -425,6 +480,19 @@ and then:
 A simple Python vocabulary can perform the reverse lookup:
 
 ```python
+vocab = {
+    "l": 0,
+    "o": 1,
+    "w": 2,
+    "e": 3,
+    "r": 4,
+    "s": 5,
+    "t": 6,
+    "lo": 7,
+    "low": 8,
+    "lower": 9,
+}
+
 inverse_vocab = {id_: token for token, id_ in vocab.items()}
 
 ids = [8, 3, 5, 6]
@@ -791,6 +859,10 @@ ids = tokenizer.encode(text)
 print(ids)
 ```
 
+- Demo: 
+  - https://tiktokenizer.vercel.app/?model=gpt2
+  - https://platform.openai.com/tokenizer
+
 The resulting IDs represent the text using the GPT-2 tokenizer.
 
 We can then decode them:
@@ -871,7 +943,10 @@ The character-level example used in this demonstration is intentionally simplifi
 
 ### References
 
-* **Sebastian Raschka — “Implementing a Byte Pair Encoding (BPE) Tokenizer From Scratch”**: his standalone educational notebook goes from bytes and vocabulary construction through BPE training, encoding, and decoding. [Raschka's BPE tutorial](https://sebastianraschka.com/blog/2025/bpe-from-scratch.html)
-* **Raschka's `LLMs-from-scratch` repository**: the corresponding code and additional Chapter 2 material. [LLMs-from-scratch on GitHub](https://github.com/rasbt/LLMs-from-scratch)
-* **Raschka's LLMs-from-scratch companion page**: useful as the broader context for where tokenisation fits in the construction of an LLM. [Build a Large Language Model From Scratch](https://sebastianraschka.com/llms-from-scratch/)
+* **[Sebastian Raschka: Implementing BPE From Scratch](https://sebastianraschka.com/blog/2025/bpe-from-scratch.html)**
+   *A step-by-step guide detailing a pure-Python `BPETokenizerSimple` class, including the underlying merge rankings and training routines.*
+* **[LLMs from Scratch - Chapter 2 Notebook (rasbt)](https://github.com/rasbt/LLMs-from-scratch/blob/main/ch02/01_main-chapter-code/ch02.ipynb)**
+   *An educational resource demonstrating the exact connection points between tokenization algorithms, embedding layers, and model input.*
+* **[nanochat Repository (karpathy)](https://github.com/karpathy/nanochat)**
+   *A minimal implementation demonstrating how modern Rust-backed tokenizers are trained (`scripts/tok_train.py`) and integrated into a chat pipeline (`nanochat/tokenizer.py`).*
 
