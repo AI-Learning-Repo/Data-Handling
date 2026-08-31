@@ -18,7 +18,7 @@
 ## Topics
 
 - Supervised Learning, Classification, evaluation        
-- Data representation, JSON/JSONL, tokenization, BPE
+- Tokenization & BPE, Data representation, JSON/JSONL
 
 ----
 
@@ -36,8 +36,9 @@
 
 ### Part 3: 
 
-- 
-- [Activity 3](./material/activity3.md)
+- [Tokenization & BPE](./material/part3.md)
+- [Demo](./material/part3-demo.md)
+- [Activity 3: Implementing A Byte Pair Encoding (BPE) Tokenizer From Scratch](https://sebastianraschka.com/blog/2025/bpe-from-scratch.html)
 
 ### Part 4: 
 
