@@ -4,6 +4,7 @@
 > - [Homework Before Next Session](./material/Homework.md) for this Week.
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
 > - [Potential Exam Questions](./material/exam-qa.md)
+> - [Submission Guidelines](./material/submission-guidelines.md/)
 
 ---
 
