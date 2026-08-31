@@ -2217,7 +2217,7 @@ Our tokenizer is useful for learning, but real tokenizers are much more sophisti
 
 For example, OpenAI's `tiktoken` library provides optimized tokenizers.
 
-If `tiktoken` is installed, you can try:
+If `tiktoken` is installed e.g. (`!pip install tiktoken --q`), you can try:
 
 ```python
 import tiktoken
