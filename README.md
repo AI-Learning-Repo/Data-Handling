@@ -24,7 +24,7 @@
 
 ## Morning:
 
-### Part 1: Classification, evaluation,
+### Part 1 & 2: Classification, evaluation,
 
 - [Theory](./material/part1.md)
 - [Activity 1](./material/activity1.md)
@@ -34,15 +34,15 @@
 
 ## Afternoon:
 
-### Part 2: 
-
-- 
-- [Activity 2](./material/activity2.md)
-
 ### Part 3: 
 
 - 
 - [Activity 3](./material/activity3.md)
+
+### Part 4: 
+
+- 
+- [Activity 4](./material/activity4.md)
 
 
 ----
