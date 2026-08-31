@@ -2380,7 +2380,7 @@ the + " "
   ↓
 "the "
 ```
-
+ 
 The tokenizer learns these patterns during **training**.
 
 Later, when it receives new text, it uses those learned rules during **encoding**:
