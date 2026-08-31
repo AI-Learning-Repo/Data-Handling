@@ -69,7 +69,7 @@ We will:
 
 ---
 
-# Part 1 — Text to UTF-8 Bytes
+# Part 1: Text to UTF-8 Bytes
 
 Before implementing BPE, we need to understand what our initial tokens are.
 
@@ -167,7 +167,7 @@ could become a new token:
 
 ---
 
-# Task 1 — Write `text_to_bytes()`
+# Task 1: Write `text_to_bytes()`
 
 Create a function called `text_to_bytes()`.
 
@@ -281,7 +281,7 @@ Answer the following questions:
 
 ---
 
-# Part 2 — Finding Neighboring Pairs
+# Part 2: Finding Neighboring Pairs
 
 BPE works by looking at neighboring tokens.
 
@@ -426,7 +426,7 @@ Output:
 
 ---
 
-# Task 2 — Write `get_frequent_pair()`
+# Task 2: Write `get_frequent_pair()`
 
 Create:
 
@@ -520,7 +520,7 @@ Counter(pairs)
 
 ---
 
-# Part 3 — Replacing a Pair
+# Part 3: Replacing a Pair
 
 We now know how to find a frequent pair.
 
@@ -722,7 +722,7 @@ instead?
 
 ---
 
-# Part 4 — Training BPE
+# Part 4: Training BPE
 
 We now have two important operations:
 
@@ -801,7 +801,7 @@ The merge rules are important because we will use them later when encoding new t
 
 ---
 
-# Task 4 — Write `train_bpe()`
+# Task 4: Write `train_bpe()`
 
 Create:
 
@@ -981,7 +981,7 @@ merges
 
 ---
 
-# Part 5 — Building a Vocabulary
+# Part 5: Building a Vocabulary
 
 Our token IDs are useful for a computer, but they are difficult for humans to understand.
 
@@ -1099,7 +1099,7 @@ we can understand that token 256 represents:
 
 ---
 
-# Task 5 — Modify Training to Build the Vocabulary
+# Task 5: Modify Training to Build the Vocabulary
 
 Create a new version of `train_bpe()` that returns:
 
@@ -1218,7 +1218,7 @@ represent?
 
 ---
 
-# Part 6 — Encoding Text
+# Part 6: Encoding Text
 
 Training and encoding are different processes.
 
@@ -1301,7 +1301,7 @@ so we get:
 
 ---
 
-# Task 6 — Write `encode()`
+# Task 6: Write `encode()`
 
 Create:
 
@@ -1397,7 +1397,7 @@ Our goal here is to understand the core idea, not reproduce GPT-2 exactly.
 
 ---
 
-# Part 7 — Decoding
+# Part 7: Decoding
 
 We now have token IDs.
 
@@ -1456,7 +1456,7 @@ Then we decode those bytes as UTF-8:
 
 ---
 
-# Task 7 — Write `decode()`
+# Task 7: Write `decode()`
 
 Create:
 
@@ -1551,7 +1551,7 @@ What does the vocabulary allow us to do instead?
 
 ---
 
-# Part 8 — Seeing the Complete Training Process
+# Part 8: Seeing the Complete Training Process
 
 Let's create an observable training function.
 
@@ -1638,7 +1638,7 @@ This is useful when debugging and when learning the algorithm.
 
 ---
 
-# Part 9 — Complete BPE Pipeline
+# Part 9: Complete BPE Pipeline
 
 We can now connect everything.
 
@@ -1693,7 +1693,7 @@ The complete process is:
 
 ---
 
-# Task 8 — Run the Complete Pipeline
+# Task 8: Run the Complete Pipeline
 
 Use:
 
@@ -1777,11 +1777,11 @@ If the assertion does not raise an error, our tokenizer successfully encoded and
 
 ---
 
-# Part 10 — Experiment with the Tokenizer
+# Part 10: Experiment with the Tokenizer
 
 Now that the basic implementation works, experiment with it.
 
-## Experiment 1 — Change the number of merges
+## Experiment 1: Change the number of merges
 
 Try:
 
@@ -1815,7 +1815,7 @@ Ask yourself:
 
 ---
 
-## Experiment 2 — Change the training text
+## Experiment 2: Change the training text
 
 Try:
 
@@ -1847,7 +1847,7 @@ What patterns does BPE discover?
 
 ---
 
-## Experiment 3 — Encode new text
+## Experiment 3: Encode new text
 
 Train on:
 
@@ -1889,7 +1889,7 @@ Answer:
 
 ---
 
-# Part 11 — Understanding the Three Main Functions
+# Part 11: Understanding the Three Main Functions
 
 At this point, the most important functions are:
 
@@ -1957,7 +1957,7 @@ text
 
 ---
 
-# Part 12 — Complete Script
+# Part 12: Complete Script
 
 Here is the complete educational implementation.
 
@@ -2208,10 +2208,10 @@ assert decoded == training_text
 
 print("Encoding and decoding successful!")
 ```
-
+ 
 ---
 
-# Part 13 — Compare with `tiktoken`
+# Part 13: Compare with `tiktoken`
 
 Our tokenizer is useful for learning, but real tokenizers are much more sophisticated.
 
