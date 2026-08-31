@@ -12,8 +12,8 @@ Each Tuesday is divided into two parts.
 | ----- | ---------------------------------------------------------------------- |
 | **1** | Course Orientation, Colab, Brainstorming                               |
 | **2** | Data processing, feature engineering, data handling                    |
-| **3** | Classical ML overview, Classification, evaluation, EDA, Underfitting/ overfitting                                        |
-| **4** | Linear and polynomial regression, decision tree regression, evaluation |
+| **3** | Classical ML overview, Classification, evaluation, EDA                                     |
+| **4** | Linear and polynomial regression, decision tree regression, evaluation,  Underfitting/ overfitting    |
 | **5** | Clustering and Big Data with DuckDB                                    |
 | **6** | Association analysis, **classification web application**               |
 | **7** | Ethics, complete ML workflow, **regression web application**           |

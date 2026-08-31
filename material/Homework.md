@@ -28,6 +28,8 @@ Next week, we will put these concepts into practice using a **real-world dataset
 
 [Read the NumPy tutorial](https://sebastianraschka.com/blog/2020/numpy-intro.html?utm_source=chatgpt.com)
 
+<!-- https://colab.research.google.com/github/ageron/handson-ml3/blob/main/tools_numpy.ipynb -->
+
 ### Goal
 
 Become familiar with NumPy and its basic concepts.
@@ -46,6 +48,8 @@ Become familiar with NumPy and its basic concepts.
 
 [Work through the Pandas/data preparation tutorial](https://github.com/microsoft/Data-Science-For-Beginners/tree/main/2-Working-With-Data/08-data-preparation?utm_source=chatgpt.com)
 
+<!-- https://colab.research.google.com/github/ageron/handson-ml3/blob/main/tools_pandas.ipynb -->
+
 ### Goal
 
 Become familiar with Pandas and the basic concepts used to work with and prepare datasets.
@@ -63,6 +67,14 @@ Become familiar with Pandas and the basic concepts used to work with and prepare
 **Tutorial:** Microsoft - *Data Visualization*
 
 [Work through the data visualization tutorial](https://github.com/microsoft/Data-Science-For-Beginners/blob/main/3-Data-Visualization/README.md?utm_source=chatgpt.com)
+
+<!-- https://colab.research.google.com/github/ageron/handson-ml3/blob/main/tools_matplotlib.ipynb -->
+
+---
+
+## 4. Seaborn
+
+[Seaborn Crash Course - Data Visualization in Python](https://www.youtube.com/watch?v=rLVCSmtoA7U)
 
 ### Goal
 

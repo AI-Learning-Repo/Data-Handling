@@ -5,6 +5,74 @@
 > - We will also use [Google AI Studio](https://aistudio.google.com/) for free API experiments, so please register with a **personal** Gmail account, **NOT** your Metropolia account. Otherwise, you may not be able to obtain the API key needed later in the course.
 > - If you have a dedicated GPU and are interested in a local setup using VS Code, please send me an email.
 
+<!-- 
+
+# Task 1C
+
+ **two separate commands**, and that is actually consistent with the stated purpose of Task 1C.
+
+The task says:
+
+```python
+!MY_VARIABLE="Colab"
+!echo "Inside this command: $MY_VARIABLE"
+```
+
+These are **two separate `!` invocations**, so Colab normally runs them in two separate shells.
+
+Therefore, the expected behavior is:
+
+* First command: creates `MY_VARIABLE` in Shell 1.
+* Shell 1 exits.
+* Second command: starts Shell 2.
+* `MY_VARIABLE` does not exist in Shell 2 ? **empty output**.
+
+So **the student is correct that it doesn't print `Colab`**, but that does **not mean the task is wrong**. In fact, the next part of the task says:
+
+> "The second command will normally show an empty value."
+
+That's exactly what should happen.
+
+The student's `&&` version:
+
+```python
+!MY_VARIABLE="Colab" && echo "Inside this command: $MY_VARIABLE"
+```
+
+is useful as an additional experiment because it demonstrates the contrast: both commands are now executed in the same shell, so `Colab` is printed.
+
+### One thing I would change in the task
+
+The wording:
+
+> `!echo "Inside this command: $MY_VARIABLE"`
+
+could confuse students because they may expect it to print `Colab`.
+
+I'd make the intended result explicit:
+
+```python
+!MY_VARIABLE="Colab"
+!echo "In a new shell: $MY_VARIABLE"
+```
+
+Then say:
+
+> **Expected output:** empty. This is because the two `!` commands run in separate shell environments.
+
+And then optionally add:
+
+```python
+!MY_VARIABLE="Colab" && echo "Inside the same shell: $MY_VARIABLE"
+```
+
+> This prints `Colab` because both commands run in the same shell.
+
+So, **yes, your original Task 1C was written as two commands, and that is correct for demonstrating shell isolation.** The student's confusion is understandable, but their `&&` experiment actually confirms the concept you're trying to teach.
+
+-->
+
+
 ----
 
 ## Overview
