@@ -17,37 +17,32 @@
 
 ## Topics
 
-- Classification, evaluation, EDA, Underfitting/ overfitting          
+- Supervised Learning, Classification, evaluation        
 - Data representation, JSON/JSONL, tokenization, BPE
 
 ----
 
 ## Morning:
 
-### Part 1: 
+### Part 1: Classification, evaluation,
 
-- 
+- [Theory](./material/part1.md)
 - [Activity 1](./material/activity1.md)
-
-
-### Part 2: 
-
-- 
-- [Activity 1](./material/activity2.md)
+- [Activity 2](./material/activity2.md)
 
 ----
 
 ## Afternoon:
 
+### Part 2: 
+
+- 
+- [Activity 2](./material/activity2.md)
+
 ### Part 3: 
 
 - 
 - [Activity 3](./material/activity3.md)
-
-### Part 4: 
-
-- 
-- [Activity 4](./material/activity4.md)
 
 
 ----
