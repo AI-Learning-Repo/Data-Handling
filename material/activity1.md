@@ -1,46 +1,22 @@
 # Lab 1: Titanic Binary Classification
 
-**Predicting Survival on the Titanic with Supervised Classification**
+## Predicting Survival on the Titanic with Classification
 
 ---
 
-## Lab Purpose
+# Lab Purpose
 
-This lab introduces **binary classification** using the Titanic dataset.
+In the previous Titanic activity, you explored the dataset and performed EDA.
 
-Unlike the previous Titanic activity, this lab does not focus on extensive exploratory data analysis (EDA). The main data investigation was already completed in the earlier Titanic activity. Here, we move from understanding the data to building and evaluating a supervised classification model.
+In this lab, we move from **understanding the data** to using the data to **make predictions**.
 
-The main workflow is:
-
-```text
-Understand the classification task
-              ↓
-Briefly validate the dataset
-              ↓
-Define features and target
-              ↓
-Split the data
-              ↓
-Build a preprocessing pipeline
-              ↓
-Establish a baseline
-              ↓
-Train a real classifier
-              ↓
-Evaluate the classifier
-              ↓
-Use cross-validation
-              ↓
-Compare classifiers
-              ↓
-Tune the model
-              ↓
-Evaluate once on the held-out test set
-```
-
-The central question is:
+The question we want to answer is:
 
 > **Can we use information about a passenger to predict whether that passenger survived?**
+
+This is a **supervised classification** problem.
+
+We will focus on the main ideas behind classification rather than the details of machine-learning software.
 
 ---
 
@@ -48,150 +24,95 @@ The central question is:
 
 By the end of this lab, you should be able to:
 
-* explain why Titanic survival prediction is a **supervised-learning** problem
-* explain why Titanic survival prediction is a **binary classification** problem
+* explain why Titanic survival prediction is a supervised-learning problem
+* explain why it is a binary classification problem
 * distinguish between **features (`X`)** and the **target (`y`)**
-* identify numerical and categorical features
-* use a preprocessing pipeline for mixed numerical and categorical data
-* explain why data should be split before model training
-* establish and interpret a simple classification baseline
+* split data into training and test sets
+* prepare numerical and categorical data for a classifier
 * train a logistic regression classifier
+* make predictions
 * evaluate a classifier using:
 
   * accuracy
-  * confusion matrix
   * precision
   * recall
   * F1 score
-* explain why cross-validation provides a stronger estimate of model performance
-* compare two different classifiers
-* understand how a classification threshold affects precision and recall
-* perform simple hyperparameter tuning without using the test set
-* evaluate a final model on previously unseen test data
-* distinguish **binary classification** from **multiclass classification**
+* interpret a confusion matrix
+* understand why different classification models can produce different results
+* compare logistic regression with a decision tree
 
 ---
 
-# Prior Connection
+# 1. From EDA to Classification
 
-In the previous Titanic activity, you practiced:
-
-* understanding the dataset
-* inspecting columns and data types
-* identifying missing values
-* performing EDA
-* cleaning and preparing data
-
-We will **not repeat the full EDA process** in this lab.
-
-Instead, we will use that previous work as a starting point and move to the next stage:
-
-> **supervised classification**
-
-This is an important transition in a machine-learning workflow.
-
-Previously, the main question was:
+In the previous Titanic activity, the main question was:
 
 > **What does the data look like?**
 
-Now the question becomes:
+We looked at variables, distributions, missing values, relationships between variables, and other characteristics of the dataset.
 
-> **Can we learn a model that predicts an outcome from the data?**
+Now we ask a different question:
 
----
-
-# Dataset
-
-We will use the Titanic dataset available through OpenML.
-
-* **Source:** OpenML
-* **OpenML ID:** `40945`
-* **Target:** `survived`
-
-For this introductory classification task, we will use the following features:
-
-```text
-pclass
-sex
-age
-sibsp
-parch
-fare
-embarked
-```
-
-These features give us a mixture of numerical and categorical data while keeping the lab focused on classification.
-
----
-
-# 1. Frame the Problem
-
-## Supervised Learning
-
-In supervised learning, a model learns from examples where the correct answer is already known.
+> **Can we use the information in the dataset to predict an outcome?**
 
 For Titanic:
-
-* each row represents a passenger
-* the passenger information is the input
-* `survived` is the known outcome
-* the model learns a relationship between passenger information and survival
-
-For example:
 
 ```text
 Passenger information
         ↓
-     Model
+   Classification model
         ↓
 Predicted survival
 ```
 
-Because the historical dataset contains the correct survival outcome, we can train a supervised-learning model.
+The dataset contains the actual outcome for each passenger, so the model can learn from examples where the correct answer is already known.
 
 ---
 
-## Binary Classification
+## What is the target?
 
-Classification means predicting a **category or class**.
+The variable we want to predict is:
 
-Titanic survival has two possible outcomes:
+```text
+survived
+```
+
+It has two possible values:
 
 ```text
 0 → Did not survive
 1 → Survived
 ```
 
-There are exactly **two classes**, so this is a:
+Because there are only two possible classes, this is called:
 
-> **binary classification problem**
+> **binary classification**
 
-Later, in Lab 2, we will use the Iris dataset, where there are **three possible classes**. That will be an example of:
+### Questions
 
-> **multiclass classification**
+1. Why is Titanic survival prediction a supervised-learning problem?
+2. Why is it a binary classification problem?
 
-### Task
+<details>
+<summary><strong>Sample answer</strong></summary>
 
-Answer the following questions before writing code:
+Titanic survival prediction is supervised learning because the dataset contains the known survival outcome for each passenger. The model can learn a relationship between the passenger information and the known outcome.
 
-1. Why is this a supervised-learning problem?
-2. Why is this specifically a binary classification problem?
-3. What is the target variable?
-4. What information will be used as features?
+It is binary classification because the target has two possible classes: 0 (did not survive) and 1 (survived).
+
+</details>
 
 ---
 
-# 2. Environment Setup
+# 2. Set Up the Environment
 
-Use the online notebook environment used in class.
-
-Run:
+Run the following in your notebook:
 
 ```python
 !pip install pandas scikit-learn matplotlib seaborn -q
 ```
 
-Then import the required libraries:
+Import the libraries:
 
 ```python
 import numpy as np
@@ -199,34 +120,27 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-from sklearn.compose import ColumnTransformer
 from sklearn.datasets import fetch_openml
-from sklearn.dummy import DummyClassifier
+from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import (
     accuracy_score,
-    classification_report,
-    confusion_matrix,
-    f1_score,
     precision_score,
     recall_score,
+    f1_score,
+    confusion_matrix,
+    classification_report
 )
-from sklearn.model_selection import (
-    GridSearchCV,
-    cross_val_score,
-    train_test_split,
-)
-from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
-from sklearn.tree import DecisionTreeClassifier
 ```
 
 ---
 
-# 3. Load the Dataset
+# 3. Load the Titanic Dataset
 
-Load the Titanic dataset directly from OpenML.
+We will use the Titanic dataset from OpenML.
 
 ```python
 titanic = fetch_openml(
@@ -241,169 +155,76 @@ display(df.head())
 print("Shape:", df.shape)
 ```
 
-### Questions
-
-1. How many rows and columns does the dataset contain?
-2. Does the dataset contain more columns than we need for this lab?
-3. Why might a smaller feature set be useful for an introductory classification task?
+You have already explored this dataset in the previous activity, so we will not repeat the EDA.
 
 ---
 
-# 4. Briefly Validate the Dataset
+# 4. Select the Variables
 
-We are not repeating the complete EDA from the previous activity.
-
-However, before building a model, we should still perform a **brief validation check**.
-
-Run:
-
-```python
-print("Columns:")
-print(df.columns.tolist())
-
-print("\nData types:")
-print(df.dtypes)
-
-print("\nTarget distribution:")
-print(df["survived"].value_counts(dropna=False))
-
-print("\nNumerical summary:")
-print(df[["age", "fare"]].describe())
-
-print("\nMissing values:")
-print(df[["age", "embarked"]].isnull().sum())
-```
-
-### What should you notice?
-
-Look for the following:
-
-* the target column exists
-* the selected features exist
-* there are both numerical and categorical variables
-* some variables contain missing values
-* the target classes are not perfectly balanced
-
-### Why does class balance matter?
-
-Suppose a dataset contained:
+For this introductory classification task, we will use:
 
 ```text
-80% class 0
-20% class 1
+pclass
+sex
+age
+sibsp
+parch
+fare
+embarked
 ```
 
-A model that always predicted class 0 would achieve:
+The target is:
 
 ```text
-80% accuracy
+survived
 ```
 
-without learning anything useful.
-
-This is one reason why **accuracy alone is not always sufficient** for evaluating a classifier.
-
-### Questions
-
-1. Which selected features are numerical?
-2. Which selected features are categorical?
-3. Which selected variables contain missing values?
-4. Why should we still check the data before modeling, even though EDA was completed previously?
-5. Why can class imbalance make accuracy misleading?
-
----
-
-# 5. Define the Feature Set
-
-We will keep only the variables needed for this lab.
+Create the feature and target datasets:
 
 ```python
-selected_features = [
+features = [
     "pclass",
     "sex",
     "age",
     "sibsp",
     "parch",
     "fare",
-    "embarked",
+    "embarked"
 ]
 
-target_column = "survived"
-
-df_model = df[selected_features + [target_column]].copy()
-
-display(df_model.head())
-
-print("\nMissing values:")
-print(df_model.isnull().sum())
+X = df[features].copy()
+y = df["survived"].astype(int)
 ```
 
-### Why use a smaller feature set?
-
-For an introductory classification lab, we want students to focus on:
-
-* classification
-* preprocessing
-* model training
-* evaluation
-* model comparison
-
-rather than spending most of the lab dealing with complicated text or highly incomplete variables.
-
-We therefore leave out variables such as:
-
-* passenger name
-* ticket
-* cabin
-* other identifiers or text-heavy fields
-
-This does **not** mean those variables could never be useful. It simply keeps the current experiment focused and manageable.
-
-### Questions
-
-1. Why are passenger name, ticket, and cabin not necessary for this introductory lab?
-2. Why can using fewer features make it easier to understand a machine-learning model?
-
----
-
-# 6. Separate Features and Target
-
-In supervised learning, we separate the input variables from the outcome we want to predict.
-
-```python
-X = df_model[selected_features]
-
-y = df_model[target_column].astype(int)
-
-print("X shape:", X.shape)
-print("y shape:", y.shape)
-```
-
-Here:
-
-* `X` contains the **features**
-* `y` contains the **target**
-
-Conceptually:
+Remember:
 
 ```text
-X → information used to make the prediction
+X → information used to make predictions
 
-y → correct answer that the model is trying to learn
+y → the outcome we want to predict
 ```
 
-### Task
+### Question
 
-Write one sentence explaining the difference between `X` and `y`.
+In your own words, what is the difference between `X` and `y`?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+`X` contains the features or input information used by the model to make predictions. `y` contains the target, which is the outcome the model is trying to predict.
+
+For Titanic, `X` contains passenger information such as age, sex, class, and fare, while `y` contains whether the passenger survived.
+
+</details>
 
 ---
 
-# 7. Split the Data
+# 5. Split the Data
 
-Before training a model, we need to separate the data into:
+We need to separate the data into:
 
-* a **training set**
-* a **test set**
+* **training data** — used to learn the model
+* **test data** — used to evaluate the model on unseen examples
 
 We will use 80% for training and 20% for testing.
 
@@ -413,143 +234,116 @@ X_train, X_test, y_train, y_test = train_test_split(
     y,
     test_size=0.2,
     random_state=42,
-    stratify=y,
+    stratify=y
 )
-
-print("Training set shape:", X_train.shape)
-print("Test set shape:", X_test.shape)
-
-print("\nTraining target distribution:")
-print(y_train.value_counts(normalize=True))
-
-print("\nTest target distribution:")
-print(y_test.value_counts(normalize=True))
 ```
 
----
+Check the sizes:
 
-## Why Split the Data?
-
-The model should be evaluated on data that it did not use during training.
+```python
+print("Training set:", X_train.shape)
+print("Test set:", X_test.shape)
+```
 
 The basic idea is:
 
 ```text
 Training data
-     ↓
+      ↓
   Learn model
-     ↓
-Test data
-     ↓
+      ↓
+  Test data
+      ↓
 Evaluate model
 ```
 
-If we train and evaluate on exactly the same data, the evaluation may make the model look better than it really is.
+We do not want to evaluate a model only on the examples it has already seen.
+
+### Question
+
+Why do we need a separate test set?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+The test set allows us to evaluate the model on data that was not used to train it. This gives us a better idea of how the model may perform on new, unseen passengers.
+
+</details>
 
 ---
 
-## Why Use Stratification?
+# 6. Prepare the Data
 
-The Titanic target contains two classes.
+Before a classifier can use the data, we need to convert the different types of variables into a suitable numerical form.
 
-`stratify=y` attempts to preserve approximately the same class proportions in both datasets.
-
-For example:
-
-```text
-Full dataset
-Class 0 → 62%
-Class 1 → 38%
-
-Training set
-Class 0 → approximately 62%
-Class 1 → approximately 38%
-
-Test set
-Class 0 → approximately 62%
-Class 1 → approximately 38%
-```
-
-This is useful when evaluating classification models.
-
-### Questions
-
-1. Why should we split the data before training?
-2. Why is stratification useful?
-3. Why should the test set remain untouched during model development?
-4. What could happen if we repeatedly used the test set to choose the best model?
-
----
-
-# 8. Build the Preprocessing Pipeline
-
-Our dataset contains different types of variables.
+We have two types of features.
 
 ### Numerical features
-
-```text
-age
-sibsp
-parch
-fare
-```
-
-### Categorical features
-
-```text
-pclass
-sex
-embarked
-```
-
-We will preprocess these two groups differently.
 
 ```python
 numeric_features = [
     "age",
     "sibsp",
     "parch",
-    "fare",
+    "fare"
 ]
+```
 
+### Categorical features
+
+```python
 categorical_features = [
     "pclass",
     "sex",
-    "embarked",
+    "embarked"
 ]
 ```
 
-## A note about `pclass`
-
-Although `pclass` contains numbers such as 1, 2, and 3, those numbers represent **passenger-class categories**.
-
-For this lab, we treat `pclass` as categorical rather than assuming that the difference between class 1 and class 2 has exactly the same meaning as the difference between class 2 and class 3.
+Notice that `pclass` contains numbers, but in this activity we treat it as a category because it represents passenger classes rather than a continuous numerical measurement.
 
 ---
 
-## Numerical Preprocessing
+## 6.1 Prepare Numerical Features
 
-For numerical variables, we will:
+For numerical variables:
 
 1. fill missing values using the median
-2. standardize the variables
+2. standardize the values
 
 ```python
-numeric_transformer = Pipeline([
-    ("imputer", SimpleImputer(strategy="median")),
-    ("scaler", StandardScaler()),
-])
+imputer_num = SimpleImputer(strategy="median")
+
+X_train_num = imputer_num.fit_transform(
+    X_train[numeric_features]
+)
+
+X_test_num = imputer_num.transform(
+    X_test[numeric_features]
+)
 ```
 
-### Why median imputation?
+Notice the difference:
 
-The median is relatively resistant to extreme values.
+```text
+Training data → fit_transform()
 
-For example, if most fares are moderate but a few fares are extremely large, the median is less affected by those extreme observations than the mean.
+Test data     → transform()
+```
+
+The median is calculated using the training data only.
+
+Now standardize:
+
+```python
+scaler = StandardScaler()
+
+X_train_num = scaler.fit_transform(X_train_num)
+X_test_num = scaler.transform(X_test_num)
+```
 
 ---
 
-## Categorical Preprocessing
+## 6.2 Prepare Categorical Features
 
 For categorical variables, we will:
 
@@ -557,121 +351,89 @@ For categorical variables, we will:
 2. convert categories into one-hot encoded columns
 
 ```python
-categorical_transformer = Pipeline([
-    ("imputer", SimpleImputer(strategy="most_frequent")),
-    ("encoder", OneHotEncoder(handle_unknown="ignore")),
-])
-```
+imputer_cat = SimpleImputer(strategy="most_frequent")
 
-### Why one-hot encoding?
-
-A model should not interpret categories as if their numeric labels represent meaningful quantities.
-
-For example, assigning:
-
-```text
-male   → 0
-female → 1
-```
-
-can be problematic if the encoding is treated as a numerical scale.
-
-One-hot encoding instead creates separate indicator variables.
-
----
-
-## Combine the Preprocessing Steps
-
-```python
-preprocessor = ColumnTransformer([
-    ("num", numeric_transformer, numeric_features),
-    ("cat", categorical_transformer, categorical_features),
-])
-```
-
----
-
-## Why Use a Pipeline?
-
-A pipeline allows preprocessing and modeling to be treated as one workflow.
-
-More importantly, preprocessing is **learned from the training data** and then applied to other data.
-
-Conceptually:
-
-```text
-Training data
-     ↓
-Learn preprocessing
-     ↓
-Transform training data
-     ↓
-Train model
-```
-
-Then:
-
-```text
-New/test data
-     ↓
-Use the already-learned preprocessing
-     ↓
-Make predictions
-```
-
-We should **not** calculate imputation values, scaling parameters, or encoding information using the complete dataset before the train/test split.
-
-Doing so can allow information from the test set to influence the model-development process. This is called **data leakage**.
-
-### Questions
-
-1. Why do we use median imputation for numerical features?
-2. Why do we use most-frequent imputation for categorical features?
-3. Why is one-hot encoding useful for categorical variables?
-4. Why do we treat `pclass` as categorical in this lab?
-5. What problem could occur if we fit preprocessing using the entire dataset before splitting?
-
----
-
-# 9. Establish a Baseline
-
-Before training a sophisticated model, we should establish a simple baseline.
-
-A baseline gives us something to compare against.
-
-We will use `DummyClassifier` with the `most_frequent` strategy.
-
-```python
-dummy_pipeline = Pipeline([
-    ("preprocessor", preprocessor),
-    ("classifier", DummyClassifier(strategy="most_frequent")),
-])
-
-dummy_pipeline.fit(X_train, y_train)
-
-y_dummy_pred = dummy_pipeline.predict(X_test)
-
-baseline_accuracy = accuracy_score(
-    y_test,
-    y_dummy_pred
+X_train_cat = imputer_cat.fit_transform(
+    X_train[categorical_features]
 )
 
-print("Baseline accuracy:", baseline_accuracy)
+X_test_cat = imputer_cat.transform(
+    X_test[categorical_features]
+)
 ```
 
-## What is the baseline doing?
+Now encode the categories:
 
-The classifier simply predicts the most common class for every passenger.
+```python
+encoder = OneHotEncoder(
+    handle_unknown="ignore",
+    sparse_output=False
+)
 
-It does not learn a meaningful relationship between passenger characteristics and survival.
+X_train_cat = encoder.fit_transform(X_train_cat)
+X_test_cat = encoder.transform(X_test_cat)
+```
 
-For example, if the majority class is:
+One-hot encoding converts categories into numerical indicator variables that the classifier can use.
+
+For example:
 
 ```text
-0 → Did not survive
+sex
+
+male
+female
 ```
 
-the baseline predicts:
+can become something like:
+
+```text
+sex_female
+sex_male
+```
+
+---
+
+## 6.3 Combine the Features
+
+Now combine the numerical and categorical data:
+
+```python
+X_train_processed = np.hstack([
+    X_train_num,
+    X_train_cat
+])
+
+X_test_processed = np.hstack([
+    X_test_num,
+    X_test_cat
+])
+```
+
+Check the result:
+
+```python
+print("Training data shape:", X_train_processed.shape)
+print("Test data shape:", X_test_processed.shape)
+```
+
+At this point, our original data has been converted into numerical data that can be used by the classifier.
+
+### Important idea
+
+The preprocessing is learned from the **training data** and then applied to the test data.
+
+We should not calculate values such as the median or scaling parameters using the complete dataset before the split.
+
+---
+
+# 7. Establish a Simple Baseline
+
+Before training a real classifier, it is useful to have something simple to compare against.
+
+Suppose we simply predict the most common class for every passenger.
+
+For example:
 
 ```text
 0
@@ -682,157 +444,122 @@ the baseline predicts:
 ...
 ```
 
-for every passenger.
+This is a very simple strategy. It does not learn a meaningful relationship between passenger characteristics and survival.
 
-### Why is this useful?
+Calculate the majority-class baseline:
 
-Suppose:
+```python
+majority_class = y_train.mode()[0]
 
-```text
-Baseline accuracy = 0.62
-Model accuracy    = 0.80
+y_baseline = np.full(
+    len(y_test),
+    majority_class
+)
+
+baseline_accuracy = accuracy_score(
+    y_test,
+    y_baseline
+)
+
+print("Baseline accuracy:", baseline_accuracy)
 ```
 
-The real model has clearly improved over the simple strategy.
+### Question
 
-But if:
+Why is a baseline useful?
 
-```text
-Baseline accuracy = 0.62
-Model accuracy    = 0.63
-```
+<details>
+<summary><strong>Sample answer</strong></summary>
 
-then the model may not be providing much useful improvement.
+A baseline gives us a simple reference point. A real classifier should perform better than a strategy that simply predicts the most common class. If the model performs only slightly better than the baseline, it may not be providing much useful predictive information.
 
-### Questions
-
-1. What is the baseline classifier doing?
-2. Why can a baseline have surprisingly good accuracy?
-3. Why should a real model be compared with a baseline?
-4. Why is accuracy alone still not enough?
+</details>
 
 ---
 
-# 10. Train the First Real Classifier
+# 8. Train a Logistic Regression Classifier
 
 We will start with **logistic regression**.
 
 Despite its name, logistic regression is commonly used for classification.
 
-For this lab, it predicts one of two classes:
+```python
+model = LogisticRegression(max_iter=1000)
+
+model.fit(
+    X_train_processed,
+    y_train
+)
+```
+
+The model has now learned from the training data.
+
+---
+
+# 9. Make Predictions
+
+Use the trained model to predict the test data:
+
+```python
+y_pred = model.predict(X_test_processed)
+```
+
+Look at some predictions:
+
+```python
+print("Predictions:")
+print(y_pred[:20])
+
+print("\nActual values:")
+print(y_test.iloc[:20].values)
+```
+
+The model produces a predicted class:
 
 ```text
-0 → Did not survive
-1 → Survived
+0 → predicted not survived
+1 → predicted survived
 ```
 
-```python
-logreg_pipeline = Pipeline([
-    ("preprocessor", preprocessor),
-    ("classifier", LogisticRegression(max_iter=1000)),
-])
-
-logreg_pipeline.fit(X_train, y_train)
-
-y_train_pred = logreg_pipeline.predict(X_train)
-y_test_pred = logreg_pipeline.predict(X_test)
-```
-
-## Why Logistic Regression?
-
-Logistic regression is a useful first classification model because:
-
-* it is widely used
-* it works well for many binary classification problems
-* it produces class probabilities
-* it provides a relatively simple model to interpret
-* it gives us a useful reference point for comparing other classifiers
-
-In this lab, we are not trying to find the most sophisticated possible Titanic model.
-
-The goal is to understand the **classification workflow**.
+We can now compare the predictions with the actual outcomes.
 
 ---
 
-# 11. Evaluate Training Performance
+# 10. Evaluate the Classifier
 
-First, look at performance on the training data.
+Classification models can be evaluated using several metrics.
 
-```python
-training_accuracy = accuracy_score(
-    y_train,
-    y_train_pred
-)
+We will use:
 
-print("Training accuracy:", training_accuracy)
-```
+* accuracy
+* precision
+* recall
+* F1 score
 
-### Important
-
-A high training accuracy does **not** automatically mean that the model is good.
-
-The model has already seen the training examples.
-
-What matters more is how well it performs on **unseen data**.
-
-### Questions
-
-1. If training accuracy is high, does that prove the model is good?
-2. Why can a model perform better on training data than on unseen data?
-3. What does a large difference between training and test performance potentially indicate?
-
----
-
-# 12. Evaluate Test Performance
-
-Now evaluate the model on the held-out test set.
+Calculate them:
 
 ```python
-test_accuracy = accuracy_score(
-    y_test,
-    y_test_pred
-)
+accuracy = accuracy_score(y_test, y_pred)
 
-test_precision = precision_score(
-    y_test,
-    y_test_pred
-)
+precision = precision_score(y_test, y_pred)
 
-test_recall = recall_score(
-    y_test,
-    y_test_pred
-)
+recall = recall_score(y_test, y_pred)
 
-test_f1 = f1_score(
-    y_test,
-    y_test_pred
-)
+f1 = f1_score(y_test, y_pred)
 
-print("Test accuracy:", test_accuracy)
-print("Precision:", test_precision)
-print("Recall:", test_recall)
-print("F1 score:", test_f1)
-
-print("\nClassification report:")
-print(classification_report(y_test, y_test_pred))
+print("Accuracy :", accuracy)
+print("Precision:", precision)
+print("Recall   :", recall)
+print("F1 score :", f1)
 ```
 
 ---
-
-# 13. Understand the Classification Metrics
-
-For this lab:
-
-```text
-Positive class = survived
-Negative class = did not survive
-```
 
 ## Accuracy
 
 Accuracy answers:
 
-> What proportion of all predictions were correct?
+> **What proportion of all predictions were correct?**
 
 ```text
 Accuracy =
@@ -845,9 +572,11 @@ correct predictions / all predictions
 
 Precision answers:
 
-> Of the passengers the model predicted would survive, how many actually survived?
+> **Of the passengers predicted to have survived, how many actually survived?**
 
-High precision means that positive predictions are usually correct.
+For example, if precision is 0.80:
+
+> Among the passengers predicted to survive, approximately 80% actually survived.
 
 ---
 
@@ -855,67 +584,64 @@ High precision means that positive predictions are usually correct.
 
 Recall answers:
 
-> Of the passengers who actually survived, how many did the model correctly identify?
+> **Of the passengers who actually survived, how many did the model correctly identify?**
 
-High recall means that the model successfully identifies a large proportion of the actual survivors.
+For example, if recall is 0.70:
+
+> The model correctly identified approximately 70% of the passengers who actually survived.
 
 ---
 
 ## F1 Score
 
-F1 combines precision and recall into one measure.
+F1 combines precision and recall into a single measure.
 
-It is useful when we want a balance between:
-
-* avoiding incorrect positive predictions
-* finding as many positive cases as possible
+It is useful when we want a balance between precision and recall.
 
 ### Task
 
-Write a short interpretation of the model's:
+Write 2–3 sentences interpreting the model's precision and recall in the Titanic context.
 
-* precision
-* recall
-* F1 score
+<details>
+<summary><strong>Sample answer structure</strong></summary>
 
-Use the Titanic context.
+My model has a precision of **[value]**. This means that among the passengers predicted to survive, approximately **[value × 100]%** actually survived.
 
-For example:
+The recall is **[value]**. This means that the model correctly identified approximately **[value × 100]%** of the passengers who actually survived.
 
-> A precision of ___ means that among the passengers predicted to have survived, approximately ___% actually survived.
+</details>
 
 ---
 
-# 14. Build and Interpret the Confusion Matrix
+# 11. Understand the Confusion Matrix
 
-A confusion matrix shows the types of predictions the classifier made.
+A confusion matrix gives us more detail about the predictions.
 
 ```python
 cm = confusion_matrix(
     y_test,
-    y_test_pred
+    y_pred
 )
 
 print(cm)
 ```
 
-Visualize it:
+We can visualize it:
 
 ```python
 sns.heatmap(
     cm,
     annot=True,
-    fmt="d",
-    cmap="Blues"
+    fmt="d"
 )
 
-plt.title("Confusion Matrix: Logistic Regression on Titanic")
-plt.xlabel("Predicted label")
-plt.ylabel("Actual label")
+plt.title("Confusion Matrix")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
 plt.show()
 ```
 
-For binary classification, the confusion matrix contains:
+A binary confusion matrix contains four types of results:
 
 ```text
                     Predicted
@@ -926,223 +652,79 @@ Actual  0       TN         FP
         1       FN         TP
 ```
 
-Where:
-
-* **TN** = true negative
-* **FP** = false positive
-* **FN** = false negative
-* **TP** = true positive
-
 For Titanic:
 
-* TP = predicted survived and actually survived
-* TN = predicted did not survive and actually did not survive
-* FP = predicted survived but actually did not survive
-* FN = predicted did not survive but actually survived
+* **TN** = predicted did not survive, and actually did not survive
+* **FP** = predicted survived, but actually did not survive
+* **FN** = predicted did not survive, but actually survived
+* **TP** = predicted survived, and actually survived
 
-### Questions
+### Question
 
-1. How many true positives are there?
-2. How many true negatives are there?
-3. How many false positives are there?
-4. How many false negatives are there?
-5. Which type of mistake would you consider more concerning in this classroom example? Explain your reasoning.
+Explain what a **false positive** and a **false negative** mean in the Titanic context.
 
-There is not necessarily one universally correct answer. The importance of an error depends on the purpose of the model.
+<details>
+<summary><strong>Sample answer</strong></summary>
 
----
+A false positive occurs when the model predicts that a passenger survived, but the passenger actually did not survive.
 
-# 15. Cross-Validation
+A false negative occurs when the model predicts that a passenger did not survive, but the passenger actually survived.
 
-So far, we have used one training/test split.
-
-A single split can sometimes give an unstable estimate of performance because the result depends partly on which observations happen to be placed in the training and test sets.
-
-Cross-validation gives us another way to evaluate the model during development.
-
-We will use **5-fold cross-validation**.
-
-```python
-cv_scores = cross_val_score(
-    logreg_pipeline,
-    X_train,
-    y_train,
-    cv=5,
-    scoring="f1",
-)
-
-print("Cross-validation F1 scores:")
-print(cv_scores)
-
-print("\nMean CV F1:")
-print(cv_scores.mean())
-
-print("\nStandard deviation:")
-print(cv_scores.std())
-```
-
-## How 5-fold cross-validation works
-
-Conceptually:
-
-```text
-Training data
-
-Fold 1 → validation
-Folds 2–5 → training
-
-Fold 2 → validation
-Folds 1,3–5 → training
-
-Fold 3 → validation
-Folds 1,2,4,5 → training
-
-Fold 4 → validation
-Folds 1–3,5 → training
-
-Fold 5 → validation
-Folds 1–4 → training
-```
-
-Each observation gets a chance to be part of the validation set.
-
-The five scores are then summarized using their mean.
-
-### Questions
-
-1. Why can cross-validation be more informative than relying on one split?
-2. Why might the mean cross-validation F1 differ from the final test F1?
-3. What does the standard deviation of the cross-validation scores tell us?
-4. Why is it useful to look at both the mean and the variation?
+</details>
 
 ---
 
-# 16. Precision and Recall Trade-Off
+# 12. Look at the Classification Report
 
-Logistic regression can produce probabilities.
-
-For example:
-
-```text
-Passenger A → 0.91 probability of survival
-Passenger B → 0.73 probability of survival
-Passenger C → 0.42 probability of survival
-Passenger D → 0.18 probability of survival
-```
-
-The model then needs a rule for converting probabilities into class predictions.
-
-A common threshold is:
-
-```text
-probability ≥ 0.50 → predict survived
-probability <  0.50 → predict did not survive
-```
-
-We can change that threshold.
-
-First, obtain the predicted probabilities:
+Scikit-learn can summarize the main classification metrics:
 
 ```python
-y_test_proba = logreg_pipeline.predict_proba(X_test)[:, 1]
-```
-
-Now compare thresholds of 0.5 and 0.7.
-
-```python
-y_pred_05 = (
-    y_test_proba >= 0.5
-).astype(int)
-
-y_pred_07 = (
-    y_test_proba >= 0.7
-).astype(int)
-```
-
-Evaluate them:
-
-```python
-print("Threshold 0.5")
-
 print(
-    "Precision:",
-    precision_score(y_test, y_pred_05)
-)
-
-print(
-    "Recall:",
-    recall_score(y_test, y_pred_05)
-)
-
-print("\nThreshold 0.7")
-
-print(
-    "Precision:",
-    precision_score(y_test, y_pred_07)
-)
-
-print(
-    "Recall:",
-    recall_score(y_test, y_pred_07)
+    classification_report(
+        y_test,
+        y_pred
+    )
 )
 ```
 
-## What does changing the threshold do?
+The report includes precision, recall, F1 score, and the number of observations in each class.
 
-The threshold does **not** change the probabilities produced by the model.
-
-It changes how those probabilities are converted into class predictions.
-
-When we increase the threshold from 0.5 to 0.7, the model becomes more demanding before predicting the positive class.
-
-In many situations, this leads to:
+Remember that the two classes have different meanings:
 
 ```text
-Higher threshold
-      ↓
-Fewer positive predictions
-      ↓
-Usually higher precision
-      ↓
-Usually lower recall
+0 → Did not survive
+1 → Survived
 ```
-
-The exact results depend on the dataset and model.
-
-### Questions
-
-1. What happened to precision when the threshold increased?
-2. What happened to recall?
-3. Why might a higher threshold be useful in some applications?
-4. Why might a lower threshold be useful in other applications?
-5. Why does threshold choice depend on the goal of the classification task?
 
 ---
 
-# 17. Compare with a Decision Tree
+# 13. Try a Second Classifier: Decision Tree
 
-Different classification algorithms can learn different types of relationships.
+Different classifiers can learn different types of relationships.
 
-Now we will compare logistic regression with a decision tree.
+Now we will compare logistic regression with a **decision tree**.
 
 ```python
-tree_pipeline = Pipeline([
-    ("preprocessor", preprocessor),
-    (
-        "classifier",
-        DecisionTreeClassifier(
-            random_state=42,
-            max_depth=4
-        )
-    ),
-])
+tree = DecisionTreeClassifier(
+    max_depth=4,
+    random_state=42
+)
 
-tree_pipeline.fit(X_train, y_train)
-
-y_tree_pred = tree_pipeline.predict(X_test)
+tree.fit(
+    X_train_processed,
+    y_train
+)
 ```
 
-Evaluate the tree:
+Make predictions:
+
+```python
+y_tree_pred = tree.predict(
+    X_test_processed
+)
+```
+
+Calculate the metrics:
 
 ```python
 tree_accuracy = accuracy_score(
@@ -1165,15 +747,16 @@ tree_f1 = f1_score(
     y_tree_pred
 )
 
-print("Decision tree accuracy:", tree_accuracy)
-print("Decision tree precision:", tree_precision)
-print("Decision tree recall:", tree_recall)
-print("Decision tree F1:", tree_f1)
+print("Decision Tree")
+print("Accuracy :", tree_accuracy)
+print("Precision:", tree_precision)
+print("Recall   :", tree_recall)
+print("F1 score :", tree_f1)
 ```
 
 ---
 
-## Compare the Models
+# 14. Compare the Classifiers
 
 Create a simple comparison table:
 
@@ -1184,24 +767,28 @@ comparison = pd.DataFrame({
         "Logistic Regression",
         "Decision Tree"
     ],
+
     "Accuracy": [
         baseline_accuracy,
-        test_accuracy,
+        accuracy,
         tree_accuracy
     ],
+
     "Precision": [
         np.nan,
-        test_precision,
+        precision,
         tree_precision
     ],
+
     "Recall": [
         np.nan,
-        test_recall,
+        recall,
         tree_recall
     ],
+
     "F1": [
         np.nan,
-        test_f1,
+        f1,
         tree_f1
     ]
 })
@@ -1211,244 +798,147 @@ display(comparison)
 
 ### Questions
 
-1. Which model has the highest test accuracy?
-2. Which model has the highest F1 score?
-3. Which model has the highest precision?
-4. Which model has the highest recall?
-5. Did the two models make exactly the same mistakes?
-6. Why might a decision tree behave differently from logistic regression?
-7. Is the model with the highest accuracy automatically the best model?
+1. Which model has the highest F1 score?
+2. Which model would you choose for this problem, and why?
+
+<details>
+<summary><strong>Sample answer</strong></summary>
+
+The model with the highest F1 score is **[model]**.
+
+I would choose **[model]** because it provides the best balance between precision and recall according to the results. I would also consider whether its accuracy and other metrics are reasonable compared with the baseline and the other classifier.
+
+There is not necessarily one universally correct choice. The important part is to justify the choice using the results.
+
+</details>
 
 ---
 
-# 18. Hyperparameter Tuning
+# 15. What Have We Learned?
 
-A model often has settings called **hyperparameters**.
-
-These are values that we choose before or during the model-development process rather than values learned directly from the training examples.
-
-For logistic regression, one important hyperparameter is `C`.
-
-We will try a small set of values:
-
-```python
-param_grid = {
-    "classifier__C": [
-        0.1,
-        1.0,
-        10.0
-    ]
-}
-```
-
-We will use `GridSearchCV` to compare these settings using 5-fold cross-validation.
-
-```python
-grid_search = GridSearchCV(
-    Pipeline([
-        ("preprocessor", preprocessor),
-        (
-            "classifier",
-            LogisticRegression(max_iter=1000)
-        ),
-    ]),
-    param_grid=param_grid,
-    cv=5,
-    scoring="f1",
-)
-```
-
-Fit the grid search using **training data only**:
-
-```python
-grid_search.fit(X_train, y_train)
-```
-
-Inspect the results:
-
-```python
-print("Best parameters:")
-print(grid_search.best_params_)
-
-print("\nBest cross-validation F1:")
-print(grid_search.best_score_)
-```
-
----
-
-# 19. Why Should We Not Tune Using the Test Set?
-
-The test set is supposed to represent **unseen data**.
-
-If we repeatedly check test performance and choose the model or hyperparameters that perform best on that test set, the test set is no longer truly independent.
-
-The workflow should instead be:
+The classification workflow in this lab can be summarized as:
 
 ```text
-Training data
-     ↓
-Cross-validation
-     ↓
-Choose model/hyperparameters
-     ↓
-Final model
-     ↓
-Test set used once for final evaluation
+Define the classification problem
+            ↓
+       Select X and y
+            ↓
+      Split the data
+            ↓
+     Prepare the data
+            ↓
+     Train a classifier
+            ↓
+       Make predictions
+            ↓
+     Evaluate predictions
+            ↓
+   Understand errors
+            ↓
+     Compare classifiers
 ```
 
-The test set should be treated as a final exam.
+The important concepts are:
 
-### Questions
+### Supervised learning
 
-1. Why would it be a mistake to choose hyperparameters by repeatedly checking test-set performance?
-2. Why is cross-validation useful for model selection?
-3. What role does the final test set play?
+The model learns from examples where the correct outcome is known.
+
+### Binary classification
+
+The target contains two possible classes.
+
+### Features and target
+
+```text
+X → input information
+
+y → outcome we want to predict
+```
+
+### Training and test data
+
+The model learns from the training data and is evaluated on unseen test data.
+
+### Classification metrics
+
+Different metrics answer different questions.
+
+* **Accuracy** → How many predictions were correct?
+* **Precision** → When the model predicts survival, how often is it correct?
+* **Recall** → How many actual survivors did the model identify?
+* **F1** → How well does the model balance precision and recall?
+
+### Confusion matrix
+
+The confusion matrix helps us understand **what kinds of mistakes** the classifier makes.
+
+### Different classifiers
+
+Logistic regression and decision trees can produce different predictions because they learn relationships in different ways.
 
 ---
 
-# 20. Final Evaluation
-
-Now retrieve the best model selected through cross-validation.
-
-```python
-best_model = grid_search.best_estimator_
-```
-
-Use it on the held-out test set.
-
-```python
-y_final_pred = best_model.predict(X_test)
-```
-
-Calculate the final metrics:
-
-```python
-final_accuracy = accuracy_score(
-    y_test,
-    y_final_pred
-)
-
-final_precision = precision_score(
-    y_test,
-    y_final_pred
-)
-
-final_recall = recall_score(
-    y_test,
-    y_final_pred
-)
-
-final_f1 = f1_score(
-    y_test,
-    y_final_pred
-)
-
-print("Final accuracy:", final_accuracy)
-print("Final precision:", final_precision)
-print("Final recall:", final_recall)
-print("Final F1:", final_f1)
-```
-
-And the confusion matrix:
-
-```python
-final_cm = confusion_matrix(
-    y_test,
-    y_final_pred
-)
-
-print("Final confusion matrix:")
-print(final_cm)
-```
-
-Visualize it:
-
-```python
-sns.heatmap(
-    final_cm,
-    annot=True,
-    fmt="d",
-    cmap="Blues"
-)
-
-plt.title("Final Confusion Matrix: Tuned Logistic Regression")
-plt.xlabel("Predicted label")
-plt.ylabel("Actual label")
-plt.show()
-```
-
----
-
-# 21. Final Reflection
+# 16. Final Reflection
 
 Answer the following questions.
 
-### 1. Baseline
+### 1. Classification
 
-Is the final model meaningfully better than the baseline?
+Why is Titanic survival prediction a binary classification problem?
 
-Explain using the results rather than simply saying "yes" or "no."
+<details>
+<summary><strong>Sample answer</strong></summary>
 
----
+It is binary classification because the target variable `survived` has two possible classes: 0 (did not survive) and 1 (survived).
 
-### 2. Untuned vs Tuned Model
+</details>
 
-Did hyperparameter tuning meaningfully improve the logistic regression model?
+### 2. Model performance
 
-Compare:
+Is your classifier meaningfully better than the baseline?
 
-* the original test performance
-* the cross-validation performance
-* the final tuned test performance
+Use the accuracy and/or F1 score to support your answer.
 
----
+<details>
+<summary><strong>Sample answer structure</strong></summary>
 
-### 3. Model Choice
+The baseline accuracy was **[value]**, while the **[chosen model]** achieved an accuracy of **[value]**. The model therefore performed **[better/slightly better/not clearly better]** than the baseline.
 
-Which model would you choose for this problem?
+I would also consider the F1 score because accuracy alone does not describe the types of errors made by the classifier.
 
-Consider:
+</details>
 
-* accuracy
-* precision
-* recall
-* F1
-* consistency across validation
-* simplicity and interpretability
+### 3. Model choice
 
-The model with the highest single metric does not necessarily have to be your choice.
+Which model would you choose: logistic regression or decision tree?
 
----
+Explain your choice using at least two metrics.
 
-### 4. Error Types
+<details>
+<summary><strong>Sample answer structure</strong></summary>
 
-Look at the final confusion matrix.
+I would choose **[model]** because it achieved an F1 score of **[value]** and an accuracy of **[value]**. Compared with the other model, it provided **[better precision / better recall / better balance between precision and recall]**.
 
-Which type of error is more common?
-
-```text
-False positives
-or
-False negatives
-```
-
-What does this mean in the Titanic context?
+</details>
 
 ---
 
-### 5. Threshold
+# Deliverables
 
-How could changing the classification threshold affect the practical behavior of the model?
+Submit:
+
+1. **Your completed notebook**
+2. **Your answers to the short questions**
+3. **The model comparison table**
+4. **The confusion matrix**
+5. **Your final model-choice explanation**
+
+Your final explanation should use evidence from the evaluation results rather than simply saying that one model is "better."
 
 ---
 
-### 6. Binary Classification
-
-Why is Titanic survival prediction called **binary classification**?
-
----
-
-# 22. Looking Ahead: Multiclass Classification
+# Looking Ahead: Multiclass Classification
 
 In this lab, the target had two possible classes:
 
@@ -1457,13 +947,11 @@ In this lab, the target had two possible classes:
 1 → Survived
 ```
 
-Therefore:
+Therefore, Titanic survival prediction is **binary classification**.
 
-> Titanic survival prediction is a **binary classification** problem.
+In the next lab, we will use the Iris dataset.
 
-In the next lab, we will use the **Iris dataset**.
-
-Iris contains three possible species:
+Iris contains three species:
 
 ```text
 Iris setosa
@@ -1471,146 +959,24 @@ Iris versicolor
 Iris virginica
 ```
 
-Therefore:
+This is an example of:
 
-> Iris species prediction is a **multiclass classification** problem.
+> **multiclass classification**
 
-The overall machine-learning workflow will remain familiar:
-
-```text
-Define the task
-      ↓
-Prepare features and target
-      ↓
-Split data
-      ↓
-Preprocess
-      ↓
-Train model
-      ↓
-Evaluate
-      ↓
-Compare models
-```
-
-However, multiclass classification introduces new questions.
-
-For example:
-
-* How does a classifier choose among three or more classes?
-* How does the confusion matrix change?
-* How should precision, recall, and F1 be calculated?
-* What does "positive class" mean when there are three classes?
-* How can we establish a useful multiclass baseline?
-
-These questions will be explored in **Lab 2**.
-
----
-
-# 23. Lab Summary
-
-The main workflow from this lab is:
+The basic workflow will remain familiar:
 
 ```text
-1. Define the classification problem
+Features and target
         ↓
-2. Validate the dataset briefly
+   Split the data
         ↓
-3. Choose features and target
+     Prepare data
         ↓
-4. Split training and test data
+   Train classifier
         ↓
-5. Build preprocessing pipelines
+     Predict
         ↓
-6. Establish a baseline
-        ↓
-7. Train a real classifier
-        ↓
-8. Evaluate with multiple metrics
-        ↓
-9. Interpret the confusion matrix
-        ↓
-10. Use cross-validation
-        ↓
-11. Examine threshold effects
-        ↓
-12. Compare classifiers
-        ↓
-13. Tune hyperparameters
-        ↓
-14. Evaluate once on the held-out test set
-        ↓
-15. Reflect on model choice
+    Evaluate
 ```
 
-The key idea is:
-
-> **A classification model is not judged by accuracy alone. We need to understand what the model predicts correctly, what it gets wrong, how stable its performance is, and whether its behavior matches the purpose of the task.**
-
----
-
-# Deliverables
-
-Submit:
-
-1. **A completed notebook or Python script**
-2. **Short written answers** to the interpretation questions
-3. **The model comparison table**
-4. **The final confusion matrix**
-5. **One paragraph explaining which model you would choose and why**
-
-Your final paragraph should refer to evidence from the evaluation rather than simply stating which model had the highest accuracy.
-
----
-
-# Optional Self-Study: ROC Curve and ROC AUC
-
-ROC curves and ROC AUC are useful classification concepts, but they are **not required for the main lab workflow**.
-
-If you want to explore them independently, logistic regression provides predicted probabilities that can be used to construct an ROC curve.
-
-For example:
-
-```python
-from sklearn.metrics import roc_curve, roc_auc_score
-
-y_test_proba = best_model.predict_proba(X_test)[:, 1]
-
-fpr, tpr, thresholds = roc_curve(
-    y_test,
-    y_test_proba
-)
-
-roc_auc = roc_auc_score(
-    y_test,
-    y_test_proba
-)
-
-plt.plot(
-    fpr,
-    tpr,
-    label=f"ROC AUC = {roc_auc:.3f}"
-)
-
-plt.plot(
-    [0, 1],
-    [0, 1],
-    linestyle="--"
-)
-
-plt.xlabel("False Positive Rate")
-plt.ylabel("True Positive Rate")
-plt.title("ROC Curve: Titanic Logistic Regression")
-plt.legend()
-plt.show()
-
-print("ROC AUC:", roc_auc)
-```
-
-### Self-study question
-
-Why might ROC AUC be useful when we want to understand classifier performance across **different classification thresholds**, rather than evaluating the model at only one threshold?
-
-You do not need to master ROC curves for the main lab. The important concepts for this lab are:
-
-**binary classification → preprocessing → baseline → classification metrics → confusion matrix → cross-validation → threshold → model comparison → tuning.**
+The difference is that the model will have to choose between **more than two classes**.

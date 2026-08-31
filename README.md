@@ -24,6 +24,10 @@
 
 ## Morning:
 
+## Part 0
+
+- [Supervised Machine Learning](./material/part0.md)
+
 ### Part 1 & 2: Classification, evaluation,
 
 - [Theory](./material/part1.md)
