@@ -3,6 +3,7 @@
 > [!IMPORTANT]  
 > - [Homework Before Next Session](./material/Homework.md) for this Week.
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
+> - [Potential Exam Questions](./material/exam-qa.md)
 
 ---
 
@@ -28,7 +29,7 @@
 
 - [Supervised Machine Learning](./material/part0.md)
 
-### Part 1 & 2: Classification, evaluation,
+### Part 1 & 2: Classification
 
 - [Theory](./material/part1.md)
 - [Activity 1](./material/activity1.md)
@@ -47,18 +48,22 @@
 
 ### Part 4: 
 
-- 
+- Data representation, JSON/JSONL
 - [Activity 4](./material/activity4.md)
 
 
 ----
 
-## Potential Exam Questions
+
+<details>
+<summary><strong>Optional (Not in exam)</strong></summary>
+
+- [Classification: Advanced](./material/part1-advanced.md)
+- [Activity 1: Advanced](./material/activity1-advanced.md)
+- [Activity 2: Advanced](./material/activity2-advanced.md)
 
 
-
-
-
+</details>
 
 
 <!-- 
