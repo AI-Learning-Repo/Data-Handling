@@ -55,7 +55,7 @@ By the end of this lab, you should be able to:
 
 ---
 
-# Part 1 — What Does a Training Example Look Like?
+# Part 1: What Does a Training Example Look Like?
 
 A fine-tuning dataset consists of many examples.
 
@@ -95,7 +95,7 @@ This is the first decision in data preparation.
 
 ---
 
-# Part 2 — Different Ways to Represent Data
+# Part 2: Different Ways to Represent Data
 
 There are many ways to represent the same information.
 
@@ -153,7 +153,7 @@ The information is similar, but the **representation is different**.
 
 ---
 
-# Part 3 — CSV, JSON and JSONL
+# Part 3: CSV, JSON and JSONL
 
 Today we will work with three important data formats.
 
@@ -212,7 +212,7 @@ This is particularly convenient for machine-learning datasets because each line 
 
 ---
 
-# Part 4 — Task 1: Inspect a Real Dataset
+# Part 4: Task 1: Inspect a Real Dataset
 
 Instead of creating all our data from scratch, we will first work with a **real dataset from Hugging Face**.
 
@@ -275,7 +275,7 @@ Answer the following:
 
 ---
 
-# Part 5 — Task 2: Dataset Detective
+# Part 5: Task 2: Dataset Detective
 
 Not every dataset you find will be ready for your project.
 
@@ -330,7 +330,7 @@ For the dataset you selected:
 
 ---
 
-# Part 6 — Task 3: Convert an Existing Dataset
+# Part 6: Task 3: Convert an Existing Dataset
 
 Suppose we have this dataset:
 
@@ -410,7 +410,7 @@ That is a normal part of preparing data for machine learning.
 
 ---
 
-# Part 7 — Task 4: Save the Dataset as JSONL
+# Part 7: Task 4: Save the Dataset as JSONL
 
 Now save the prepared examples as JSONL.
 
@@ -441,7 +441,7 @@ You should see something similar to:
 
 ---
 
-# Part 8 — Task 5: Validate the JSONL
+# Part 8: Task 5: Validate the JSONL
 
 A file being called `train.jsonl` does not mean that it is a good training dataset.
 
@@ -481,7 +481,7 @@ def validate_example(example):
 
 ---
 
-# Part 9 — Find Bad Training Examples
+# Part 9: Find Bad Training Examples
 
 A dataset can be valid JSON and still be a **bad training dataset**.
 
@@ -562,7 +562,7 @@ Think about:
 
 ---
 
-# Part 10 — Synthetic Data
+# Part 10: Synthetic Data
 
 Sometimes we do not have enough training examples.
 
@@ -592,7 +592,7 @@ Synthetic data needs to be reviewed and validated just like real data.
 
 ---
 
-# Part 11 — Synthetic Data Pipeline
+# Part 11: Synthetic Data Pipeline
 
 A useful way to think about synthetic data generation is:
 
@@ -616,7 +616,7 @@ The LLM is a **data-generation tool**, not the final authority on whether the da
 
 ---
 
-# Part 12 — Distillation
+# Part 12: Distillation
 
 Another approach is **distillation**.
 
@@ -654,7 +654,7 @@ The resulting examples can then be converted into our chosen dataset format.
 
 ---
 
-# Part 13 — Homework: Generate Synthetic Data Using an API
+# Part 13: Homework: Generate Synthetic Data Using an API
 
 For homework, you will generate a small synthetic dataset using an LLM API.
 
@@ -685,13 +685,13 @@ Your final output should be a JSONL file containing your generated examples.
 
 ---
 
-# Part 14 — In-Class Activity: Build a Dataset with ChatGPT
+# Part 14: In-Class Activity: Build a Dataset with ChatGPT
 
 Now we will create a dataset interactively using an AI assistant such as ChatGPT.
 
 We will work with two domains:
 
-## Domain A — Health
+## Domain A: Health
 
 The goal is to create a small educational health-information dataset.
 
@@ -733,7 +733,7 @@ For this exercise, the dataset should focus on **general educational information
 
 ---
 
-# Domain B — Cybersecurity
+# Domain B: Cybersecurity
 
 The second dataset will focus on cybersecurity.
 
@@ -773,7 +773,7 @@ Assistant:
 
 ---
 
-# Part 15 — Prompting ChatGPT to Generate Data
+# Part 15: Prompting ChatGPT to Generate Data
 
 Your first task is **not** to ask:
 
@@ -808,7 +808,7 @@ Ask yourself:
 
 ---
 
-# Part 16 — Improve the Generation Prompt
+# Part 16: Improve the Generation Prompt
 
 Now ask the AI assistant to generate examples with stricter requirements.
 
@@ -840,7 +840,7 @@ What problems still remain?
 
 ---
 
-# Part 17 — Human Validation
+# Part 17: Human Validation
 
 Now manually review the generated dataset.
 
@@ -864,7 +864,7 @@ This is an essential part of synthetic-data generation.
 
 ---
 
-# Part 18 — Final Dataset
+# Part 18: Final Dataset
 
 At the end of today's lab, your dataset should look conceptually like:
 
@@ -893,7 +893,7 @@ For example:
 
 ---
 
-# Part 19 — Final Challenge
+# Part 19: Final Challenge
 
 Choose **one** of the two domains:
 
@@ -902,21 +902,21 @@ Choose **one** of the two domains:
 
 Then complete the following:
 
-### Step 1 — Define the task
+### Step 1: Define the task
 
 Write one sentence:
 
 > "We want the model to learn how to __________."
 
-### Step 2 — Define the input
+### Step 2: Define the input
 
 What will the user provide?
 
-### Step 3 — Define the output
+### Step 3: Define the output
 
 What should the assistant produce?
 
-### Step 4 — Choose a representation
+### Step 4: Choose a representation
 
 For example:
 
@@ -930,7 +930,7 @@ or:
 messages
 ```
 
-### Step 5 — Create examples
+### Step 5: Create examples
 
 Use either:
 
@@ -939,11 +939,11 @@ Use either:
 * AI-generated synthetic examples;
 * or a combination.
 
-### Step 6 — Convert
+### Step 6: Convert
 
 Convert your examples into a consistent structure.
 
-### Step 7 — Save
+### Step 7: Save
 
 Save them as:
 
@@ -951,7 +951,7 @@ Save them as:
 train.jsonl
 ```
 
-### Step 8 — Validate
+### Step 8: Validate
 
 Check:
 
