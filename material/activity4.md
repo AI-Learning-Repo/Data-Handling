@@ -228,7 +228,7 @@ Hugging Face provides many datasets covering areas such as:
 
 You can browse datasets at the Hugging Face Datasets Hub.
 
-[Hugging Face Datasets](https://huggingface.co/datasets?utm_source=chatgpt.com)
+[Hugging Face Datasets](https://huggingface.co/datasets)
 
 For this exercise, your instructor will provide a dataset or dataset name.
 
