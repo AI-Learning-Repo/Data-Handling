@@ -57,9 +57,19 @@
 
 ### Part 3: Tokenization & BPE
 
-- [Demo](./material/part3-demo.md)
-- [Summary](./material/part3.md)
-- [Activity 3](./material/activity3.md)
+- [Summary](./material/part3.md), [Demo](./material/part3-demo.md)
+- [Activity 3](./material/activity3.md), [src](./material/part3-src.py)
+
+<details>
+<summary>Links used in Session</summary>
+
+- https://tiktokenizer.vercel.app/?model=gpt2
+- https://platform.openai.com/tokenizer
+- https://sebastianraschka.com/blog/2025/bpe-from-scratch.html
+- https://github.com/karpathy/nanochat
+- https://github.com/rasbt/LLMs-from-scratch/tree/main/ch02/02_bonus_bytepair-encoder
+</details> 
+
 
 ### Part 4: 
 

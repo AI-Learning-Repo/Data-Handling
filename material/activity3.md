@@ -2428,7 +2428,6 @@ That is the basic idea behind the BPE tokenizer you have built in this lab.
 
 ---
 
-[Raschka's full BPE tutorial](https://sebastianraschka.com/blog/2025/bpe-from-scratch.html)
-
-[Raschka's standalone notebook on GitHub](https://github.com/rasbt/LLMs-from-scratch/blob/main/ch02/05_bpe_from_scratch/bpe-from-scratch.ipynb)
+- [Raschka's full BPE tutorial](https://sebastianraschka.com/blog/2025/bpe-from-scratch.html)
+- [Raschka's standalone notebook on GitHub](https://github.com/rasbt/LLMs-from-scratch/blob/main/ch02/05_bpe_from_scratch/bpe-from-scratch.ipynb)
 

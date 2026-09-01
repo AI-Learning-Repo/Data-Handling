@@ -1,5 +1,7 @@
 # Tokenisation and Byte Pair Encoding (BPE)
 
+<a href="https://sebastianraschka.com/blog/2025/bpe-from-scratch.html" ><img src="./img/tokenizer.png" width="50%"></a>
+
 ## 1. From text to tokens
 
 Language models do not process text directly. They process sequences of numbers.
@@ -86,14 +88,10 @@ pairs = Counter(zip(tokens, tokens[1:]))
 print(pairs.most_common(5))
 ```
 
-A typical result is:
+Here's the result:
 
 ```text
-[(('l', 'o'), 5),
- (('o', 'w'), 5),
- (('w', 'e'), 3),
- (('e', 'r'), 2),
- (('e', 's'), 1)]
+[(('l', 'o'), 5), (('o', 'w'), 5), (('w', 'e'), 3), (('w', 'l'), 2), (('e', 'r'), 2)]
 ```
 
 There are several frequent pairs. We can choose the most frequent one.

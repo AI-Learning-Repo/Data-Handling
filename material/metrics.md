@@ -190,6 +190,55 @@ For example:
 
 **Normal email → Model says spam**
 
+
+---
+
+<details>
+<summary>Examples when high precision is needed</summary>
+
+You prioritize **High Precision** when the cost of a **False Positive is much worse than a False Negative**. 
+
+Here are the best examples:
+
+
+### 1. Email Spam Detection (The Classic Example)
+* **Positive:** Email is Spam.
+* **Negative:** Email is Important / Not Spam.
+
+* **False Positive (Bad):** An important job offer or client email is falsely flagged as spam and sent to the junk folder. You miss it completely, causing serious harm.
+* **False Negative (Tolerable):** A junk email slips through and appears in your inbox. You simply delete it in one second.
+
+> **Why High Precision is needed:** You only want the filter to mark an email as spam if it is **extremely sure**. It is much better to let a few spam emails reach the inbox than to accidentally hide a critical email.
+
+
+### 2. Legal Conviction ("Innocent until proven guilty")
+* **Positive:** Person is Guilty.
+* **Negative:** Person is Innocent.
+
+* **False Positive (Severe):** An innocent person is convicted and sent to prison.
+* **False Negative (Tolerable by comparison):** A guilty person is acquitted due to lack of decisive evidence.
+
+> **Why High Precision is needed:** The justice system requires proof *"beyond a reasonable doubt."* The ethical cost of imprisoning an innocent person (False Positive) is considered far worse than failing to convict a guilty person (False Negative).
+
+
+### 3. Video / Product Recommendations (e.g., YouTube, Netflix)
+* **Positive:** User will love this video/movie.
+* **Negative:** User will not care.
+
+* **False Positive (Bad):** The system fills the homepage with irrelevant or annoying content, causing the user to lose trust in the platform.
+* **False Negative (Tolerable):** The system misses showing *every* possible video the user might like (the user will never know what they missed anyway).
+
+> **Why High Precision is needed:** The platform only has 5–10 spots on the screen. It is better to show 5 videos the user will definitely watch rather than trying to capture every possible video they might be interested in.
+
+
+### Summary Comparison:
+
+| Goal | Priority Metric | Focus | Example |
+| :--- | :--- | :--- | :--- |
+| **"Don't miss anything"** | **High Recall** | Minimize False Negatives | Cancer / Disease detection, Airport security screening |
+| **"Be sure when you say YES"** | **High Precision** | Minimize False Positives | Spam filters, Legal convictions, Automatic account banning |
+</details>
+
 ---
 
 # 6. Precision and Recall Answer Different Questions
