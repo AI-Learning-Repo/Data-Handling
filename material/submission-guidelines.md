@@ -22,7 +22,7 @@ Please follow the instructions below to set up a shared Google Drive folder for 
 ---
 
 #### **3. Submitting Weekly Activities**
-* Place all completed work into the corresponding week’s subfolder (e.g., all Week 2 activities should be uploaded to the `Week 1` folder).
+* Place all completed work into the corresponding week’s subfolder (e.g., all Week 2 activities should be uploaded to the `Week 2` folder).
 
 ---
 
