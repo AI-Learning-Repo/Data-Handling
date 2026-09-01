@@ -66,11 +66,11 @@
 
 
 <details>
-<summary><strong>Optional (Not in exam)</strong></summary>
+<summary><strong>Old Material (Not in exam)</strong></summary>
 
-- [Classification: Advanced](./material/part1-advanced.md)
-- [Activity 1: Advanced](./material/activity1-advanced.md)
-- [Activity 2: Advanced](./material/activity2-advanced.md)
+- [Classification](./material/part1-o.md)
+- [Activity 1](./material/activity1-o.md)
+- [Activity 2](./material/activity2-o.md)
 
 
 </details>
