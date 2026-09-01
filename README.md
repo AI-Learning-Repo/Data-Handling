@@ -33,6 +33,7 @@
 ### Part 1 & 2: Classification
 
 - [Theory](./material/part1.md)
+- [Classification Metrics](./material/metrics.md)
 - [Activity 1](./material/activity1.md)
 - [Activity 2](./material/activity2.md)
 
