@@ -230,7 +230,7 @@ You can browse datasets at the Hugging Face Datasets Hub.
 
 [Hugging Face Datasets](https://huggingface.co/datasets)
 
-For this exercise, your instructor will provide a dataset or dataset name.
+<!-- For this exercise, your instructor will provide a dataset or dataset name. -->
 
 Load it using:
 
