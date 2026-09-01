@@ -654,9 +654,9 @@ The resulting examples can then be converted into our chosen dataset format.
 
 ---
 
-# Part 13: Homework: Generate Synthetic Data Using an API
+# Part 13: (**Optional**) Generate Synthetic Data Using an API
 
-For homework, you will generate a small synthetic dataset using an LLM API.
+You can generate a small synthetic dataset using an LLM API.
 
 You may use either:
 
@@ -679,7 +679,7 @@ Python receives examples
 Save as JSONL
 ```
 
-For this week's homework, focus on the **data**, not the API engineering.
+<!-- For this week's homework, focus on the **data**, not the API engineering. -->
 
 Your final output should be a JSONL file containing your generated examples.
 
