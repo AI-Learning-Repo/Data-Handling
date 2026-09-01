@@ -33,7 +33,7 @@
 ### Part 1 & 2: Classification
 
 - [Theory](./material/part1.md)
-- [Classification Metrics](./material/metrics.md)
+- [Demo: Classification Metrics](./material/metrics.md)
 - [Activity 1](./material/activity1.md)
 - [Activity 2](./material/activity2.md)
 
@@ -44,6 +44,10 @@
   - [Classification](https://developers.google.com/machine-learning/crash-course/classification)
   - [Algorithms for Supervised machine learning](https://scikit-learn.org/stable/supervised_learning.html)
   - [Multiclass Classification vs Multi-label Classification](https://www.geeksforgeeks.org/machine-learning/multiclass-classification-vs-multi-label-classification/)
+  - [F1 Score in Machine Learning](https://www.geeksforgeeks.org/machine-learning/f1-score-in-machine-learning/)
+  - [Logistic Regression](https://www.geeksforgeeks.org/machine-learning/understanding-logistic-regression/)
+  - [Decision Tree](https://www.geeksforgeeks.org/machine-learning/decision-tree-introduction-example/)
+  - [K-Nearest Neighbors (KNN)](https://www.geeksforgeeks.org/machine-learning/k-nearest-neighbours/)
 </details> 
 
 
