@@ -431,3 +431,9 @@ Combines precision and recall into a single measure.
 The main lesson is:
 
 > **Accuracy tells us how often the model is correct overall, but it does not tell us what kind of errors the model is making. Precision, recall, and the confusion matrix give us a much clearer picture of classification performance.**
+
+---
+
+## Links
+
+- [F1 Score in Machine Learning](https://www.geeksforgeeks.org/machine-learning/f1-score-in-machine-learning/)

@@ -651,9 +651,9 @@ A **classifier** is a machine-learning model that predicts a class.
 
 We will use three different classifiers across the two labs:
 
-1. Logistic Regression
-2. Decision Tree
-3. K-Nearest Neighbors (KNN)
+1. [Logistic Regression](https://www.geeksforgeeks.org/machine-learning/understanding-logistic-regression/)
+2. [Decision Tree](https://www.geeksforgeeks.org/machine-learning/decision-tree-introduction-example/)
+3. [K-Nearest Neighbors (KNN)](https://www.geeksforgeeks.org/machine-learning/k-nearest-neighbours/)
 
 They solve the same general problem:
 
