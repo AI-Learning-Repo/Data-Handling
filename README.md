@@ -73,11 +73,10 @@
 
 ### Part 4: 
 
-
-- [Preparing and Formatting Data for Fine-Tuning](./material/part4.md)
-  - [Activity 4](./material/activity4.md)
-- [Data Representation and File Formats](./material/part5.md)
-  - [Activity 5](./material/activity5.md)
+- [Preparing and Formatting Data for Fine-Tuning](./material/part4a.md)
+- [Data Representation and File Formats](./material/part4b.md)
+  - [Activity 4 (Optional)](./material/activity4.md)
+  - [Activity 5 (Optional)](./material/activity5.md)
 
 
 ----

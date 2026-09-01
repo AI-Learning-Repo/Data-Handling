@@ -1,5 +1,7 @@
 # Theory: Understanding Tokenization and Byte Pair Encoding (BPE)
 
+<a href="https://sebastianraschka.com/blog/2025/bpe-from-scratch.html" ><img src="./img/tokenizer.png" width="50%"></a>
+
 ## 1. Why Do Large Language Models Need Tokenization?
 
 Large Language Models operate on numerical inputs, but human language begins as text.
