@@ -36,15 +36,24 @@
 - [Activity 1](./material/activity1.md)
 - [Activity 2](./material/activity2.md)
 
+<details>
+  <summary>Links used in Session</summary>
+
+  - [Introduction to Supervised Learning](https://developers.google.com/machine-learning/intro-to-ml/supervised)
+  - [Classification](https://developers.google.com/machine-learning/crash-course/classification)
+  - [Algorithms for Supervised machine learning](https://scikit-learn.org/stable/supervised_learning.html)
+  - [Multiclass Classification vs Multi-label Classification](https://www.geeksforgeeks.org/machine-learning/multiclass-classification-vs-multi-label-classification/)
+</details> 
+
+
 ----
 
 ## Afternoon:
 
-### Part 3: 
+### Part 3: Tokenization & BPE
 
-- Tokenization & BPE
-  - [Demo](./material/part3-demo.md)
-  - [Summary](./material/part3.md)
+- [Demo](./material/part3-demo.md)
+- [Summary](./material/part3.md)
 - [Activity 3](./material/activity3.md)
 
 ### Part 4: 
