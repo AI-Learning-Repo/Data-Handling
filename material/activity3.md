@@ -5,7 +5,7 @@ Pydantic is a data validation and parsing library for Python. It uses Python typ
 ### Installation
 
 ```bash
-pip install pydantic
+!pip install pydantic
 ```
 
 ---
