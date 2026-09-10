@@ -888,6 +888,7 @@ $$
 
 This is a strong positive linear relationship, although it is not perfect.
 
+
 ---
 
 # A.23 What have we learned from multiple features?
@@ -2147,8 +2148,6 @@ This is relatively simple.
 
 It can underfit if the true relationship is strongly nonlinear.
 
----
-
 ## Multiple Linear Regression
 
 Multiple linear regression uses several features.
@@ -2171,8 +2170,6 @@ However:
 > More features do not automatically mean better performance.
 
 Some features can be irrelevant, noisy, or redundant.
-
----
 
 ## Polynomial Regression
 
@@ -2242,20 +2239,7 @@ This is more meaningful than simply asking:
 
 A useful conceptual diagram is:
 
-```text
-Error
- ^
- |\
- | \
- |  \        Test error
- |   \      /\
- |    \____/  \
- |         \
- |          \
- |           \ Training error
- +------------------------------> Model complexity
-       low      optimal     high
-```
+<img src="./img/complexity.png" width="50%">
 
 The exact shape will vary from problem to problem.
 
@@ -2407,6 +2391,24 @@ The lab applies these concepts in sequence:
 The most important habit to develop is:
 
 > **Always look beyond how well a model performs on training data. Ask whether it can generalize to data that it has not seen.**
+
+<!-- 
+```text
+Error
+ ^
+ |\
+ | \
+ |  \        Test error
+ |   \      /\
+ |    \____/  \
+ |         \
+ |          \
+ |           \ Training error
+ +------------------------------> Model complexity
+       low      optimal     high
+``` 
+-->
+
 
 
 <!-- # Part 1: Supervised Machine Learning: A Beginner's Guide
