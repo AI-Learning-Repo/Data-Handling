@@ -115,14 +115,18 @@ This transformer creates additional features such as squares, cubes, and interac
 
 For two features `x1` and `x2`, degree 2 can create terms conceptually like:
 
+
 $$
-1\\
-x_1\\
-x_2\\
-x_1^2\\
-x_1 x_2\\
-x_2^2\\
+\begin{gathered}
+1 \\
+x_1 \\
+x_2 \\
+x_1^2 \\
+x_1 x_2 \\
+x_2^2 
+\end{gathered}
 $$
+
 
 #### `Pipeline`
 
@@ -1248,16 +1252,20 @@ poly = PolynomialFeatures(degree=2, include_bias=False)
 For one feature `x`, degree 2 gives:
 
 $$
-x\\
-x^2\\
+\begin{gathered}
+x \\
+x^2
+\end{gathered}
 $$
 
 If we used `degree=3`, we would get:
 
 $$
-x\\
-x^2\\
-x^3\\
+\begin{gathered}
+x \\
+x^2 \\
+x^3
+\end{gathered}
 $$
 
 ### Why `include_bias=False`?
