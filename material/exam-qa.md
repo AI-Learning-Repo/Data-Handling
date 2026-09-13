@@ -536,9 +536,7 @@ Test RMSE     = 9.8
 
 Suppose a model is:
 
-$$
-\widehat{FARE}=4.50+2.10(TRIP\_MILES)
-$$
+$\widehat{FARE}=4.50+2.10(TRIP\_MILES)$
 
 * **(a)** What is the intercept?
 * **(b)** What is the coefficient of `TRIP_MILES`?
@@ -973,109 +971,109 @@ Your solution should include:
 
 ## Section A: Multiple Choice
 
-**1. B** — Supervised regression learns from examples where the correct numerical target values are known.
+**1. B**: Supervised regression learns from examples where the correct numerical target values are known.
 
-**2. B** — `X` normally represents the input features and `y` represents the numerical target.
+**2. B**: `X` normally represents the input features and `y` represents the numerical target.
 
-**3. C** — Taxi fare is a numerical quantity, so predicting it is a regression problem.
+**3. C**: Taxi fare is a numerical quantity, so predicting it is a regression problem.
 
-**4. A** — Linear regression models a continuous numerical target using a linear relationship between features and the prediction.
+**4. A**: Linear regression models a continuous numerical target using a linear relationship between features and the prediction.
 
-**5. A** — Simple linear regression can be represented as:
+**5. A**: Simple linear regression can be represented as:
 
 $$
 y=b_0+b_1x
 $$
 
-**6. B** — Simple linear regression uses one feature, while multiple linear regression uses two or more features.
+**6. B**: Simple linear regression uses one feature, while multiple linear regression uses two or more features.
 
-**7. B** — The model uses both `TRIP_MILES` and `TRIP_MINUTES`, so it is multiple linear regression.
+**7. B**: The model uses both `TRIP_MILES` and `TRIP_MINUTES`, so it is multiple linear regression.
 
-**8. A** — The intercept is the model's predicted value when all features are zero.
+**8. A**: The intercept is the model's predicted value when all features are zero.
 
-**9. A** — In a multiple regression model, a positive coefficient means that increasing that feature is associated with an increase in the prediction while the other model features are held constant.
+**9. A**: In a multiple regression model, a positive coefficient means that increasing that feature is associated with an increase in the prediction while the other model features are held constant.
 
-**10. A** — Pearson correlation measures the strength and direction of a linear relationship between two numerical variables.
+**10. A**: Pearson correlation measures the strength and direction of a linear relationship between two numerical variables.
 
-**11. C** — Pearson `r` ranges from `-1` to `+1`.
+**11. C**: Pearson `r` ranges from `-1` to `+1`.
 
-**12. A** — `r = 0.92` indicates a strong positive linear relationship.
+**12. A**: `r = 0.92` indicates a strong positive linear relationship.
 
-**13. B** — `r = -0.85` indicates a strong negative linear relationship.
+**13. B**: `r = -0.85` indicates a strong negative linear relationship.
 
-**14. B** — Pearson correlation is specifically a measure of linear association.
+**14. B**: Pearson correlation is specifically a measure of linear association.
 
-**15. B** — \(y=x^2\) is nonlinear, and Pearson `r` can be close to zero even though the variables have a strong mathematical relationship.
+**15. B**: \(y=x^2\) is nonlinear, and Pearson `r` can be close to zero even though the variables have a strong mathematical relationship.
 
-**16. A** — Correlations provide an initial understanding of how individual features are linearly associated with the target.
+**16. A**: Correlations provide an initial understanding of how individual features are linearly associated with the target.
 
-**17. B** — The test set lets us estimate how well the trained model performs on unseen observations.
+**17. B**: The test set lets us estimate how well the trained model performs on unseen observations.
 
-**18. A** — `train_test_split()` is the scikit-learn function commonly used for this task.
+**18. A**: `train_test_split()` is the scikit-learn function commonly used for this task.
 
-**19. A** — Approximately 20% of the observations are assigned to the test set.
+**19. A**: Approximately 20% of the observations are assigned to the test set.
 
-**20. B** — `random_state` makes the randomized split reproducible.
+**20. B**: `random_state` makes the randomized split reproducible.
 
-**21. B** — `fit()` learns model parameters from the training data.
+**21. B**: `fit()` learns model parameters from the training data.
 
-**22. B** — `predict()` generates predicted target values for the supplied observations.
+**22. B**: `predict()` generates predicted target values for the supplied observations.
 
-**23. A** — MAE is the mean absolute error.
+**23. A**: MAE is the mean absolute error.
 
-**24. B** — MSE squares the errors, giving large errors more influence.
+**24. B**: MSE squares the errors, giving large errors more influence.
 
-**25. B** — RMSE is the square root of MSE and is expressed in the same units as the target.
+**25. B**: RMSE is the square root of MSE and is expressed in the same units as the target.
 
-**26. A** — R² of `0.85` indicates that the model explains a large proportion of the variation in the target relative to the baseline/reference represented by the metric.
+**26. A**: R² of `0.85` indicates that the model explains a large proportion of the variation in the target relative to the baseline/reference represented by the metric.
 
-**27. A** — Polynomial regression creates polynomial terms and then can use a linear regression estimator to fit them.
+**27. A**: Polynomial regression creates polynomial terms and then can use a linear regression estimator to fit them.
 
-**28. B** — Degree 2 creates terms such as squared features and, depending on the input, interaction terms.
+**28. B**: Degree 2 creates terms such as squared features and, depending on the input, interaction terms.
 
-**29. C** — Increasing the degree makes the model more flexible, which can help initially but can eventually cause overfitting.
+**29. C**: Increasing the degree makes the model more flexible, which can help initially but can eventually cause overfitting.
 
-**30. B** — Very low training error combined with much higher test error is a classic sign of overfitting.
+**30. B**: Very low training error combined with much higher test error is a classic sign of overfitting.
 
-**31. B** — High training and high test error can indicate that the model is too simple or otherwise unable to capture the important structure.
+**31. B**: High training and high test error can indicate that the model is too simple or otherwise unable to capture the important structure.
 
-**32. B** — A very flexible polynomial can fit training noise as well as the useful underlying relationship.
+**32. B**: A very flexible polynomial can fit training noise as well as the useful underlying relationship.
 
-**33. A** — Scaling puts numerical variables onto comparable scales and is particularly important for algorithms that depend on numerical scale or distance.
+**33. A**: Scaling puts numerical variables onto comparable scales and is particularly important for algorithms that depend on numerical scale or distance.
 
-**34. A** — A pipeline can combine preprocessing and a model into one reproducible workflow.
+**34. A**: A pipeline can combine preprocessing and a model into one reproducible workflow.
 
-**35. A** — Learning each step separately helps students understand what the pipeline is doing internally.
+**35. A**: Learning each step separately helps students understand what the pipeline is doing internally.
 
 ---
 
 ## Section B: True or False
 
-**36. True** — Regression is generally used when the target is a numerical quantity rather than a category.
+**36. True**: Regression is generally used when the target is a numerical quantity rather than a category.
 
-**37. False** — A Pearson correlation near zero means little or no linear association; a nonlinear relationship may still exist.
+**37. False**: A Pearson correlation near zero means little or no linear association; a nonlinear relationship may still exist.
 
-**38. True** — \(y=2x\) is a straight-line relationship and therefore linear.
+**38. True**: \(y=2x\) is a straight-line relationship and therefore linear.
 
-**39. True** — \(y=x^2\) is a curved, nonlinear relationship.
+**39. True**: \(y=x^2\) is a curved, nonlinear relationship.
 
-**40. False** — Correlation is useful for exploration but does not by itself determine whether a feature belongs in the final model.
+**40. False**: Correlation is useful for exploration but does not by itself determine whether a feature belongs in the final model.
 
-**41. False** — The model should be fitted using training data, while the test set is reserved for evaluation.
+**41. False**: The model should be fitted using training data, while the test set is reserved for evaluation.
 
-**42. True** — A model can fit the training observations extremely well but generalize poorly, which is overfitting.
+**42. True**: A model can fit the training observations extremely well but generalize poorly, which is overfitting.
 
-**43. True** — Underfitting occurs when the model is too simple or otherwise unable to capture important patterns.
+**43. True**: Underfitting occurs when the model is too simple or otherwise unable to capture important patterns.
 
-**44. False** — Overfitting usually means training performance is much better than test performance.
+**44. False**: Overfitting usually means training performance is much better than test performance.
 
-**45. False** — Increasing degree can improve training performance but can eventually reduce test performance because of overfitting.
+**45. False**: Increasing degree can improve training performance but can eventually reduce test performance because of overfitting.
 
-**46. True** — RMSE has the same units as the target variable.
+**46. True**: RMSE has the same units as the target variable.
 
-**47. False** — MSE squares errors; MAE uses absolute values and does not square the errors.
+**47. False**: MSE squares errors; MAE uses absolute values and does not square the errors.
 
-**48. True** — A pipeline can combine preprocessing and modeling steps into one workflow.
+**48. True**: A pipeline can combine preprocessing and modeling steps into one workflow.
 
 ---
 
@@ -1185,13 +1183,7 @@ $$
 
 **(f)**
 
-$$
-r=
-\frac{10}{\sqrt{5\times20}}
-=
-\frac{10}{10}
-=1
-$$
+$r=\frac{10}{\sqrt{5\times20}}=\frac{10}{10}=1$
 
 **(g)** There is a perfect positive linear relationship between `x` and `y`.
 
@@ -1201,17 +1193,13 @@ $$
 
 **(a)** Yes. The relationship is:
 
-$$
-y=x^2
-$$
+$y=x^2$
 
 **(b)** It is nonlinear.
 
 **(c)** Pearson correlation can be:
 
-$$
-r=0
-$$
+$r=0$
 
 for this symmetric example.
 
@@ -1227,21 +1215,13 @@ for this symmetric example.
 
 **(b)** For example:
 
-$$
-corr(TRIP\_MILES,FARE)
-$$
+$corr(TRIP\_MILES,FARE)$
 
-$$
-corr(TRIP\_MINUTES,FARE)
-$$
+$corr(TRIP\_MINUTES,FARE)$
 
-$$
-corr(PASSENGER\_COUNT,FARE)
-$$
+$corr(PASSENGER\_COUNT,FARE)$
 
-$$
-corr(HOUR,FARE)
-$$
+$corr(HOUR,FARE)$
 
 **(c)** `TRIP_MILES` has a strong positive linear relationship with fare.
 
@@ -1267,9 +1247,7 @@ $$
 
 Given:
 
-$$
-\widehat{FARE}=4.50+2.10(TRIP\_MILES)
-$$
+$\widehat{FARE}=4.50+2.10(TRIP\_MILES)$
 
 **(a)** Intercept:
 
@@ -1315,15 +1293,7 @@ $$
 
 Given:
 
-$$
-\widehat{FARE}
-=
-3.0
-+
-1.8(TRIP\_MILES)
-+
-0.5(TRIP\_MINUTES)
-$$
+$\widehat{FARE}=3.0+1.8(TRIP\_MILES)+0.5(TRIP\_MINUTES)$
 
 **(a)** Two features.
 
