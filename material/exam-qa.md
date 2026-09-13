@@ -1293,7 +1293,7 @@ $$
 
 Given:
 
-$\widehat{FARE}=3.0+1.8(TRIP\_MILES)+0.5(TRIP\_MINUTES)$
+$\widehat{\text{FARE}} = 3.0 + 1.8(\text{TRIP\_MILES}) + 0.5(\text{TRIP\_MINUTES})$
 
 **(a)** Two features.
 
