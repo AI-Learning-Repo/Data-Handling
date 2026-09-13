@@ -1294,9 +1294,9 @@ $$
 Given:
 
 $$
-\widehat{FARE} = 3.0 + 1.8(TRIP\_MILES) + 0.5(TRIP\_MINUTES)
+\widehat{\mathrm{FARE}}
+= 3.0 + 1.8(\mathrm{TRIP\_MILES}) + 0.5(\mathrm{TRIP\_MINUTES})
 $$
-
 
 **(a)** Two features.
 
