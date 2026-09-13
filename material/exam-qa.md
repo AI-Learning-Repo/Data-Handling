@@ -1247,7 +1247,9 @@ $corr(HOUR,FARE)$
 
 Given:
 
-$\widehat{FARE}=4.50+2.10(TRIP\_MILES)$
+$\widehat{FARE}=4.50+2.10(TRIP`\\_MILES)$
+
+
 
 **(a)** Intercept:
 
@@ -1297,7 +1299,6 @@ $$
 \widehat{\mathrm{FARE}}
 = 3.0 + 1.8(\mathrm{TRIP\\_MILES}) + 0.5(\mathrm{TRIP\\_MINUTES})
 $$
-
 
 
 **(a)** Two features.
