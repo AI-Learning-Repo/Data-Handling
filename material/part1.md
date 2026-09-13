@@ -1,4 +1,4 @@
-# Theory — Introduction to Regression with Auto MPG
+# Theory : Introduction to Regression with Auto MPG
 
 This theory section introduces the main concepts needed for **Activity 1: Introduction to Regression with Auto MPG**.
 
@@ -94,8 +94,8 @@ This is a numerical quantity, so the problem is a regression problem.
 
 A supervised machine-learning dataset normally contains:
 
-* **features** — information used to make a prediction;
-* **target** — the value we want to predict.
+* **features** : information used to make a prediction;
+* **target** : the value we want to predict.
 
 For Auto MPG, possible features include:
 
@@ -769,11 +769,7 @@ $\hat{y}=b_0+b_1x$
 
 For Auto MPG:
 
-$$
-\widehat{MPG}
-=
-b_0+b_1(Weight)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)$
 
 This means that the model uses a straight line to describe the relationship between weight and MPG.
 
@@ -1138,7 +1134,7 @@ Important introductory regression metrics are:
 
 ---
 
-# 33. Mean Absolute Error — MAE
+# 33. Mean Absolute Error : MAE
 
 MAE stands for:
 
@@ -1200,7 +1196,7 @@ MAE is easy to understand because it uses the same units as the target.
 
 ---
 
-# 35. Mean Squared Error — MSE
+# 35. Mean Squared Error : MSE
 
 MSE stands for:
 
@@ -1245,7 +1241,7 @@ Therefore, large errors have a much greater influence on MSE.
 
 ---
 
-# 36. Root Mean Squared Error — RMSE
+# 36. Root Mean Squared Error : RMSE
 
 RMSE is:
 
@@ -1299,7 +1295,7 @@ This is one reason it is useful to examine both MAE and RMSE.
 
 ---
 
-# 38. R² — Coefficient of Determination
+# 38. R² : Coefficient of Determination
 
 R² is another common regression metric.
 
