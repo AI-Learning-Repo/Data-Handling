@@ -1513,9 +1513,7 @@ The second is `x²`.
 
 The linear regression model then learns:
 
-$$
-\hat{y} = b_0 + b_1x + b_2x^2
-$$
+$\hat{y} = b_0 + b_1x + b_2x^2$
 
 This is still linear in the parameters `b0`, `b1`, and `b2`, but it can form a curved relationship as a function of `x`.
 
@@ -1696,9 +1694,7 @@ The interaction term allows the model to represent a situation where the relatio
 
 The resulting model can be written conceptually as:
 
-$$
-\hat{y} = b_0 + b_1x_1 + b_2x_2 + b_3x_1^2 + b_4x_1x_2 + b_5x_2^2
-$$
+$\hat{y} = b_0 + b_1x_1 + b_2x_2 + b_3x_1^2 + b_4x_1x_2 + b_5x_2^2$
 
 where:
 
@@ -2681,9 +2677,7 @@ The model parameter associated with a feature. In a linear model it represents t
 
 It is still linear because the prediction is a linear combination of the model parameters and transformed feature values:
 
-$$
-\hat{y} = b_0 + b_1x_1 + b_2x_2
-$$
+$\hat{y} = b_0 + b_1x_1 + b_2x_2$
 
 ### 8. Polynomial regression
 
