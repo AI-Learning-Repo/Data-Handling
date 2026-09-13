@@ -2144,7 +2144,7 @@ Multiple linear regression uses several features.
 
 For example:
 
-$\hat{y}=b_0+b_1(\text{Miles})+b_2(\text{Minutes})+b_3(\textPassengers})$
+$\hat{y} = b_0 + b_1(\text{Miles}) + b_2(\text{Minutes}) + b_3(\text{Passengers})$
 
 This gives the model more information.
 
