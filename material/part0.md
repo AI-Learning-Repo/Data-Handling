@@ -1157,23 +1157,10 @@ In other words:
 
 > The model has not learned enough.
 
-Suppose the true relationship looks like a curve:
+Suppose the true relationship looks like a curve, but we use only a straight line:
 
-```text
-       *
-     *   *
-   *       *
-  *         *
-```
-
-but we use only a straight line:
-
-```text
-*
-  *
-    *
-      *
-```
+<!-- ![](./img/underfitting.png) -->
+<img src="./img/underfitting.png" width="50%">
 
 The line cannot represent the curved relationship well.
 
