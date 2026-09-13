@@ -208,9 +208,7 @@ r = -1     perfect negative linear relationship
 
 The formula is:
 
-$$
-r = \frac{\operatorname{cov}(X,Y)}{\sigma_X\sigma_Y}
-$$
+$r = \frac{\text{cov}(X,Y)}{\sigma_X \, \sigma_Y}$
 
 where:
 
@@ -295,9 +293,7 @@ where:
 
 For the taxi example, we might use:
 
-$$
-\widehat{FARE} = b_0 + b_1(TRIP\_MILES)
-$$
+$\widehat{FARE} = b_0 + b_1(TRIP\\_MILES)$
 
 The model is trying to find the line that gives the best fit to the training observations according to the ordinary least-squares objective.
 
@@ -307,9 +303,7 @@ The model is trying to find the line that gives the best fit to the training obs
 
 Suppose the fitted model is:
 
-$$
-\widehat{FARE} = 3.20 + 2.10(TRIP\_MILES)
-$$
+$\widehat{FARE} = 3.20 + 2.10(TRIP\\_MILES)$
 
 Then:
 
@@ -365,13 +359,7 @@ $$
 
 For the taxi problem:
 
-$$
-\widehat{FARE}
-=
-b_0
-+ b_1(TRIP\_MILES)
-+ b_2(TRIP\_MINUTES)
-$$
+$\widehat{FARE}=b_0+ b_1(TRIP\\_MILES)+ b_2(TRIP\\_MINUTES)$
 
 The key conceptual point is:
 
@@ -387,7 +375,7 @@ Suppose the model is:
 
 $$
 \widehat{FARE}
-= 2.5 + 1.7(TRIP\_MILES) + 0.4(TRIP\_MINUTES)
+= 2.5 + 1.7(TRIP\\_MILES) + 0.4(TRIP\\_MINUTES)
 $$
 
 The interpretation of `1.7` is approximately:
@@ -974,13 +962,7 @@ Ridge regression uses an ordinary linear model with an L2 penalty.
 
 Conceptually:
 
-$$
-\text{objective}
-=
-\text{sum of squared errors}
-+
-\lambda\sum_j b_j^2
-$$
+$\text{objective}=\text{sum of squared errors}+\lambda\sum_j b_j^2$
 
 The effect is to shrink coefficients toward zero.
 
@@ -997,13 +979,7 @@ A larger regularization strength generally produces more shrinkage.
 
 Lasso adds a penalty based on the sum of absolute coefficient values:
 
-$$
-\text{objective}
-=
-\text{sum of squared errors}
-+
-\lambda\sum_j |b_j|
-$$
+$\text{objective}=\text{sum of squared errors}+\lambda\sum_j |b_j|$
 
 The L1 penalty has an important property: it can drive some coefficients exactly to zero.
 
@@ -1034,15 +1010,7 @@ ElasticNet combines L1 and L2 penalties.
 
 Conceptually:
 
-$$
-\text{objective}
-=
-\text{prediction error}
-+
-\lambda_1\sum_j|b_j|
-+
-\lambda_2\sum_jb_j^2
-$$
+$\text{objective}=\text{prediction error}+\lambda_1\sum_j|b_j|+\lambda_2\sum_jb_j^2$
 
 This gives the model properties associated with both forms of regularization.
 
