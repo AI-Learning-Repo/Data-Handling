@@ -576,9 +576,8 @@ My package has not arrived yet.
 
 You want the model to return:
 
-JSON
 
-```
+```json
 {
   "category": "delivery",
   "sentiment": "negative",
@@ -596,8 +595,6 @@ But language models sometimes return:
 * Confidence values outside the expected range.
 
 For example:
-
-JSON
 
 ```json
 {
@@ -759,10 +756,8 @@ A fine-tuned model may be trained to produce a certain output format, but traini
 Pydantic gives us a validation step:
 
 1. Fine-tuned model: Generates a prediction or structured response
-2. Raw output
-3. Pydantic validation: Checks fields, types, and allowed values
-4. Validated result or error
-5. Your Python application: Uses the validated data
+2. Pydantic validation: Checks fields, types, and allowed values
+3. Your Python application: Uses the validated data
 
 # Example 5: Converting a Fine-Tuned Model's JSON Text into Pydantic
 
