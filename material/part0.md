@@ -817,21 +817,11 @@ Fare       = 8, 12, 16, 20
 
 The mean number of passengers is:
 
-$$
-\bar{x}=
-\frac{1+1+2+2}{4}
-=
-1.5
-$$
+$\bar{x}=\frac{1+1+2+2}{4}=1.5$
 
 The mean fare is:
 
-$$
-\bar{y}=
-\frac{8+12+16+20}{4}
-=
-14
-$$
+$\bar{y}=\frac{8+12+16+20}{4}=14$
 
 Calculate the deviations:
 
@@ -918,15 +908,15 @@ FARE
 we can calculate:
 
 $$
-corr(TRIP\_MILES,FARE)
+corr(TRIP\\_MILES,FARE)
 $$
 
 $$
-corr(TRIP\_MINUTES,FARE)
+corr(TRIP\\_MINUTES,FARE)
 $$
 
 $$
-corr(PASSENGER\_COUNT,FARE)
+corr(PASSENGER\\_COUNT,FARE)
 $$
 
 $$
@@ -980,7 +970,7 @@ We can also calculate correlation between features themselves.
 For example:
 
 $$
-corr(TRIP\_MILES,TRIP\_MINUTES)
+corr(TRIP\\_MILES,TRIP\\_MINUTES)
 $$
 
 might be high.
@@ -2154,14 +2144,7 @@ Multiple linear regression uses several features.
 
 For example:
 
-$$
-\hat{y}
-=
-b_0+
-b_1(\text{Miles})+
-b_2(\text{Minutes})+
-b_3(\text{Passengers})
-$$
+$\hat{y}=b_0+b_1(\text{Miles})+b_2(\text{Minutes})+b_3(\textPassengers})$
 
 This gives the model more information.
 
@@ -2193,13 +2176,7 @@ This allows a linear regression estimator to represent nonlinear patterns.
 
 For example:
 
-$$
-\hat{y}
-=
-b_0+
-b_1x+
-b_2x^2
-$$
+$\hat{y}=b_0+b_1x+b_2x^2$
 
 can represent a curved relationship.
 
@@ -2391,23 +2368,6 @@ The lab applies these concepts in sequence:
 The most important habit to develop is:
 
 > **Always look beyond how well a model performs on training data. Ask whether it can generalize to data that it has not seen.**
-
-<!-- 
-```text
-Error
- ^
- |\
- | \
- |  \        Test error
- |   \      /\
- |    \____/  \
- |         \
- |          \
- |           \ Training error
- +------------------------------> Model complexity
-       low      optimal     high
-``` 
--->
 
 
 
