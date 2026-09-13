@@ -1,31 +1,14 @@
 # Activity 3: Practical Guide to Pydantic
 
-Learn how to validate, structure, and format data in Python — from simple objects to fine-tuned model outputs.
-
-Beginner-friendly
-
-Python
-
-Pydantic v2
-
-LLM outputs
-
-# Activity 3: Practical Guide to Pydantic
-
-## Learning objectives
+## Learning objectivesn
 
 By the end of this activity, you will be able to:
 
 1. Explain what Pydantic is and why it is useful.
-
 2. Create a Pydantic model using Python type annotations.
-
 3. Validate data and understand validation errors.
-
 4. Add constraints using `Field`.
-
 5. Work with nested models and lists.
-
 6. Format and validate structured outputs from a fine-tuned language model.
 
 ## 1. What is Pydantic?
