@@ -751,11 +751,7 @@ $$
 
 Regression:
 
-$$
-\widehat{MPG}
-=
-b_0+b_1(Weight)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)$
 
 Correlation summarizes a relationship.
 
@@ -769,9 +765,7 @@ When one feature is used to predict a numerical target, we can use **simple line
 
 The mathematical form is:
 
-$$
-\hat{y}=b_0+b_1x
-$$
+$\hat{y}=b_0+b_1x$
 
 For Auto MPG:
 
@@ -837,11 +831,7 @@ the line slopes upward.
 
 Suppose a model has:
 
-$$
-\widehat{MPG}
-=
-50-0.005(Weight)
-$$
+$\widehat{MPG}=50-0.005(Weight)$
 
 The coefficient is:
 
@@ -863,14 +853,7 @@ For example, a coefficient calculated using pounds will have a different numeric
 
 Later, several features may be included:
 
-$$
-\widehat{MPG}
-=
-b_0+
-b_1(Weight)+
-b_2(Displacement)+
-b_3(Cylinders)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)+b_2(Displacement)+b_3(Cylinders)$
 
 In this situation, the coefficient for one feature is interpreted while the other model features are held constant.
 
@@ -1386,15 +1369,7 @@ So the ideal points would lie on a diagonal line.
 
 For example:
 
-```text
-Predicted
-   ^
-   |       *
-   |     *
-   |   *
-   | *
-   +---------------> Actual
-```
+<img src="./img/ideal.png" width="50%">
 
 The closer the observations are to the diagonal, the closer the predictions are to the actual values.
 
@@ -1404,31 +1379,15 @@ The closer the observations are to the diagonal, the closer the predictions are 
 
 Simple linear regression uses one feature:
 
-$$
-\hat{y}=b_0+b_1x
-$$
+$\hat{y}=b_0+b_1x$
 
 Multiple linear regression uses several features:
 
-$$
-\hat{y}
-=
-b_0+
-b_1x_1+
-b_2x_2+
-b_3x_3+\cdots
-$$
+$\hat{y}=b_0+b_1x_1+b_2x_2+b_3x_3+\cdots$
 
 For Auto MPG, an example is:
 
-$$
-\widehat{MPG}
-=
-b_0+
-b_1(Weight)+
-b_2(Displacement)+
-b_3(Cylinders)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)+b_2(Displacement)+b_3(Cylinders)$
 
 The model can therefore use several aspects of the vehicle simultaneously.
 
@@ -1523,17 +1482,11 @@ The idea of model complexity is important.
 
 A simple linear model is relatively limited:
 
-$$
-\hat{y}=b_0+b_1x
-$$
+$\hat{y}=b_0+b_1x$
 
 A polynomial model with many terms can be much more flexible:
 
-$$
-\hat{y}
-=
-b_0+b_1x+b_2x^2+\cdots+b_kx^k
-$$
+$\hat{y}=b_0+b_1x+b_2x^2+\cdots+b_kx^k$
 
 Greater flexibility can help the model capture complicated patterns.
 
