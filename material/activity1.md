@@ -705,9 +705,7 @@ Answer:
 <details>
 <summary>Solution</summary>
 
-1. Yes. There is a perfect mathematical relationship:
-
-$y=x^2$
+1. Yes. There is a perfect mathematical relationship: $y=x^2$
 
 2. It is nonlinear.
 3. No. Pearson correlation measures linear association, and the correlation for this symmetric example is zero.
@@ -727,8 +725,7 @@ Regression asks a different question:
 
 > Can we use weight to predict MPG?
 
-A simple linear regression model can be written as:
-
+A simple linear regression model can be written as: 
 $\hat{y}=b_0+b_1x$
 
 For our example:
@@ -833,27 +830,17 @@ Answer:
 
 # 23. Understanding the Intercept
 
-The intercept is:
-
-$$
-b_0
-$$
+The intercept is: $b_0$
 
 It represents the model's predicted target when all features are zero.
 
 In our simple model:
 
-$$
-\widehat{MPG}
-=
-b_0+b_1(Weight)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)$
 
 the intercept is the predicted MPG when:
 
-$$
-Weight=0
-$$
+$Weight=0$$
 
 However, a vehicle with zero weight is not realistic.
 
@@ -1039,6 +1026,8 @@ We therefore split the data into two parts:
 ```
 
 The purpose of the test set is to estimate how well the trained model works on **unseen observations**.
+
+> [Training, validation, and test sets]( https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets#training_validation_and_test_sets)
 
 ---
 
@@ -1404,25 +1393,11 @@ We can therefore use several features.
 
 A multiple linear regression model can be written as:
 
-$$
-\hat{y}
-=
-b_0+
-b_1x_1+
-b_2x_2+
-b_3x_3+\cdots
-$$
+$\hat{y}=b_0+b_1x_1+b_2x_2+b_3x_3+\cdots$
 
 For example:
 
-$$
-\widehat{MPG}
-=
-b_0+
-b_1(Weight)+
-b_2(Displacement)+
-b_3(Cylinders)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)+b_2(Displacement)+b_3(Cylinders)$
 
 ---
 
@@ -1526,14 +1501,7 @@ This tells us how the model uses the different features.
 
 For example, the model conceptually has the form:
 
-$$
-\widehat{MPG}
-=
-b_0+
-b_1(Cylinders)+
-b_2(Displacement)+
-b_3(Weight)
-$$
+$\widehat{MPG}=b_0+b_1(Cylinders)+b_2(Displacement)+b_3(Weight)$
 
 ---
 
@@ -2002,9 +1970,7 @@ Pearson correlation describes the **strength and direction of a linear relations
 
 Its value ranges from:
 
-$$
--1\le r\le1
-$$
+$-1\le r\le1$
 
 The sign indicates the direction, while the magnitude indicates the strength of the linear association.
 
@@ -2027,15 +1993,11 @@ Why is `r = 0` not proof that two variables have no relationship?
 
 For example:
 
-$$
-y=x^2
-$$
+$y=x^2$
 
 can produce:
 
-$$
-r=0
-$$
+$r=0$
 
 for a symmetric dataset such as:
 
@@ -2284,15 +2246,11 @@ MPG means **miles per gallon** and represents how many miles a vehicle can trave
 
 Approximately:
 
-$$
-km/L \approx MPG\times0.425
-$$
+$km/L \approx MPG\times0.425$
 
 For example:
 
-$$
-30 MPG\approx12.75\ km/L
-$$
+$30 MPG\approx12.75\ km/L$$
 
 </details>
 
@@ -2315,9 +2273,7 @@ It means that larger values of one variable tend to be associated with smaller v
 
 Because Pearson measures linear association. A strong nonlinear relationship such as:
 
-$$
-y=x^2
-$$
+$y=x^2$
 
 can have a Pearson correlation close to zero.
 
