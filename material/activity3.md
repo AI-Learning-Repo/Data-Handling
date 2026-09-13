@@ -17,10 +17,6 @@ When we work with Python data, we often expect it to follow a specific structure
 
 For example, a student record might look like this:
 
-Python
-
-Run
-
 ```python
 student = {
     "name": "Sara",
@@ -30,10 +26,6 @@ student = {
 ```
 
 But what happens if someone provides:
-
-Python
-
-Run
 
 ```python
 student = {
@@ -65,11 +57,7 @@ A simple way to think about Pydantic:
 
 Run the following in a Jupyter Notebook or Google Colab cell:
 
-Python
-
-Run
-
-```
+```python
 !pip install pydantic
 ```
 
@@ -83,11 +71,7 @@ Create a simple model for a student and learn how Pydantic checks data types and
 
 ## Step 1: Define the schema
 
-Python
-
-Run
-
-```
+```python
 from pydantic import BaseModel
 
 class Student(BaseModel):
@@ -100,11 +84,8 @@ Let's understand this step by step.
 
 ### What is `BaseModel`?
 
-Python
 
-Run
-
-```
+```python
 class Student(BaseModel):
 ```
 
@@ -112,11 +93,8 @@ class Student(BaseModel):
 
 ### What are the fields?
 
-Python
 
-Run
-
-```
+```python
 name: str
 age: int
 course: str
@@ -134,11 +112,8 @@ The fields are required because we have not given them default values.
 
 ## Step 2: Create a student
 
-Python
 
-Run
-
-```
+```python
 student = Student(
     name="Sara",
     age=21,
@@ -158,11 +133,7 @@ Pydantic has created a `Student` object that follows our schema.
 
 ## Step 3: Check the data types
 
-Python
-
-Run
-
-```
+```python
 print(student.name)
 print(student.age)
 print(type(student.age))
@@ -182,11 +153,7 @@ The age is stored as an integer.
 
 What happens if we provide an age that is not a valid integer?
 
-Python
-
-Run
-
-```
+```python
 from pydantic import ValidationError
 
 try:
@@ -209,11 +176,7 @@ Pydantic can sometimes convert compatible types.
 
 For example:
 
-Python
-
-Run
-
-```
+```python
 student = Student(
     name="Sara",
     age="21",
@@ -235,42 +198,11 @@ The string `"21"` is converted into the integer `21`.
 
 However, this does not mean Pydantic can convert every string into a number.
 
-|
-Input
-
-|
-
-Result
-
-|
+| Input | Result |
 | --- | --- |
-|
-
-`"21"`
-
-|
-
-Can be converted to `int`
-
-|
-|
-
-`"twenty-one"`
-
-|
-
-Validation error
-
-|
-|
-
-`21`
-
-|
-
-Valid integer
-
-|
+| `"21"` | Can be converted to `int` |
+| `"twenty-one"` | Validation error |
+| `21` | Valid integer |
 
 Beginner takeaway: Type annotations describe the expected data, and Pydantic checks those expectations at runtime.
 
@@ -285,22 +217,16 @@ Imagine we are building a simple system for tracking books in a library.
 Each book should have:
 
 * A title.
-
 * An author.
-
 * A year of publication.
-
 * A number of available copies.
 
 We want to make sure that the publication year is reasonable and the number of copies is not negative.
 
 ## Step 1: Create the model
 
-Python
 
-Run
-
-```
+```python
 from pydantic import BaseModel, Field
 
 class Book(BaseModel):
@@ -318,95 +244,31 @@ Let's break down the important parts.
 
 For example:
 
-Python
-
-Run
-
-```
+```python
 publication_year: int = Field(ge=1900, le=2026)
 ```
 
 This means:
 
 * The value must be an integer.
-
 * The value must be greater than or equal to `1900`.
-
 * The value must be less than or equal to `2026`.
 
 ### Common constraints
 
-|
-Constraint
-
-|
-
-Meaning
-
-|
+| Constraint | Meaning |
 | --- | --- |
-|
-
-`gt=0`
-
-|
-
-Greater than 0
-
-|
-|
-
-`ge=0`
-
-|
-
-Greater than or equal to 0
-
-|
-|
-
-`lt=100`
-
-|
-
-Less than 100
-
-|
-|
-
-`le=100`
-
-|
-
-Less than or equal to 100
-
-|
-|
-
-`min_length=3`
-
-|
-
-Minimum string length of 3
-
-|
-|
-
-`max_length=50`
-
-|
-
-Maximum string length of 50
-
-|
+| `gt=0` | Greater than 0 |
+| `ge=0` | Greater than or equal to 0 |
+| `lt=100` | Less than 100 |
+| `le=100` | Less than or equal to 100 |
+| `min_length=3` | Minimum string length of 3 |
+| `max_length=50` | Maximum string length of 50 |
 
 ## Step 2: Create a valid book
 
-Python
 
-Run
-
-```
+```python
 book = Book(
     title="Python for Beginners",
     author="Alex Brown",
@@ -427,11 +289,7 @@ title='Python for Beginners' author='Alex Brown' publication_year=2024 available
 
 We can leave out `available_copies`.
 
-Python
-
-Run
-
-```
+```python
 book = Book(
     title="Learning AI",
     author="Maya Lee",
@@ -449,10 +307,6 @@ Output:
 
 Because we defined:
 
-Python
-
-Run
-
 ```
 available_copies: int = Field(default=0, ge=0)
 ```
@@ -461,11 +315,7 @@ Pydantic uses `0` when the field is missing.
 
 ## Step 4: Try invalid values
 
-Python
-
-Run
-
-```
+```python
 try:
     book = Book(
         title="Learning AI",
@@ -491,11 +341,8 @@ Both values violate the schema:
 
 The method:
 
-Python
 
-Run
-
-```
+```python
 e.errors()
 ```
 
@@ -503,11 +350,7 @@ returns a list of dictionaries containing information about each validation erro
 
 For example, an error might include:
 
-Python
-
-Run
-
-```
+```python
 {
     "type": "greater_than_equal",
     "loc": ("available_copies",),
@@ -518,9 +361,7 @@ Run
 The most useful fields for beginners are:
 
 * `loc`: Which field caused the error.
-
 * `msg`: A human-readable explanation.
-
 * `type`: The type of validation error.
 
 ### Beginner takeaway
@@ -538,22 +379,16 @@ Real-world data is often more complex than a single flat dictionary.
 For example, an online course may have:
 
 * A course name.
-
 * An instructor.
-
 * A list of lessons.
-
 * Each lesson has a title and duration.
 
 Instead of putting everything into one large model, we can create smaller models and combine them.
 
 ## Step 1: Create a model for a lesson
 
-Python
 
-Run
-
-```
+```python
 from pydantic import BaseModel
 
 class Lesson(BaseModel):
@@ -565,11 +400,8 @@ This model describes one lesson.
 
 Example:
 
-Python
 
-Run
-
-```
+```python
 lesson = Lesson(
     title="Introduction to Python",
     duration_minutes=30
@@ -580,11 +412,8 @@ print(lesson)
 
 ## Step 2: Create a model for the course
 
-Python
 
-Run
-
-```
+```python
 class Course(BaseModel):
     name: str
     instructor: str
@@ -593,11 +422,7 @@ class Course(BaseModel):
 
 The important field is:
 
-Python
-
-Run
-
-```
+```python
 lessons: list[Lesson]
 ```
 
@@ -609,11 +434,8 @@ This means:
 
 Suppose we receive this dictionary from an API:
 
-Python
 
-Run
-
-```
+```python
 course_data = {
     "name": "Python Basics",
     "instructor": "Maya Lee",
@@ -632,11 +454,8 @@ course_data = {
 
 We can validate it using:
 
-Python
 
-Run
-
-```
+```python
 course = Course.model_validate(course_data)
 
 print(course)
@@ -645,22 +464,15 @@ print(course)
 Pydantic will:
 
 1. Check the course name.
-
 2. Check the instructor.
-
 3. Check that `lessons` is a list.
-
 4. Validate every lesson.
-
 5. Convert each valid lesson dictionary into a `Lesson` object.
 
 ## Step 4: Access nested data
 
-Python
 
-Run
-
-```
+```python
 print(course.name)
 
 print(course.lessons[0].title)
@@ -682,11 +494,7 @@ The first lesson is no longer just a dictionary. It is a validated `Lesson` obje
 
 After validating the data, we may want to convert it back into a dictionary.
 
-Python
-
-Run
-
-```
+```python
 course_dict = course.model_dump()
 
 print(course_dict)
@@ -717,11 +525,7 @@ Output:
 
 JSON is a common format for APIs and machine learning applications.
 
-Python
-
-Run
-
-```
+```python
 course_json = course.model_dump_json(indent=2)
 
 print(course_json)
@@ -785,22 +589,17 @@ JSON
 But language models sometimes return:
 
 * Missing fields.
-
 * Incorrect field names.
-
 * Extra explanations.
-
 * Invalid JSON.
-
 * Wrong data types.
-
 * Confidence values outside the expected range.
 
 For example:
 
 JSON
 
-```
+```json
 {
   "category": "delivery",
   "sentiment": "negative",
@@ -814,11 +613,7 @@ Pydantic can help us check the output before we use it in our application.
 
 ## Step 1: Define the expected output schema
 
-Python
-
-Run
-
-```
+```python
 from typing import Literal
 from pydantic import BaseModel, Field
 
@@ -832,11 +627,8 @@ Let's understand this model.
 
 ### `Literal`
 
-Python
 
-Run
-
-```
+```python
 category: Literal["delivery", "billing", "technical", "other"]
 ```
 
@@ -844,21 +636,15 @@ This means the category must be exactly one of the allowed values.
 
 Valid:
 
-Python
 
-Run
-
-```
+```python
 "delivery"
 ```
 
 Invalid:
 
-Python
 
-Run
-
-```
+```python
 "shipping"
 ```
 
@@ -866,11 +652,8 @@ unless `"shipping"` is added to the allowed list.
 
 ### Confidence constraints
 
-Python
 
-Run
-
-```
+```python
 confidence: float = Field(ge=0, le=1)
 ```
 
@@ -878,21 +661,15 @@ This means the confidence score must be between `0` and `1`, inclusive.
 
 Valid:
 
-Python
 
-Run
-
-```
+```python
 0.95
 ```
 
 Invalid:
 
-Python
 
-Run
-
-```
+```python
 1.5
 ```
 
@@ -900,11 +677,8 @@ Run
 
 For this activity, we will pretend that the fine-tuned model has already generated the following dictionary.
 
-Python
 
-Run
-
-```
+```python
 model_output = {
     "category": "delivery",
     "sentiment": "negative",
@@ -914,11 +688,8 @@ model_output = {
 
 Validate the output:
 
-Python
 
-Run
-
-```
+```python
 result = ClassificationOutput.model_validate(model_output)
 
 print(result)
@@ -932,11 +703,8 @@ category='delivery' sentiment='negative' confidence=0.95
 
 ## Step 3: Access the validated fields
 
-Python
 
-Run
-
-```
+```python
 print("Category:", result.category)
 print("Sentiment:", result.sentiment)
 print("Confidence:", result.confidence)
@@ -956,11 +724,8 @@ Now our Python program can safely use these fields according to the schema.
 
 Suppose the model returns:
 
-Python
 
-Run
-
-```
+```python
 bad_model_output = {
     "category": "shipping",
     "sentiment": "negative",
@@ -970,11 +735,8 @@ bad_model_output = {
 
 Validate it:
 
-Python
 
-Run
-
-```
+```python
 try:
     result = ClassificationOutput.model_validate(bad_model_output)
 
@@ -988,7 +750,6 @@ except ValidationError as e:
 Pydantic will report errors for:
 
 * `category`: The value `"shipping"` is not in the allowed list.
-
 * `confidence`: The value `1.5` is greater than the maximum of `1`.
 
 ### Why is this useful for fine-tuned models?
@@ -997,21 +758,11 @@ A fine-tuned model may be trained to produce a certain output format, but traini
 
 Pydantic gives us a validation step:
 
-Fine-tuned model
-
-Generates a prediction or structured response
-
-Raw output
-
-Pydantic validation
-
-Checks fields, types, and allowed values
-
-Validated result or error
-
-Your Python application
-
-Uses the validated data
+1. Fine-tuned model: Generates a prediction or structured response
+2. Raw output
+3. Pydantic validation: Checks fields, types, and allowed values
+4. Validated result or error
+5. Your Python application: Uses the validated data
 
 # Example 5: Converting a Fine-Tuned Model's JSON Text into Pydantic
 
@@ -1021,11 +772,7 @@ Learn how to handle model outputs that arrive as a JSON string instead of a Pyth
 
 In real applications, a model might return text like this:
 
-Python
-
-Run
-
-```
+```python
 model_response = """
 {
     "category": "billing",
@@ -1039,11 +786,7 @@ This is a string, not a Python dictionary.
 
 We can use Pydantic's `model_validate_json()` method to parse and validate JSON text.
 
-Python
-
-Run
-
-```
+```python
 model_response = """
 {
     "category": "billing",
@@ -1065,41 +808,15 @@ category='billing' sentiment='neutral' confidence=0.88
 
 ### What is the difference?
 
-|
-Method
-
-|
-
-Input
-
-|
+| Method | Input |
 | --- | --- |
-|
-
-`model_validate()`
-
-|
-
-Python dictionary or compatible object
-
-|
-|
-
-`model_validate_json()`
-
-|
-
-JSON string or bytes
-
-|
+| `model_validate()` | Python dictionary or compatible object |
+| `model_validate_json()` | JSON string or bytes |
 
 For example:
 
-Python
 
-Run
-
-```
+```python
 # Python dictionary
 ClassificationOutput.model_validate({
     "category": "billing",
@@ -1108,11 +825,8 @@ ClassificationOutput.model_validate({
 })
 ```
 
-Python
 
-Run
-
-```
+```python
 # JSON string
 ClassificationOutput.model_validate_json("""
 {
@@ -1127,21 +841,13 @@ Both produce a validated `ClassificationOutput` object.
 
 ### Export the result
 
-Python
-
-Run
-
-```
+```python
 print(result.model_dump())
 ```
 
 This returns a Python dictionary.
 
-Python
-
-Run
-
-```
+```python
 print(result.model_dump_json(indent=2))
 ```
 
@@ -1151,69 +857,14 @@ Important: Pydantic validates the JSON structure and values. It does not guarant
 
 # Quick Reference: Important Pydantic Methods
 
-|
-Method
-
-|
-
-What it does
-
-|
+| Method | What it does |
 | --- | --- |
-|
-
-`Model(...)`
-
-|
-
-Create a model from keyword arguments
-
-|
-|
-
-`Model.model_validate(data)`
-
-|
-
-Validate a Python dictionary or object
-
-|
-|
-
-`Model.model_validate_json(text)`
-
-|
-
-Parse and validate JSON text
-
-|
-|
-
-`model.model_dump()`
-
-|
-
-Convert a model to a Python dictionary
-
-|
-|
-
-`model.model_dump_json()`
-
-|
-
-Convert a model to a JSON string
-
-|
-|
-
-`e.errors()`
-
-|
-
-Get detailed validation errors
-
-|
+| `Model(...)` | Create a model from keyword arguments |
+| `Model.model_validate(data)` | Validate a Python dictionary or object |
+| `Model.model_validate_json(text)` | Parse and validate JSON text |
+| `model.model_dump()` | Convert a model to a Python dictionary |
+| `model.model_dump_json()` | Convert a model to a JSON string |
+| `e.errors()` | Get detailed validation errors |
 
 # Practice Exercises
 
@@ -1223,101 +874,33 @@ Try these exercises after completing the examples.
 
 Create a Pydantic model named `Movie` with the following fields:
 
-|
-Field
-
-|
-
-Type
-
-|
-
-Rule
-
-|
+| Field | Type | Rule |
 | --- | --- | --- |
-|
-
-`title`
-
-|
-
-`str`
-
-|
-
-Required
-
-|
-|
-
-`director`
-
-|
-
-`str`
-
-|
-
-Required
-
-|
-|
-
-`rating`
-
-|
-
-`float`
-
-|
-
-Between 0 and 10
-
-|
-|
-
-`release_year`
-
-|
-
-`int`
-
-|
-
-Between 1900 and 2026
-
-|
+| `title` | `str` | Required |
+| `director` | `str` | Required |
+| `rating` | `float` | Between 0 and 10 |
+| `release_year` | `int` | Between 1900 and 2026 |
 
 Tasks:
 
 * Create a valid movie.
-
 * Try a movie with a rating of `12`.
-
 * Try a movie with a missing title.
-
 * Print the validation errors.
 
 ## Exercise 2: Create a nested model
 
 Create two models:
 
-Python
-
-Run
-
-```
+```python
 class Ingredient(BaseModel):
     name: str
     quantity: float
 ```
 
-Python
 
-Run
 
-```
+```python
 class Recipe(BaseModel):
     name: str
     ingredients: list[Ingredient]
@@ -1330,18 +913,13 @@ Create a recipe with at least three ingredients and export it to JSON.
 Create a Pydantic model named `SentimentOutput` with:
 
 * `sentiment`: Must be `"positive"`, `"negative"`, or `"neutral"`.
-
 * `confidence`: Must be between `0` and `1`.
-
 * `explanation`: A string.
 
 Test the model with:
 
-Python
 
-Run
-
-```
+```python
 {
     "sentiment": "positive",
     "confidence": 0.92,
@@ -1351,11 +929,8 @@ Run
 
 Then test this invalid output:
 
-Python
 
-Run
-
-```
+```python
 {
     "sentiment": "very positive",
     "confidence": 1.4,
@@ -1372,17 +947,11 @@ In this activity, you learned that Pydantic helps us create structured and valid
 The main ideas are:
 
 1. `BaseModel` defines a data schema.
-
 2. Type annotations describe the expected data types.
-
 3. Pydantic validation checks incoming data.
-
 4. `Field` adds rules such as minimums, maximums, and string lengths.
-
 5. Nested models allow us to represent complex data.
-
 6. `model_validate_json()` is useful when working with JSON text from a model.
-
 7. `model_dump()` and `model_dump_json()` convert validated objects back into formats that applications can use.
 
 ### The key connection to fine-tuning
