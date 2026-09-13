@@ -707,9 +707,7 @@ Answer:
 
 1. Yes. There is a perfect mathematical relationship:
 
-$$
-y=x^2
-$$
+$y=x^2$
 
 2. It is nonlinear.
 3. No. Pearson correlation measures linear association, and the correlation for this symmetric example is zero.
@@ -731,22 +729,16 @@ Regression asks a different question:
 
 A simple linear regression model can be written as:
 
-$$
-\hat{y}=b_0+b_1x
-$$
+$\hat{y}=b_0+b_1x$
 
 For our example:
 
-$$
-\widehat{MPG}
-=
-b_0+b_1(Weight)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)$
 
 where:
 
-* \(b_0\) is the intercept;
-* \(b_1\) is the coefficient for weight.
+* $b_0$ is the intercept;
+* $b_1$ is the coefficient for weight.
 
 The model learns these values from the data.
 
@@ -806,11 +798,7 @@ print("Coefficient:", model.coef_[0])
 
 The model can now be written conceptually as:
 
-$$
-\widehat{MPG}
-=
-b_0+b_1(Weight)
-$$
+$\widehat{MPG}=b_0+b_1(Weight)$
 
 using the values learned by the algorithm.
 
