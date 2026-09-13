@@ -548,11 +548,7 @@ $$
 The mean of `y` is:
 
 $$
-\bar{y}=
-\frac{9+4+1+0+1+4+9}{7}
-=
-\frac{28}{7}
-=4
+\bar{y}=\frac{9+4+1+0+1+4+9}{7}=\frac{28}{7}=4
 $$
 
 Now consider:
