@@ -522,7 +522,7 @@ There will be variation because fuel efficiency depends on more than just vehicl
 
 ---
 
-# 12. Question 4 — Read the Scatter Plot
+# 12. Question 4: Read the Scatter Plot
 
 Look at the scatter plot and answer:
 
@@ -600,7 +600,7 @@ The exact value depends on the data representation being used, but the important
 
 ---
 
-# 15. Question 5 — Interpret Pearson `r`
+# 15. Question 5: Interpret Pearson `r`
 
 Suppose the correlation is:
 
@@ -681,7 +681,7 @@ It may mean:
 
 ---
 
-# 17. Question 6 — Pearson Limitation
+# 17. Question 6: Pearson Limitation
 
 Consider:
 
@@ -801,7 +801,7 @@ using the values learned by the algorithm.
 
 ---
 
-# 22. Question 7 — Interpret the Coefficient
+# 22. Question 7: Interpret the Coefficient
 
 Suppose the coefficient is negative.
 
@@ -886,7 +886,7 @@ The model is trying to capture the general trend using a straight line.
 
 ---
 
-# 25. Question 8 — Understand the Regression Line
+# 25. Question 8: Understand the Regression Line
 
 Look at the plot.
 
@@ -968,7 +968,7 @@ The conversion is only for interpretation.
 
 ---
 
-# 28. Question 9 — Prediction
+# 28. Question 9: Prediction
 
 Suppose the model predicts:
 
@@ -1072,7 +1072,7 @@ contains the true MPG values for those test observations.
 
 ---
 
-# 31. Question 10 — Understand the Split
+# 31. Question 10: Understand the Split
 
 Answer:
 
@@ -1240,7 +1240,7 @@ Regression does not use classification accuracy.
 
 ---
 
-# 37. Question 11 — Interpret the Metrics
+# 37. Question 11: Interpret the Metrics
 
 Suppose the model produces:
 
@@ -1342,7 +1342,7 @@ Points closer to the diagonal generally represent more accurate predictions.
 
 ---
 
-# 40. Question 12 — Interpret the Prediction Plot
+# 40. Question 12: Interpret the Prediction Plot
 
 Answer:
 
@@ -1525,7 +1525,7 @@ This is different from simply looking at the correlation between one feature and
 
 ---
 
-# 47. Question 13 — Simple vs Multiple Linear Regression
+# 47. Question 13: Simple vs Multiple Linear Regression
 
 Complete the following table:
 
@@ -1729,7 +1729,7 @@ results
 
 ---
 
-# 49. Question 14 — Compare the Models
+# 49. Question 14: Compare the Models
 
 Use the results table.
 
@@ -1833,7 +1833,7 @@ print("Test RMSE:", test_rmse)
 
 ---
 
-# 52. Question 15 — Interpret Training vs Test Error
+# 52. Question 15: Interpret Training vs Test Error
 
 Suppose a model produces:
 
@@ -2217,14 +2217,14 @@ Why is test performance important?
 # Final Answers
 
 <details>
-<summary>Q1 — What type of machine-learning problem is Auto MPG?</summary>
+<summary>Q1: What type of machine-learning problem is Auto MPG?</summary>
 
 It is a **supervised regression problem** because the target `mpg` is a numerical value.
 
 </details>
 
 <details>
-<summary>Q2 — What is the target variable?</summary>
+<summary>Q2: What is the target variable?</summary>
 
 The target is:
 
@@ -2235,14 +2235,14 @@ mpg
 </details>
 
 <details>
-<summary>Q3 — What does MPG mean?</summary>
+<summary>Q3: What does MPG mean?</summary>
 
 MPG means **miles per gallon** and represents how many miles a vehicle can travel using one US gallon of fuel.
 
 </details>
 
 <details>
-<summary>Q4 — How can MPG be converted to km/L?</summary>
+<summary>Q4: How can MPG be converted to km/L?</summary>
 
 Approximately:
 
@@ -2255,21 +2255,21 @@ $30 MPG\approx12.75\ km/L$$
 </details>
 
 <details>
-<summary>Q5 — What does Pearson r measure?</summary>
+<summary>Q5: What does Pearson r measure?</summary>
 
 Pearson `r` measures the **strength and direction of a linear relationship** between two numerical variables.
 
 </details>
 
 <details>
-<summary>Q6 — What does a negative Pearson correlation mean?</summary>
+<summary>Q6: What does a negative Pearson correlation mean?</summary>
 
 It means that larger values of one variable tend to be associated with smaller values of the other variable in a linear relationship.
 
 </details>
 
 <details>
-<summary>Q7 — Why can r be close to zero when a relationship exists?</summary>
+<summary>Q7: Why can r be close to zero when a relationship exists?</summary>
 
 Because Pearson measures linear association. A strong nonlinear relationship such as:
 
@@ -2280,56 +2280,56 @@ can have a Pearson correlation close to zero.
 </details>
 
 <details>
-<summary>Q8 — What is the purpose of LinearRegression()?</summary>
+<summary>Q8: What is the purpose of LinearRegression()?</summary>
 
 It creates a scikit-learn linear regression model that can be trained to predict a numerical target.
 
 </details>
 
 <details>
-<summary>Q9 — What does fit() do?</summary>
+<summary>Q9: What does fit() do?</summary>
 
 It learns the model parameters from the training data.
 
 </details>
 
 <details>
-<summary>Q10 — What does predict() do?</summary>
+<summary>Q10: What does predict() do?</summary>
 
 It uses the trained model to produce predictions for new observations.
 
 </details>
 
 <details>
-<summary>Q11 — Why use a train/test split?</summary>
+<summary>Q11: Why use a train/test split?</summary>
 
 To evaluate the model on observations that were not used during training and therefore obtain an estimate of generalization performance.
 
 </details>
 
 <details>
-<summary>Q12 — What does MAE measure?</summary>
+<summary>Q12: What does MAE measure?</summary>
 
 MAE measures the average absolute prediction error.
 
 </details>
 
 <details>
-<summary>Q13 — What does RMSE measure?</summary>
+<summary>Q13: What does RMSE measure?</summary>
 
 RMSE summarizes prediction error while giving larger errors more influence. It is expressed in the same units as the target.
 
 </details>
 
 <details>
-<summary>Q14 — What does R² tell us?</summary>
+<summary>Q14: What does R² tell us?</summary>
 
 R² describes how much variation in the target is explained by the model relative to the metric's reference baseline.
 
 </details>
 
 <details>
-<summary>Q15 — Simple vs multiple linear regression?</summary>
+<summary>Q15: Simple vs multiple linear regression?</summary>
 
 Simple linear regression uses one feature.
 
@@ -2338,21 +2338,21 @@ Multiple linear regression uses two or more features.
 </details>
 
 <details>
-<summary>Q16 — What is underfitting?</summary>
+<summary>Q16: What is underfitting?</summary>
 
 Underfitting occurs when the model is too simple to capture important patterns in the data. Training and test performance are often both poor.
 
 </details>
 
 <details>
-<summary>Q17 — What is overfitting?</summary>
+<summary>Q17: What is overfitting?</summary>
 
 Overfitting occurs when the model fits the training data too closely and performs substantially worse on unseen data.
 
 </details>
 
 <details>
-<summary>Q18 — Why is test performance important?</summary>
+<summary>Q18: Why is test performance important?</summary>
 
 Because the ultimate goal of a machine-learning model is to make useful predictions on new observations, not merely to fit the training data.
 

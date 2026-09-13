@@ -115,14 +115,14 @@ This transformer creates additional features such as squares, cubes, and interac
 
 For two features `x1` and `x2`, degree 2 can create terms conceptually like:
 
-```text
-1
-x1
-x2
-x1²
-x1*x2
-x2²
-```
+$$
+1\\
+x_1\\
+x_2\\
+x_1^2\\
+x_1 x_2\\
+x_2^2\\
+$$
 
 #### `Pipeline`
 
@@ -532,7 +532,7 @@ X_train -> input features for training
 X_test  -> input features for testing
 
 y_train -> true target values for training
- y_test -> true target values for testing
+y_test -> true target values for testing
 ```
 
 ---
@@ -614,9 +614,7 @@ $$
 
 For our taxi example:
 
-$$
-\widehat{FARE} = b_0 + b_1(TRIP\_MILES)
-$$
+$\widehat{FARE} = b_0 + b_1(TRIP\_MILES)$
 
 Where:
 
@@ -835,9 +833,7 @@ Give me hints first. If I ask for the solution, give a concrete explanation and 
 
 The model learns:
 
-$$
-\hat{y} = b_0 + b_1x
-$$
+$\hat{y} = b_0 + b_1x$
 
 For this dataset:
 
@@ -955,7 +951,7 @@ A residual plot is a diagnostic tool, not a proof by itself.
 
 ---
 
-# Part 5: Model 2: Multiple Linear Regression
+# Part 5: Model 2 - Multiple Linear Regression
 
 Now we ask a stronger question:
 
@@ -965,9 +961,7 @@ Next, extend the model by adding trip duration as a second input feature.
 
 The model becomes:
 
-$$
-\widehat{FARE} = b_0 + b_1(TRIP\_MILES) + b_2(TRIP\_MINUTES)
-$$
+$\widehat{FARE} = b_0 + b_1(TRIP\_MILES) + b_2(TRIP\_MINUTES)$
 
 This is still **linear regression**.
 
@@ -1153,9 +1147,7 @@ Give hints before answers.
 
 Because the prediction is a linear combination of the input features:
 
-$$
-\hat{y} = b_0 + b_1x_1 + b_2x_2
-$$
+$\hat{y} = b_0 + b_1x_1 + b_2x_2$
 
 There is no squared feature, exponential transformation, tree split, or other nonlinear transformation in this basic model.
 
@@ -1255,18 +1247,18 @@ poly = PolynomialFeatures(degree=2, include_bias=False)
 
 For one feature `x`, degree 2 gives:
 
-```text
-x
-x²
-```
+$$
+x\\
+x^2\\
+$$
 
 If we used `degree=3`, we would get:
 
-```text
-x
-x²
-x³
-```
+$$
+x\\
+x^2\\
+x^3\\
+$$
 
 ### Why `include_bias=False`?
 
