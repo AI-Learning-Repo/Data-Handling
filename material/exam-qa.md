@@ -1215,11 +1215,11 @@ for this symmetric example.
 
 **(b)** For example:
 
-$corr(TRIP\_MILES,FARE)$
+$corr(TRIP\\_MILES,FARE)$
 
-$corr(TRIP\_MINUTES,FARE)$
+$corr(TRIP\\_MINUTES,FARE)$
 
-$corr(PASSENGER\_COUNT,FARE)$
+$corr(PASSENGER\\_COUNT,FARE)$
 
 $corr(HOUR,FARE)$
 
@@ -1247,7 +1247,7 @@ $corr(HOUR,FARE)$
 
 Given:
 
-$\widehat{FARE}=4.50+2.10(TRIP`\\_MILES)$
+$\widehat{FARE}=4.50+2.10(TRIP\\_MILES)$
 
 
 
