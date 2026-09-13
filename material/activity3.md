@@ -21,7 +21,7 @@ Python
 
 Run
 
-```
+```python
 student = {
     "name": "Sara",
     "age": 21,
@@ -35,7 +35,7 @@ Python
 
 Run
 
-```
+```python
 student = {
     "name": "Sara",
     "age": "twenty-one",
@@ -52,13 +52,9 @@ Python dictionaries do not automatically check whether the data follows the stru
 Pydantic is a Python library that uses type annotations to:
 
 * Define the structure of data.
-
 * Check whether incoming data is valid.
-
 * Convert some compatible data types.
-
 * Report errors when data does not match the expected schema.
-
 * Convert validated objects into dictionaries or JSON.
 
 A simple way to think about Pydantic:
@@ -128,42 +124,11 @@ course: str
 
 These are the rules for our student data.
 
-|
-Field
-
-|
-
-Expected type
-
-|
+| Field | Expected type |
 | --- | --- |
-|
-
-`name`
-
-|
-
-String (`str`)
-
-|
-|
-
-`age`
-
-|
-
-Integer (`int`)
-
-|
-|
-
-`course`
-
-|
-
-String (`str`)
-
-|
+| `name` | String (`str`) |
+| `age` | Integer (`int`) |
+| `course` | String (`str`) |
 
 The fields are required because we have not given them default values.
 
