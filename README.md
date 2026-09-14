@@ -1,7 +1,7 @@
 # This Week in Brief
 
 > [!IMPORTANT]  
-> - [Homework Before Next Session](./material/Homework.md) for this Week.
+> - [Homework Before Next Session](./material/Homework.md)
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
 > - We'll follow a [**5-step learning cycle**](./material/img/learning-phases.png)
 
@@ -36,20 +36,25 @@
   - [Activity 2 (Optional)](./material/activity2.md)
 - [Potential Exam Questions](./material/exam-qa.md)
 
+
 ----
 
 ## Afternoon:
 
 ## Misc.
 
-- [*Situational Awareness: The Decade Ahead* (2024), Leopold Aschenbrenner](https://situational-awareness.ai/)
+- PPT: [*Situational Awareness: The Decade Ahead* (2024), Leopold Aschenbrenner](https://situational-awareness.ai/)
+- [Importance of Data: Industry Use Case](./material/industry-use-case.md)
 
 ### Part 3: 
 
 - [Building Interactive Web Applications with Streamlit in Google Colab](./material/part3-Streamlit.md)
 - [Activity 3](./material/activity3.md)
 
+### Part 4: 
 
+- [Principles of Training Data Engineering for Language Model Specialization](./material/part4-Data-for-LLMs.md)
+- [Activity 4](./material/activity4.md)
 
 
 
