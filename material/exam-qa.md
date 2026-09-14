@@ -1,6 +1,6 @@
 # Session Review & Sample Exam Questions: Regression
 
-Use these questions to test your understanding of supervised regression, features and targets, Pearson correlation, linear and multiple linear regression, polynomial regression, preprocessing, train/test splitting, model evaluation, underfitting, overfitting, and pipelines.
+Use these questions to test your understanding of supervised regression, features and targets, Pearson correlation, linear and multiple linear regression, polynomial regression, preprocessing, train/test splitting, model evaluation, underfitting, and overfitting.
 
 ---
 
@@ -307,7 +307,7 @@ train_test_split(X, y, test_size=0.2, random_state=42)
 
 ---
 
-**34. Which statement about `Pipeline` is correct?**
+**34. (Not in exam) Which statement about `Pipeline` is correct?**
 
 * A) A pipeline can combine preprocessing and a machine-learning model into one workflow.
 * B) A pipeline is required for every scikit-learn model.
@@ -316,7 +316,7 @@ train_test_split(X, y, test_size=0.2, random_state=42)
 
 ---
 
-**35. Why is it useful to learn preprocessing separately before introducing `Pipeline`?**
+**35. (Not in exam) Why is it useful to learn preprocessing separately before introducing `Pipeline`?**
 
 * A) It helps students understand each operation before those operations are combined into a single workflow.
 * B) Pipelines cannot perform preprocessing.
@@ -399,7 +399,7 @@ train_test_split(X, y, test_size=0.2, random_state=42)
 
 ---
 
-**48. Statement:** *"A pipeline can help organize preprocessing and model training into a single workflow."*
+**48. (Not in exam) Statement:** *"A pipeline can help organize preprocessing and model training into a single workflow."*
 
 * **True / False?** Justify: __________________________________________________________________
 
@@ -551,15 +551,7 @@ $\widehat{FARE}=4.50+2.10(TRIP\_MILES)$
 
 Suppose a model is:
 
-$$
-\widehat{FARE}
-=
-3.0
-+
-1.8(TRIP\_MILES)
-+
-0.5(TRIP\_MINUTES)
-$$
+$\widehat{FARE}=3.0+1.8(TRIP\\_MILES)+0.5(TRIP\\_MINUTES)$
 
 * **(a)** How many features does this model use?
 * **(b)** What does the coefficient `1.8` represent?
@@ -804,7 +796,7 @@ test_rmse = np.sqrt(
 
 ---
 
-**69. Pipeline**
+**69. (Not in exam) Pipeline**
 
 Examine:
 

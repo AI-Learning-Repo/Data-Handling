@@ -1,4 +1,4 @@
-# Activity 1 — Introduction to Regression with Auto MPG
+# Activity 1: Introduction to Regression with Auto MPG
 
 ## Learning Objectives
 
@@ -70,7 +70,7 @@ The important variables for this activity are:
 
 | Variable       | Meaning                            |
 | -------------- | ---------------------------------- |
-| `mpg`          | Miles per gallon — fuel efficiency |
+| `mpg`          | Miles per gallon: fuel efficiency |
 | `cylinders`    | Number of engine cylinders         |
 | `displacement` | Engine displacement                |
 | `horsepower`   | Engine power                       |
@@ -228,7 +228,7 @@ The conversion is provided only so that the numerical values are easier to inter
 
 ---
 
-# 4. Question 1 — Identify the Machine-Learning Problem
+# 4. Question 1: Identify the Machine-Learning Problem
 
 Consider the problem:
 
@@ -380,7 +380,7 @@ print(auto_mpg.variables)
 
 ---
 
-# 8. Question 2 — Explore the Dataset
+# 8. Question 2: Explore the Dataset
 
 Before building a model, inspect the data.
 
@@ -461,7 +461,7 @@ for the target.
 
 ---
 
-# 10. Question 3 — Why Use `weight`?
+# 10. Question 3: Why Use `weight`?
 
 Before fitting a model, consider the likely relationship.
 
@@ -993,9 +993,7 @@ Answer:
 1. The model estimates that a car with the given weight has fuel efficiency of approximately 30 miles per US gallon.
 2. Approximately:
 
-$$
-30\times0.425\approx12.75\ km/L
-$$
+$30\times0.425\approx12.75\ km/L$
 
 3. No. The model provides an estimate based on the learned relationship.
 4. No. Real observations contain variation and the model does not know every factor affecting the actual fuel efficiency.
@@ -1187,6 +1185,8 @@ MAE = 2.5
 ```
 
 the typical absolute prediction error is about 2.5 MPG.
+
+<img src="./img/loss.png" width="50%">
 
 ---
 
