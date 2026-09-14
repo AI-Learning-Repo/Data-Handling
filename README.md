@@ -1,0 +1,109 @@
+# This Week in Brief
+
+> [!IMPORTANT]  
+> - [Homework Before Next Session](./material/Homework.md) for this Week.
+> - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
+> - [Potential Exam Questions](./material/exam-qa.md)
+> - [Submission Guidelines](./material/submission-guidelines.md/)
+
+---
+
+> [!NOTE]  
+> - Tentative Timeline per session
+>   - Mini lecture (~35min)
+>   - Group / Pair programming `+ Break` (~50min)
+>   - Mini lecture (~35min)
+>   - Group / Pair programming (~35min)
+
+----
+
+## Topics
+
+- Linear and polynomial regression, Underfitting/ overfitting
+- Qwen, PEFT, QLoRA, high-level fine-tuning
+
+
+----
+
+## Morning:
+
+### Part 1:  
+
+- [Pearson Correlation, Underfitting, and Overfitting](./material/part0.md)
+- [Introduction to Regression](./material/part1.md)
+- [Activity 1](./material/activity1.md)
+
+<details>
+<summary>Links used in Session</summary>
+
+- https://www.interactive-ml.com/
+- https://www.interactive-ml.com/linear-regression.html
+- https://www.interactive-ml.com/polynomial.html
+- https://developers.google.com/machine-learning/crash-course
+- https://www.geeksforgeeks.org/machine-learning/ml-linear-regression/
+- https://www.geeksforgeeks.org/machine-learning/regression-in-machine-learning/
+</details> 
+
+
+
+### Part 2: 
+
+- [Regression with scikit-learn](./material/part2.md)
+- [Activity 2](./material/activity2.md)
+
+
+----
+
+## Afternoon:
+
+### Part 3: Recursive Self-Improvement in AI 
+
+
+- [AGI](https://en.wikipedia.org/wiki/Artificial_general_intelligence)/[RSI](https://en.wikipedia.org/wiki/Recursive_self-improvement)/[ASI](https://en.wikipedia.org/wiki/Superintelligence)
+  - 2026: [An Alien Mind, By: Jakub Pachocki, Chief Scientist at OpenAI](https://openai.com/index/an-alien-mind/)
+  - 2026: [Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
+  - [Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops](https://arxiv.org/abs/2607.07663v1)
+  - 2024: [Machines of Loving Grace, How AI Could Transform the World for the Better](https://darioamodei.com/essay/machines-of-loving-grace)
+  - 2024: [Situational Awareness: The Decade Ahead, Leopold Aschenbrenner](https://situational-awareness.ai/)
+
+
+### Part 4: Fine-Tuning
+
+- Pydantic, Fine-Tuning
+- [Activity 3: Practical Guide to Pydantic](./material/activity3.md)
+- [Activity 4: Fine-Tuning Qwen 2.5 with LoRA](./material/activity4.md)
+
+<!-- Activity 3 in parallel w activity 4 -->
+
+
+> [!NOTE]  
+> Qwen 3.8 27B scores 52 on the Artificial Analysis Intelligence Index (via) That's the same score as GPT-5.6 Luna (max), and just one point behind GLM-5.2 (max) and DeepSeek V4 Pro 0813 (max) - that GLM is 753B and that DeepSeek is 1.7T parameters, and Luna's size is unknown but presumably a whole lot bigger than 27B: https://artificialanalysis.ai/models/qwen3-8-27b 
+
+<details>
+<summary>Links used in Session</summary>
+
+- https://streamlit.io/playground?example=dataframes
+- https://jsonltools.com/what-is-jsonl
+</details> 
+
+
+
+
+<!-- 
+
+> [!NOTE]  
+> Highlights information that users should take into account, even when skimming.
+
+> [!TIP]
+> Optional information to help a user be more successful.
+
+> [!IMPORTANT]  
+> Crucial information necessary for users to succeed.
+
+> [!WARNING]  
+> Critical content demanding immediate user attention due to potential risks.
+
+> [!CAUTION]
+> Negative potential consequences of an action. 
+
+-->
