@@ -1,11 +1,5 @@
 # Lab: Building a Retrieval-Augmented Generation (RAG) System with Qwen 2.5, Sentence Embeddings, and ChromaDB
 
-**Platform:** Google Colab
-**Model:** Qwen 2.5-1.5B-Instruct
-**Vector database:** ChromaDB
-**Embedding model:** Sentence Transformers
-**Document types:** PDF, TXT/Markdown, JSON/CSV, and other text-based sources
-
 ## Learning Objectives
 
 By the end of this lab, the learner will be able to:
@@ -80,7 +74,7 @@ Qwen 2.5 does not need a special "RAG mode." RAG is an application architecture 
 
 > "Explain what Retrieval-Augmented Generation solves and why a language model might need external documents."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 RAG allows a language model to use information from an external knowledge base at inference time. Instead of relying only on information stored in the model's parameters, the application retrieves relevant documents and places them into the prompt.
 
@@ -100,7 +94,7 @@ The model then generates the answer using that retrieved information.
 
 A complete RAG system normally has two stages.
 
-## Stage A — Building the knowledge base
+## Stage A: Building the knowledge base
 
 ```text
 Documents
@@ -118,7 +112,7 @@ Store in ChromaDB
 
 This stage is usually performed before users ask questions.
 
-## Stage B — Answering a question
+## Stage B: Answering a question
 
 ```text
 User question
@@ -146,7 +140,7 @@ This second stage occurs whenever a user submits a question.
 
 > "Explain why text documents are converted into vector embeddings in a RAG system."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Text cannot be directly compared using ordinary numerical similarity operations. An embedding model converts text into a numerical vector representing its semantic meaning.
 
@@ -216,7 +210,7 @@ if torch.cuda.is_available():
 
 > "Explain which parts of a RAG pipeline benefit from GPU acceleration."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 The language model is usually the most computationally expensive part of the pipeline. Generating tokens with Qwen 2.5 is substantially faster on a GPU than on a CPU.
 
@@ -359,7 +353,7 @@ is required before the RAG pipeline can use the content effectively.
 
 > "Explain why metadata such as page numbers and filenames are important in a RAG system."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Page numbers provide provenance information.
 
@@ -481,7 +475,7 @@ for item in all_chunks[:3]:
 
 > "Explain the trade-off between small and large chunks in a RAG retrieval system."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 If chunks are too large, a retrieved chunk may contain a large amount of irrelevant information. This increases prompt length and can make it harder for the model to identify the important information.
 
@@ -569,7 +563,7 @@ print("Embedding shape:", embeddings.shape)
 
 > "Compare the roles of a sentence embedding model and a generative language model in RAG."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 An embedding model converts text into numerical vectors that are useful for measuring semantic similarity.
 
@@ -641,7 +635,7 @@ produces a score indicating how semantically related the two pieces of text are.
 
 > "Explain the difference between keyword search and semantic vector search using a simple example."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Keyword search looks for matching words.
 
@@ -763,7 +757,7 @@ for document, metadata in zip(
 
 > "Explain which metadata is useful to store with document chunks in a vector database."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 At minimum, a useful record contains:
 
@@ -845,7 +839,7 @@ retrieves three chunks.
 
 > "Explain how the number of retrieved chunks affects a RAG system."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 `n_results` controls how many candidate chunks are returned from the vector database.
 
@@ -947,7 +941,7 @@ This demonstrates the generation component before external documents are introdu
 
 > "Explain why components of a RAG pipeline should be tested independently before combining them."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 A RAG system contains several independent components:
 
@@ -1121,7 +1115,7 @@ This makes it possible to inspect whether the answer is based on appropriate evi
 
 > "Explain why retrieval quality and generation quality should be evaluated separately in RAG."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 A fluent answer can still be incorrect.
 
@@ -1201,7 +1195,7 @@ The exact wording may vary.
 
 > "Explain hallucination in RAG systems and why an explicit unknown-answer policy is useful."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Retrieval does not guarantee that the retrieved information answers the question.
 
@@ -1324,7 +1318,7 @@ This allows the retrieval system to search across multiple documents while retai
 
 > "Explain how multi-document RAG differs from RAG using a single document."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 A multi-document knowledge base can answer questions that require information distributed across several sources.
 
@@ -1393,7 +1387,7 @@ Record observations such as:
 
 > "Explain why there is no universal optimal chunk size for every RAG application."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Different documents have different structures.
 
@@ -1444,7 +1438,7 @@ Compare:
 
 > "Explain why increasing the number of retrieved chunks does not always improve RAG answers."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 More context is not automatically better.
 
@@ -1528,7 +1522,7 @@ Record the results.
 
 > "Explain how RAG can change a model's available information without changing the model weights."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 RAG changes the information available to the model at inference time.
 
@@ -1582,7 +1576,7 @@ This combination is optional for the lab.
 
 > "Compare fine-tuning and RAG and explain what problem each one is designed to solve."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Fine-tuning changes model parameters through additional training.
 
@@ -1638,7 +1632,7 @@ Create an evaluation table:
 
 > "Explain the difference between a correct answer and a grounded answer in RAG."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 An answer can be correct for the wrong reason.
 
@@ -1730,7 +1724,7 @@ At this stage, the complete system can be represented as:
 
 > "Divide a RAG pipeline into retrieval and generation components and explain the role of each."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 The retrieval side includes:
 
@@ -1875,7 +1869,7 @@ What are the main stages of a RAG pipeline?
 
 > "Summarize the complete RAG pipeline from external documents to a generated answer."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 The main stages are:
 
@@ -1903,7 +1897,7 @@ What is the role of ChromaDB?
 
 > "Explain the role of ChromaDB in a sentence-embedding-based RAG system."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 ChromaDB stores document chunks, their embeddings, and metadata. It provides a mechanism for finding vectors that are semantically similar to a question embedding.
 
@@ -1919,7 +1913,7 @@ Why are sentence embeddings needed?
 
 > "Explain why a RAG system converts documents and questions into sentence embeddings."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 Embeddings provide a numerical representation of semantic meaning.
 
@@ -1947,7 +1941,7 @@ Why does RAG not require changing Qwen's model weights?
 
 > "Explain how RAG provides external information to a language model without modifying its parameters."
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 RAG supplies external information through the input prompt.
 
@@ -1973,7 +1967,7 @@ What is the most important principle when evaluating a RAG system?
 
 > "What are the most important criteria for evaluating retrieval-augmented generation systems?"
 
-**Answer — Detailed explanation**
+**Answer: Detailed explanation**
 
 A useful RAG system should retrieve relevant information and generate an answer that is supported by that information.
 
@@ -2025,4 +2019,4 @@ The next step is to experiment with **different documents, chunk sizes, embeddin
 
 This lab is adapted from the RAG and vector-database concepts covered in Microsoft's **Generative AI for Beginners** course:
 
-<Link url="https://github.com/microsoft/generative-ai-for-beginners/tree/main/05-advanced-prompts/02-retrieval-augmented-generation">Microsoft — Generative AI for Beginners: Retrieval-Augmented Generation</Link>
+<Link url="https://github.com/microsoft/generative-ai-for-beginners/tree/main/05-advanced-prompts/02-retrieval-augmented-generation">Microsoft: Generative AI for Beginners: Retrieval-Augmented Generation</Link>

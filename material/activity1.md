@@ -1,4 +1,4 @@
-# Activity 1 — Introduction to Unsupervised Learning with Clustering
+# Activity 1: Introduction to Unsupervised Learning with Clustering
 
 ## Learning Objectives
 
@@ -245,7 +245,7 @@ The smaller the distance, the more similar the observations are under this parti
 
 ---
 
-# 5. Question 1 — Calculate a Distance
+# 5. Question 1: Calculate a Distance
 
 Consider:
 
@@ -483,7 +483,7 @@ Observation 2 → [7.1, 8.2]
 
 ---
 
-# 12. Question 2 — Understand the Shape
+# 12. Question 2: Understand the Shape
 
 If:
 
@@ -542,7 +542,7 @@ The two coordinates represent the two features.
 
 ---
 
-# 14. Question 3 — Examine the Data
+# 14. Question 3: Examine the Data
 
 Look at the scatter plot.
 
@@ -624,7 +624,7 @@ The value of `K` is specified as part of the model configuration.
 
 K-Means can be understood as an iterative process.
 
-### Step 1 — Choose K
+### Step 1: Choose K
 
 For example:
 
@@ -632,19 +632,19 @@ $$
 K=3
 $$
 
-### Step 2 — Initialize centroids
+### Step 2: Initialize centroids
 
 The algorithm starts with initial cluster centers.
 
-### Step 3 — Assign observations
+### Step 3: Assign observations
 
 Each observation is assigned to the nearest centroid.
 
-### Step 4 — Recalculate centroids
+### Step 4: Recalculate centroids
 
 Each centroid is moved to the center of the observations currently assigned to it.
 
-### Step 5 — Repeat
+### Step 5: Repeat
 
 The assignment and centroid calculations are repeated until the solution stabilizes according to the algorithm's stopping criteria.
 
@@ -778,7 +778,7 @@ They are simply identifiers.
 
 ---
 
-# 22. Question 4 — Understand Cluster Labels
+# 22. Question 4: Understand Cluster Labels
 
 Suppose two clustering algorithms produce:
 
@@ -890,7 +890,7 @@ The centroid represents the center of the cluster according to the feature space
 
 ---
 
-# 25. Question 5 — Calculate a Centroid
+# 25. Question 5: Calculate a Centroid
 
 Consider the following observations:
 
@@ -971,7 +971,7 @@ n_features = 2
 
 ---
 
-# 27. Question 6 — Understand `cluster_centers_`
+# 27. Question 6: Understand `cluster_centers_`
 
 If:
 
@@ -1047,7 +1047,7 @@ This is the central intuition behind K-Means.
 
 ---
 
-# 29. Question 7 — Assign an Observation to a Cluster
+# 29. Question 7: Assign an Observation to a Cluster
 
 Suppose an observation has these distances:
 
@@ -1157,7 +1157,7 @@ $$
 
 ---
 
-# 32. Question 8 — Changing K
+# 32. Question 8: Changing K
 
 Answer:
 
@@ -1312,7 +1312,7 @@ plt.show()
 
 ---
 
-# 38. Question 9 — Compare the Two Methods
+# 38. Question 9: Compare the Two Methods
 
 Compare the K-Means and hierarchical-clustering plots.
 
@@ -1456,7 +1456,7 @@ For a large dataset, plotting every observation can make the dendrogram difficul
 
 ---
 
-# 42. Question 10 — Read the Dendrogram Conceptually
+# 42. Question 10: Read the Dendrogram Conceptually
 
 Answer:
 
@@ -1518,7 +1518,7 @@ Therefore:
 
 ---
 
-# 44. Question 11 — Change the Features
+# 44. Question 11: Change the Features
 
 Suppose customer data contains:
 
@@ -1624,7 +1624,7 @@ Scaling transforms the features so that they are on comparable numerical scales.
 
 ---
 
-# 47. Question 12 — Why Can Scale Matter?
+# 47. Question 12: Why Can Scale Matter?
 
 Suppose a clustering dataset contains:
 
@@ -1738,7 +1738,7 @@ It does, however, provide a useful advantage:
 
 ---
 
-# 51. Question 13 — Choosing Between K-Means and Hierarchical Clustering
+# 51. Question 13: Choosing Between K-Means and Hierarchical Clustering
 
 Consider:
 
@@ -1887,7 +1887,7 @@ This distinction matters because:
 
 ---
 
-# 55. Question 14 — Is This Supervised or Unsupervised?
+# 55. Question 14: Is This Supervised or Unsupervised?
 
 Consider:
 
@@ -1946,7 +1946,7 @@ A clustering result must be interpreted based on the feature values and domain c
 
 ---
 
-# 57. Question 15 — Interpret Cluster Numbers
+# 57. Question 15: Interpret Cluster Numbers
 
 Suppose K-Means is applied to a dataset with known labels, but the labels are not used during clustering.
 
@@ -2016,7 +2016,7 @@ This illustrates an important point:
 
 ---
 
-# 59. Question 16 — Interpret Clusters
+# 59. Question 16: Interpret Clusters
 
 Suppose the following cluster summaries are observed:
 
@@ -2101,7 +2101,7 @@ Therefore:
 
 ---
 
-# 61. Question 17 — Is There Always One Correct Clustering?
+# 61. Question 17: Is There Always One Correct Clustering?
 
 Answer:
 
@@ -2132,7 +2132,7 @@ Additional evaluation and domain knowledge are often needed.
 
 ---
 
-# 62. Mini Experiment — Change the Cluster Spread
+# 62. Mini Experiment: Change the Cluster Spread
 
 The original dataset used:
 
@@ -2217,7 +2217,7 @@ plt.show()
 
 ---
 
-# 63. Question 18 — Why Does Overlap Matter?
+# 63. Question 18: Why Does Overlap Matter?
 
 Compare the original dataset with the overlapping dataset.
 
@@ -2322,7 +2322,7 @@ random_labels = random_kmeans.fit_predict(
 
 ---
 
-# 66. Question 19 — Does K-Means Prove That Groups Exist?
+# 66. Question 19: Does K-Means Prove That Groups Exist?
 
 After clustering the random data, answer:
 
@@ -2351,7 +2351,7 @@ The result must be evaluated and interpreted.
 
 The activity has introduced several levels of unsupervised learning.
 
-### Level 1 — Data
+### Level 1: Data
 
 ```text
 X
@@ -2359,19 +2359,19 @@ X
 
 contains observations without a target guiding the learning process.
 
-### Level 2 — Similarity
+### Level 2: Similarity
 
 Observations can be compared using distance.
 
-### Level 3 — Clustering
+### Level 3: Clustering
 
 Similar observations can be grouped.
 
-### Level 4 — K-Means
+### Level 4: K-Means
 
 K-Means groups observations around centroids.
 
-### Level 5 — Hierarchical clustering
+### Level 5: Hierarchical clustering
 
 Observations can also be grouped progressively into a hierarchy.
 
