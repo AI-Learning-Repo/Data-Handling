@@ -1,7 +1,7 @@
 # This Week in Brief
 
 > [!IMPORTANT]  
-> - [Homework Before Next Session](./material/Homework.md) for this Week.
+> - [Homework Before Next Session](./material/Homework.md)
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
 > - [Potential Exam Questions](./material/exam-qa.md)
 > - [Submission Guidelines](./material/submission-guidelines.md/)
@@ -40,6 +40,9 @@
 <details>
   <summary>Links used in Session</summary>
 
+  - https://www.interactive-ml.com/logistic-regression.html
+  - https://www.interactive-ml.com/knn.html
+  - https://www.interactive-ml.com/decision-tree.html
   - [Introduction to Supervised Learning](https://developers.google.com/machine-learning/intro-to-ml/supervised)
   - [Classification](https://developers.google.com/machine-learning/crash-course/classification)
   - [Algorithms for Supervised machine learning](https://scikit-learn.org/stable/supervised_learning.html)
@@ -77,7 +80,6 @@
 - [Data Representation and File Formats](./material/part4b.md)
   - [Activity 4 (Optional)](./material/activity4.md)
   - [Activity 5 (Optional)](./material/activity5.md)
-
 
 ----
 
