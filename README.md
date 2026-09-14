@@ -29,6 +29,7 @@
 
 ### Part 1:  
 
+- Slides
 - [Pearson Correlation, Underfitting, and Overfitting](./material/part0.md)
 - [Introduction to Regression](./material/part1.md)
 - [Activity 1](./material/activity1.md)
