@@ -60,12 +60,14 @@
 ### Part 3: Recursive Self-Improvement in AI 
 
 
-- [AGI](https://en.wikipedia.org/wiki/Artificial_general_intelligence)/[RSI](https://en.wikipedia.org/wiki/Recursive_self-improvement)/[ASI](https://en.wikipedia.org/wiki/Superintelligence)
-  - 2026: [An Alien Mind, By: Jakub Pachocki, Chief Scientist at OpenAI](https://openai.com/index/an-alien-mind/)
-  - 2026: [Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
-  - 2026: [Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops](https://arxiv.org/abs/2607.07663v1)
-  - 2024: [Machines of Loving Grace, How AI Could Transform the World for the Better](https://darioamodei.com/essay/machines-of-loving-grace)
-  - 2024: [Situational Awareness: The Decade Ahead, Leopold Aschenbrenner](https://situational-awareness.ai/)
+- [AGI](https://en.wikipedia.org/wiki/Artificial_general_intelligence) / [RSI](https://en.wikipedia.org/wiki/Recursive_self-improvement) / [ASI](https://en.wikipedia.org/wiki/Superintelligence)
+- 2026: 
+  - [An Alien Mind, By: Jakub Pachocki, Chief Scientist at OpenAI](https://openai.com/index/an-alien-mind/)
+  - [Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
+  - [Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops](https://arxiv.org/abs/2607.07663v1)
+- 2024: 
+  - [Machines of Loving Grace, How AI Could Transform the World for the Better](https://darioamodei.com/essay/machines-of-loving-grace)
+  - [Situational Awareness: The Decade Ahead, Leopold Aschenbrenner](https://situational-awareness.ai/)
 
 
 ### Part 4: Fine-Tuning
