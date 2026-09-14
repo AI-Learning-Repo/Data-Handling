@@ -50,7 +50,7 @@ We'll follow a 5-step learning cycle as shown in the figure below:
 ----
 
 ## Morning: Why This 3-Course Package Matters
-
+- For the majority of the class, the *Data Handling and Machine Learning* course runs in parallel with two other courses: *Probability Calculus and Statistics* and *Database Solutions*.
 - [From Data to AI Agents](./material/part1-state-ai-txt.md)
 - [The AI Package](./material/img/ai-package.png)
 - About the Course
