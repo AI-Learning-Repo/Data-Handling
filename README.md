@@ -1,7 +1,7 @@
 # This Week in Brief
 
 > [!IMPORTANT]  
-> - [Homework Before Next Session](./material/Homework.md) for this Week.
+> - [Homework Before Next Session](./material/Homework.md)
 > - [Zoom Recordings](https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa_dyuxYAISaLK3j9jXNBNAbMwTiSJEvT0Mv1aXgWBvuo?e=JM8kA8)
 > - [Potential Exam Questions](./material/exam-qa.md)
 > - [Submission Guidelines](./material/submission-guidelines.md/)
@@ -62,7 +62,7 @@
 - [AGI](https://en.wikipedia.org/wiki/Artificial_general_intelligence)/[RSI](https://en.wikipedia.org/wiki/Recursive_self-improvement)/[ASI](https://en.wikipedia.org/wiki/Superintelligence)
   - 2026: [An Alien Mind, By: Jakub Pachocki, Chief Scientist at OpenAI](https://openai.com/index/an-alien-mind/)
   - 2026: [Research acceleration: The view inside OpenAI](https://openai.com/index/research-acceleration-view-inside-openai/)
-  - [Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops](https://arxiv.org/abs/2607.07663v1)
+  - 2026: [Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops](https://arxiv.org/abs/2607.07663v1)
   - 2024: [Machines of Loving Grace, How AI Could Transform the World for the Better](https://darioamodei.com/essay/machines-of-loving-grace)
   - 2024: [Situational Awareness: The Decade Ahead, Leopold Aschenbrenner](https://situational-awareness.ai/)
 
@@ -79,13 +79,14 @@
 > [!NOTE]  
 > Qwen 3.8 27B scores 52 on the Artificial Analysis Intelligence Index (via) That's the same score as GPT-5.6 Luna (max), and just one point behind GLM-5.2 (max) and DeepSeek V4 Pro 0813 (max) - that GLM is 753B and that DeepSeek is 1.7T parameters, and Luna's size is unknown but presumably a whole lot bigger than 27B: https://artificialanalysis.ai/models/qwen3-8-27b 
 
+<!-- 
 <details>
 <summary>Links used in Session</summary>
 
 - https://streamlit.io/playground?example=dataframes
 - https://jsonltools.com/what-is-jsonl
 </details> 
-
+ -->
 
 
 
