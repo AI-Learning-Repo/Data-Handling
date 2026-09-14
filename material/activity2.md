@@ -1,4 +1,4 @@
-# Activity 2 — Unsupervised Learning in More Detail
+# Activity 2: Unsupervised Learning in More Detail
 
 ## Overview
 
@@ -45,7 +45,7 @@ By the end of this activity, the following should be understood:
 
 ---
 
-# Part A — K-Means in More Detail
+# Part A: K-Means in More Detail
 
 ## 1. Start with a Dataset
 
@@ -98,7 +98,7 @@ The dataset contains:
 
 ---
 
-# 2. Question 1 — Inspect the Data Before Clustering
+# 2. Question 1: Inspect the Data Before Clustering
 
 Before running K-Means:
 
@@ -200,7 +200,7 @@ The exact numbers depend on the generated data.
 
 ---
 
-# 6. Question 2 — Interpret Cluster Sizes
+# 6. Question 2: Interpret Cluster Sizes
 
 Why might it be useful to examine how many observations belong to each cluster?
 
@@ -338,7 +338,7 @@ That would not necessarily be a useful clustering.
 
 ---
 
-# 10. Question 3 — Why Not Choose the Largest K?
+# 10. Question 3: Why Not Choose the Largest K?
 
 Suppose:
 
@@ -452,7 +452,7 @@ Therefore:
 
 ---
 
-# 13. Question 4 — Find the Elbow
+# 13. Question 4: Find the Elbow
 
 Look at the elbow plot.
 
@@ -561,7 +561,7 @@ plt.show()
 
 ---
 
-# 16. Question 5 — Compare Elbow and Silhouette
+# 16. Question 5: Compare Elbow and Silhouette
 
 Use both analyses.
 
@@ -710,7 +710,7 @@ where:
 
 ---
 
-# 21. Question 6 — Why Scale Features?
+# 21. Question 6: Why Scale Features?
 
 Explain:
 
@@ -804,7 +804,7 @@ For the unsupervised examples where clustering is being demonstrated on one comp
 
 ---
 
-# Part B — Hierarchical Clustering in More Detail
+# Part B: Hierarchical Clustering in More Detail
 
 # 24. Agglomerative Hierarchical Clustering
 
@@ -911,7 +911,7 @@ plt.show()
 
 ---
 
-# 28. Question 7 — Compare the Results
+# 28. Question 7: Compare the Results
 
 Compare the K-Means and hierarchical clustering plots.
 
@@ -1017,7 +1017,7 @@ A large vertical jump can suggest that groups being merged are relatively far ap
 
 ---
 
-# 31. Question 8 — Where Could the Hierarchy Be Cut?
+# 31. Question 8: Where Could the Hierarchy Be Cut?
 
 Consider a dendrogram with a large vertical gap between two sets of merges.
 
@@ -1081,7 +1081,7 @@ The exact cluster sizes can change with linkage.
 
 ---
 
-# 33. Question 9 — Why Does Linkage Matter?
+# 33. Question 9: Why Does Linkage Matter?
 
 Why might changing:
 
@@ -1111,7 +1111,7 @@ Because the hierarchy is built from those merges, the final clusters can also ch
 
 ---
 
-# Part C — Anomaly Detection
+# Part C: Anomaly Detection
 
 # 34. What Is Anomaly Detection?
 
@@ -1205,7 +1205,7 @@ plt.show()
 
 ---
 
-# 36. Question 10 — Identify the Potential Anomalies
+# 36. Question 10: Identify the Potential Anomalies
 
 Looking at the plot:
 
@@ -1331,7 +1331,7 @@ plt.show()
 
 ---
 
-# 41. Question 11 — Anomaly vs Cluster
+# 41. Question 11: Anomaly vs Cluster
 
 Suppose an observation is far away from all clusters.
 
@@ -1401,7 +1401,7 @@ It does not automatically provide the explanation.
 
 ---
 
-# Part D — Association Rule Learning
+# Part D: Association Rule Learning
 
 # 43. A Different Type of Unsupervised Learning
 
@@ -1614,7 +1614,7 @@ $$
 
 ---
 
-# 49. Question 12 — Calculate Support
+# 49. Question 12: Calculate Support
 
 Suppose there are 10 transactions.
 
@@ -1742,7 +1742,7 @@ Interpretation:
 
 ---
 
-# 52. Question 13 — Calculate Confidence
+# 52. Question 13: Calculate Confidence
 
 There are:
 
@@ -1887,7 +1887,7 @@ A lift of 1.5 indicates that bread and butter co-occur more often than would be 
 
 ---
 
-# 55. Question 14 — Interpret Lift
+# 55. Question 14: Interpret Lift
 
 Suppose the following rules are produced:
 
@@ -1958,7 +1958,7 @@ It does not establish causal relationships.
 
 ---
 
-# 57. Question 15 — Association or Causation?
+# 57. Question 15: Association or Causation?
 
 Suppose a supermarket discovers:
 
@@ -1991,7 +1991,7 @@ Other variables or purchasing habits could explain the relationship.
 
 ---
 
-# Part E — Comparing the Unsupervised-Learning Techniques
+# Part E: Comparing the Unsupervised-Learning Techniques
 
 # 58. Different Questions, Different Methods
 
@@ -2083,7 +2083,7 @@ The goal is to discover co-occurrence relationships between items.
 
 ---
 
-# 61. Question 16 — Choose the Technique
+# 61. Question 16: Choose the Technique
 
 Choose an appropriate unsupervised-learning technique.
 
@@ -2162,7 +2162,7 @@ The choice also depends on:
 
 ---
 
-# 63. Question 17 — Algorithm Selection
+# 63. Question 17: Algorithm Selection
 
 A dataset contains 50 observations and the main interest is understanding which observations are closely related to one another at several levels.
 
@@ -2244,7 +2244,7 @@ results_df
 
 ---
 
-# 65. Question 18 — Model Selection
+# 65. Question 18: Model Selection
 
 Use the results table.
 
@@ -2321,7 +2321,7 @@ The resulting summary can provide meaning to the clusters.
 
 ---
 
-# 67. Question 19 — Why Profile Clusters?
+# 67. Question 19: Why Profile Clusters?
 
 Why is a cluster label such as `Cluster 2` not sufficient for interpreting a real-world clustering result?
 
@@ -2342,7 +2342,7 @@ For example, it may reveal that one cluster contains younger customers with lowe
 
 ---
 
-# Part F — Integrated Analysis
+# Part F: Integrated Analysis
 
 # 68. Complete Unsupervised-Learning Workflow
 
@@ -2422,7 +2422,7 @@ Answer:
 
 ---
 
-# 70. Integrated Scenario — Anomaly Detection
+# 70. Integrated Scenario: Anomaly Detection
 
 A bank has transaction data containing:
 
@@ -2458,7 +2458,7 @@ Answer:
 
 ---
 
-# 71. Integrated Scenario — Association Rules
+# 71. Integrated Scenario: Association Rules
 
 A supermarket records:
 
@@ -2629,140 +2629,140 @@ Which technique would be most appropriate for discovering products frequently pu
 # Final Answers
 
 <details>
-<summary>Q1 — What is the main purpose of K-Means?</summary>
+<summary>Q1: What is the main purpose of K-Means?</summary>
 
 To divide observations into a chosen number of clusters based on their similarity to cluster centroids.
 
 </details>
 
 <details>
-<summary>Q2 — What does K represent?</summary>
+<summary>Q2: What does K represent?</summary>
 
 K represents the number of clusters that K-Means is instructed to create.
 
 </details>
 
 <details>
-<summary>Q3 — What is a centroid?</summary>
+<summary>Q3: What is a centroid?</summary>
 
 A centroid is the mean position of the observations assigned to a cluster.
 
 </details>
 
 <details>
-<summary>Q4 — Why does inertia decrease as K increases?</summary>
+<summary>Q4: Why does inertia decrease as K increases?</summary>
 
 More clusters give K-Means more centroids and therefore more flexibility to place observations closer to their assigned centers.
 
 </details>
 
 <details>
-<summary>Q5 — Why not choose the lowest inertia?</summary>
+<summary>Q5: Why not choose the lowest inertia?</summary>
 
 Because inertia generally improves as more clusters are added. A very large K can fit the data closely without producing meaningful groups.
 
 </details>
 
 <details>
-<summary>Q6 — What does the elbow method identify?</summary>
+<summary>Q6: What does the elbow method identify?</summary>
 
 It looks for a point where increasing K begins to produce substantially smaller reductions in inertia.
 
 </details>
 
 <details>
-<summary>Q7 — What does silhouette score measure?</summary>
+<summary>Q7: What does silhouette score measure?</summary>
 
 It measures how well observations fit within their assigned clusters while considering their separation from neighboring clusters.
 
 </details>
 
 <details>
-<summary>Q8 — Why can scaling change K-Means?</summary>
+<summary>Q8: Why can scaling change K-Means?</summary>
 
 K-Means uses distances. Features with larger numerical scales can dominate the distance calculation.
 
 </details>
 
 <details>
-<summary>Q9 — What is agglomerative hierarchical clustering?</summary>
+<summary>Q9: What is agglomerative hierarchical clustering?</summary>
 
 It starts with individual observations and progressively merges observations or clusters to create a hierarchy.
 
 </details>
 
 <details>
-<summary>Q10 — What is a dendrogram?</summary>
+<summary>Q10: What is a dendrogram?</summary>
 
 A dendrogram is a visualization of the hierarchy created during hierarchical clustering.
 
 </details>
 
 <details>
-<summary>Q11 — What is linkage?</summary>
+<summary>Q11: What is linkage?</summary>
 
 Linkage defines how the distance between two groups or clusters is calculated during hierarchical clustering.
 
 </details>
 
 <details>
-<summary>Q12 — How is anomaly detection different from clustering?</summary>
+<summary>Q12: How is anomaly detection different from clustering?</summary>
 
 Clustering focuses on finding groups, while anomaly detection focuses on identifying observations that are unusually different from the rest.
 
 </details>
 
 <details>
-<summary>Q13 — What does Isolation Forest identify?</summary>
+<summary>Q13: What does Isolation Forest identify?</summary>
 
 It identifies observations that can be isolated unusually quickly through random recursive partitioning of the feature space.
 
 </details>
 
 <details>
-<summary>Q14 — What does contamination represent?</summary>
+<summary>Q14: What does contamination represent?</summary>
 
 It represents the assumed or expected proportion of anomalous observations used to determine the anomaly threshold.
 
 </details>
 
 <details>
-<summary>Q15 — What is support?</summary>
+<summary>Q15: What is support?</summary>
 
 Support measures how frequently an itemset occurs in the full set of transactions.
 
 </details>
 
 <details>
-<summary>Q16 — What is confidence?</summary>
+<summary>Q16: What is confidence?</summary>
 
 Confidence measures how often the consequent appears among transactions containing the antecedent.
 
 </details>
 
 <details>
-<summary>Q17 — What is lift?</summary>
+<summary>Q17: What is lift?</summary>
 
 Lift compares the observed confidence of a rule with the overall frequency of the consequent and indicates how much stronger the association is than would be expected under independence.
 
 </details>
 
 <details>
-<summary>Q18 — Does high lift prove causation?</summary>
+<summary>Q18: Does high lift prove causation?</summary>
 
 No. Lift measures association and co-occurrence, not causation.
 
 </details>
 
 <details>
-<summary>Q19 — Why are cluster labels not meaningful names?</summary>
+<summary>Q19: Why are cluster labels not meaningful names?</summary>
 
 They are arbitrary identifiers assigned by the algorithm. Cluster `0` does not inherently represent a particular real-world group.
 
 </details>
 
 <details>
-<summary>Q20 — Which technique finds frequently purchased products?</summary>
+<summary>Q20: Which technique finds frequently purchased products?</summary>
 
 Association rule learning.
 
