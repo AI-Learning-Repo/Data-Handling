@@ -186,6 +186,8 @@ The model must not learn from `X_test` and `y_test` before evaluation.
 
 This principle becomes especially important when preprocessing or feature engineering has parameters that are learned from the data. Such transformations should also be fitted using the training data and then applied to the test data.
 
+> https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets
+
 ---
 
 # 4. Correlation and an initial look at relationships

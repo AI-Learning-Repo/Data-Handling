@@ -1436,6 +1436,8 @@ y = y_full["mpg"]
 
 # 43. Split the Multiple-Feature Data
 
+> https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets
+
 ### Code Cell
 
 ```python

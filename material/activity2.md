@@ -510,6 +510,8 @@ rather than:
 
 ## 3.2 Split the data
 
+> https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets
+
 ```python
 X_train, X_test, y_train, y_test = train_test_split(
     X,

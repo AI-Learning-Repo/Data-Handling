@@ -1060,6 +1060,8 @@ Here:
 * `X_test` contains test features;
 * `y_test` contains the true test targets.
 
+> https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets
+
 ---
 
 # 30. The Meaning of `test_size`

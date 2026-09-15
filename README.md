@@ -30,8 +30,8 @@
 ### Part 1:  
 
 - Slides
-- [Pearson Correlation, Underfitting, and Overfitting](./material/part0.md)
-- [Introduction to Regression](./material/part1.md)
+- Demos: [Pearson Correlation](./material/demo-Pearson.md), [Regression Metrics](./material/demo-metrics.md), [Underfitting vs Overfitting](./material/demo-underfitting.md), [Datframe 2 csv](./material/demo-save-csv.md)
+- Theory: [Pearson Correlation, Underfitting, Overfitting](./material/part0.md), [Introduction to Regression](./material/part1.md)
 - [Activity 1](./material/activity1.md)
 
 <details>
