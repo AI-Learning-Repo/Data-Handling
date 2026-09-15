@@ -219,7 +219,7 @@ X_train, X_test, y_train, y_test = train_test_split(
   * $R^2 = 1.0$: Perfect predictions.
   * $R^2 = 0.0$: Performs no better than the simple mean.
   * $R^2 < 0.0$: Performs worse than the mean baseline.
-* *$R^2$ is NOT classification accuracy (e.g., $R^2 = 0.65$ does NOT mean "65% correct").*
+* $R^2$ is NOT classification accuracy (e.g., $R^2 = 0.65$ does NOT mean "65% correct").
 
 ---
 
