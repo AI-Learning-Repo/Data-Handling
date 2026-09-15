@@ -6,6 +6,7 @@
 > - [Potential Exam Questions](./material/exam-qa.md)
 > - [Submission Guidelines](./material/submission-guidelines.md/)
 
+<!-- 
 ---
 
 > [!NOTE]  
@@ -13,7 +14,8 @@
 >   - Mini lecture (~35min)
 >   - Group / Pair programming `+ Break` (~50min)
 >   - Mini lecture (~35min)
->   - Group / Pair programming (~35min)
+>   - Group / Pair programming (~35min) 
+-->
 
 ----
 
@@ -25,7 +27,7 @@
 
 ----
 
-> [!IMPORTANT]  
+> [!NOTE]  
 > # Compensation Plan for Missed Class
 >
 > * **Today's Session:** Pair programming with a member of your project group so you can easily continue the tasks outside of class.
