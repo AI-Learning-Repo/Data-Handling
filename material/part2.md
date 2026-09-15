@@ -256,15 +256,7 @@ Pearson's `r` specifically measures linear association.
 
 Imagine a relationship shaped approximately like a U:
 
-```text
-      y
-      | *       *
-      |  *     *
-      |   *   *
-      |    * *
-      |     *
-      +------------ x
-```
+<img src="./img/nonlinear.png" width="50%">
 
 There is a strong systematic relationship, but the ordinary Pearson correlation can be close to zero because positive and negative slopes occur in different parts of the curve.
 
@@ -748,16 +740,7 @@ A useful regression visualization is a scatter plot with:
 
 Conceptually, the ideal relationship is:
 
-```text
-predicted
-   |
-   |        /
-   |      /
-   |    /
-   |  /
-   | /
-   +-------------- actual
-```
+<img src="./img/actual-vs-predict.png" width="50%">
 
 More precisely, perfect predictions would lie on the diagonal:
 
@@ -791,16 +774,7 @@ Residual plots help us inspect whether the model's errors appear random or show 
 
 A useful idealized pattern is:
 
-```text
-residual
-   |
- 2 |    .  .
- 1 | .     .   .
- 0 |----------------------
--1 |   .  .   .
--2 |      .
-   +---------------------- feature
-```
+<img src="./img/residual.png" width="50%">
 
 We generally do not want a strong curved, funnel-shaped, or otherwise systematic pattern.
 
