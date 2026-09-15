@@ -15,9 +15,11 @@ Let $y_i$ be the actual value, $\hat{y}_i$ be the predicted value, $\bar{y}$ be 
 * **Root Mean Squared Error (RMSE):** The square root of MSE. It brings the error unit back to the original unit of the target variable while maintaining the sensitivity to large errors.
   $$\text{RMSE} = \sqrt{\text{MSE}} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}$$
 
-* **Coefficient of Determination ($R^2$):** Measures the proportion of variance in the target variable explained by the model: $R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}} = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}$
+* **Coefficient of Determination ($R^2$):** Measures the proportion of variance in the target variable explained by the model: 
 
-  $$R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}} = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}$$
+$$
+R^2 = 1 - \frac{\text{SS}_{\text{res}}}{\text{SS}_{\text{tot}}} = 1 - \frac{\sum_{i=1}^{n} (y_i - \hat{y}_i)^2}{\sum_{i=1}^{n} (y_i - \bar{y})^2}
+$$
 
 ---
 
