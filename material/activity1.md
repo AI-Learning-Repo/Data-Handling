@@ -1161,6 +1161,9 @@ These can be compared.
 
 # 34. Evaluate the Model with MAE
 
+> - https://developers.google.com/machine-learning/crash-course/linear-regression/loss
+> - https://www.geeksforgeeks.org/machine-learning/metrics-for-machine-learning-model/
+
 Mean Absolute Error is:
 
 $$

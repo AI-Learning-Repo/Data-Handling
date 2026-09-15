@@ -140,6 +140,9 @@ We will use three complementary metrics:
 - **RMSE**: Root Mean Squared Error.
 - **R²**: coefficient of determination.
 
+> - https://developers.google.com/machine-learning/crash-course/linear-regression/loss
+> - https://www.geeksforgeeks.org/machine-learning/metrics-for-machine-learning-model/
+
 ---
 
 ## 1.2 Load the dataset

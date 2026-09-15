@@ -9,7 +9,9 @@ The explanations begin with small examples that can be calculated by hand and th
 
 ---
 
-# Part A — Pearson Correlation Coefficient (`r`)
+# Part A:  Pearson Correlation Coefficient (`r`)
+
+> https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
 
 ## A.1 What is correlation?
 
@@ -175,7 +177,7 @@ But let's calculate it ourselves.
 
 ---
 
-# A.5 Step 1 — Calculate the mean of `x`
+# A.5 Step 1:  Calculate the mean of `x`
 
 The `x` values are:
 
@@ -206,7 +208,7 @@ $$
 
 ---
 
-# A.6 Step 2 — Calculate the mean of `y`
+# A.6 Step 2:  Calculate the mean of `y`
 
 The `y` values are:
 
@@ -237,7 +239,7 @@ $$
 
 ---
 
-# A.7 Step 3 — Calculate deviations from the mean
+# A.7 Step 3:  Calculate deviations from the mean
 
 For each observation, calculate:
 
@@ -274,7 +276,7 @@ $$
 
 ---
 
-# A.8 Step 4 — Multiply the deviations
+# A.8 Step 4:  Multiply the deviations
 
 Now calculate:
 
@@ -303,7 +305,7 @@ $$
 
 ---
 
-# A.9 Step 5 — Square the deviations of `x`
+# A.9 Step 5:  Square the deviations of `x`
 
 Calculate:
 
@@ -332,7 +334,7 @@ $$
 
 ---
 
-# A.10 Step 6 — Square the deviations of `y`
+# A.10 Step 6:  Square the deviations of `y`
 
 Calculate:
 
@@ -361,7 +363,7 @@ $$
 
 ---
 
-# A.11 Step 7 — Apply the Pearson formula
+# A.11 Step 7:  Apply the Pearson formula
 
 The Pearson correlation coefficient is:
 
@@ -700,7 +702,7 @@ The important difference is:
 y = 2x       → linear
 y = 2x + 5   → linear
 y = x²       → nonlinear
-y = x³       → nonlinear relationship, although monotonic over all real x
+y = x³       → nonlinear relationship, although [monotonic](https://en.wikipedia.org/wiki/Monotonic_function) over all real x
 ```
 
 The problem with Pearson is not the number `2`.
@@ -1128,7 +1130,7 @@ The most important sentence to remember is:
 
 ---
 
-# Part B — Underfitting and Overfitting
+# Part B:  Underfitting and Overfitting
 
 ## B.1 What are underfitting and overfitting?
 
@@ -1579,6 +1581,8 @@ That is the core idea behind overfitting.
 ---
 
 # B.16 Why do we need separate training and test data?
+
+> [Training, validation, and test sets]( https://developers.google.com/machine-learning/crash-course/overfitting/dividing-datasets#training_validation_and_test_sets)
 
 Suppose we train and evaluate on exactly the same observations.
 

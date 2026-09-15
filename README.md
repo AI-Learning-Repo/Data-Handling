@@ -37,12 +37,17 @@
 <details>
 <summary>Links used in Session</summary>
 
+- https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
 - https://www.interactive-ml.com/
 - https://www.interactive-ml.com/linear-regression.html
 - https://www.interactive-ml.com/polynomial.html
+- https://developers.google.com/machine-learning/crash-course/linear-regression/loss
+- https://www.geeksforgeeks.org/machine-learning/metrics-for-machine-learning-model/
 - https://developers.google.com/machine-learning/crash-course
 - https://www.geeksforgeeks.org/machine-learning/ml-linear-regression/
-- https://www.geeksforgeeks.org/machine-learning/regression-in-machine-learning/
+- https://www.geeksforgeeks.org/machine-learning/python-implementation-of-polynomial-regression/
+- https://en.wikipedia.org/wiki/Monotonic_function
+
 </details> 
 
 
