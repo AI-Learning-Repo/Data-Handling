@@ -509,6 +509,11 @@ lora_config = LoraConfig(
 model = get_peft_model(model, lora_config)
 ```
 
+<img src="./img/lora1.png" width="50%">
+<br>
+
+<img src="./img/lora.png" width="50%">
+<br>
 
 <img src="./img/lora.png" width="50%">
 <br>(src: https://www.intel.com/content/www/us/en/developer/articles/llm/fine-tuning-llama2-70b-and-lora-on-gaudi2.html)
