@@ -25,6 +25,18 @@
 
 ----
 
+> [!IMPORTANT]  
+> # Compensation Plan for Missed Class
+>
+> * **Today's Session:** Pair programming with a member of your project group so you can easily continue the tasks outside of class.
+> * **Single Sprint Schedule:**
+>   * **Next Week:** RAG (Retrieval-Augmented Generation), not Sprint 1
+>   * **Week 7:** Mini-Project Presentations (*Fine-Tuning vs. RAG comparison*)
+> * **Exam Review:** Extra homework activity in Week 7 to prepare for the upcoming exam.
+
+
+----
+
 ## Morning:
 
 ### Part 1:  
