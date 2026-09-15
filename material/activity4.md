@@ -765,7 +765,7 @@ This tells the Trainer how often to print the training loss (how wrong the model
 </details>
 
 
-<details>
+<details open>
 <summary><b>NOTE ON SAVING YOUR MODEL (IMPORTANT IN COLAB)</b></summary>
 
 

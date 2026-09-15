@@ -52,6 +52,7 @@
 <summary>Links used in Session</summary>
 
 - https://en.wikipedia.org/wiki/Pearson_correlation_coefficient
+- https://en.wikipedia.org/wiki/Coefficient_of_determination
 - https://www.interactive-ml.com/
 - https://www.interactive-ml.com/linear-regression.html
 - https://www.interactive-ml.com/polynomial.html
@@ -91,26 +92,24 @@
 
 ### Part 4: Fine-Tuning
 
+> [!NOTE]  
+> Qwen 3.8 27B scores 52 on the Artificial Analysis Intelligence Index (via) That's the same score as GPT-5.6 Luna (max), and just one point behind GLM-5.2 (max) and DeepSeek V4 Pro 0813 (max) - that GLM is 753B and that DeepSeek is 1.7T parameters, and Luna's size is unknown but presumably a whole lot bigger than 27B: https://artificialanalysis.ai/models/qwen3-8-27b 
+
+<!-- Activity 3 in parallel w activity 4 -->
+
 - Pydantic, Fine-Tuning
 - [Activity 3: Practical Guide to Pydantic](./material/activity3.md)
 - [Activity 4: Fine-Tuning Qwen 2.5 with LoRA](./material/activity4.md)
 
-<!-- Activity 3 in parallel w activity 4 -->
-
-
-> [!NOTE]  
-> Qwen 3.8 27B scores 52 on the Artificial Analysis Intelligence Index (via) That's the same score as GPT-5.6 Luna (max), and just one point behind GLM-5.2 (max) and DeepSeek V4 Pro 0813 (max) - that GLM is 753B and that DeepSeek is 1.7T parameters, and Luna's size is unknown but presumably a whole lot bigger than 27B: https://artificialanalysis.ai/models/qwen3-8-27b 
-
-<!-- 
 <details>
 <summary>Links used in Session</summary>
 
+- https://huggingface.co/Qwen/Qwen2-1.5B/blob/main/config.json
+- https://github.com/rasbt/LLMs-from-scratch/tree/main/ch05
+- https://playground.tensorflow.org
 - https://streamlit.io/playground?example=dataframes
 - https://jsonltools.com/what-is-jsonl
 </details> 
- -->
-
-
 
 <!-- 
 
