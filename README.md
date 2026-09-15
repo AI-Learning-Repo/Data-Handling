@@ -19,7 +19,7 @@
 
 ## Topics
 
-- Linear and polynomial regression, Underfitting/ overfitting
+- Linear and polynomial regression, Underfitting/ overfitting,  Regression Metrics
 - Qwen, PEFT, QLoRA, high-level fine-tuning
 
 
