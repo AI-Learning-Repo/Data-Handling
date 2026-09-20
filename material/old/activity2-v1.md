@@ -1,20 +1,5 @@
 # Activity 2: Unsupervised Learning in More Detail
 
-## Table of Contents
-
-## Part 1: Clustering Algorithms & Diagnostics
-
-1. **Module 1: Diagnostics & Choosing `K`**
-2. **Module 2: Feature Geometry & Scaling**
-3. **Module 3: Hierarchical Linkage & Dendrogram Cuts**
-
-## Part 2: Other Unsupervised Learning Tasks
-
-4. **Module 4: Anomaly Detection via Isolation Forest**
-5. **Module 5: Association Rule Learning via Apriori**
-6. **Module 6: Comparative Synthesis & Case Scenarios**
-
-
 ## Overview
 
 This activity extends the clustering concepts introduced in Activity 1.
@@ -60,17 +45,15 @@ By the end of this activity, the following should be understood:
 
 ---
 
-## Part 1: Clustering Algorithms & Diagnostics
-
-### Module 1: Diagnostics & Choosing `K`
-
 # Part A: K-Means in More Detail
 
 ## 1. Start with a Dataset
 
 The first activity introduced K-Means using a simple two-dimensional dataset.
 
-This activity uses a real-world automobile dataset so that the clustering results can be interpreted in a familiar domain. We use `horsepower` and `weight` from Seaborn's `mpg` dataset and exclude `mpg` itself from the clustering inputs.
+This activity will use the same general idea, but the analysis will be more systematic.
+
+Create a dataset with four clusters.
 
 ### Code Cell
 
@@ -79,7 +62,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import seaborn as sns
+from sklearn.datasets import make_blobs
 
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
@@ -96,10 +79,12 @@ Generate the data:
 ### Code Cell
 
 ```python id="3lqkmq"
-mpg = sns.load_dataset("mpg")
-
-X_df = mpg[["horsepower", "weight"]].dropna()
-X = X_df.to_numpy()
+X, _ = make_blobs(
+    n_samples=500,
+    centers=4,
+    cluster_std=1.2,
+    random_state=42
+)
 
 print(X.shape)
 ```
@@ -107,7 +92,8 @@ print(X.shape)
 The dataset contains:
 
 ```text
-Two selected features: `horsepower` and `weight`. The number of observations is determined by the complete rows in the dataset.
+500 observations
+2 features
 ```
 
 ---
@@ -201,7 +187,14 @@ cluster_counts = pd.Series(
 print(cluster_counts)
 ```
 
-The exact cluster sizes depend on the real dataset and the selected value of `K`.
+The result might look approximately like:
+
+```text
+0    125
+1    124
+2    126
+3    125
+```
 
 The exact numbers depend on the generated data.
 
@@ -477,7 +470,7 @@ Look at the elbow plot.
 
 The candidate K is the point where increasing the number of clusters begins to produce substantially smaller improvements in inertia.
 
-For the real automobile data, the elbow may be gradual or ambiguous. Treat it as evidence to discuss rather than as a guaranteed answer.
+For the generated data, the elbow should be near the number of underlying groups.
 
 However, the elbow can be ambiguous, and the best K may require additional evaluation and domain knowledge.
 
@@ -630,8 +623,6 @@ Therefore:
 
 ---
 
-### Module 2: Feature Geometry & Scaling
-
 # 18. Feature Scaling and Clustering
 
 Consider a dataset containing:
@@ -658,9 +649,24 @@ It means that its numerical units contribute more strongly to the distance.
 ### Code Cell
 
 ```python id="pr1i82"
-tips = sns.load_dataset("tips").dropna()
+rng = np.random.default_rng(42)
 
-X_scale_demo = tips[["total_bill", "size"]].copy()
+age = rng.normal(
+    40,
+    10,
+    300
+)
+
+income = rng.normal(
+    50000,
+    15000,
+    300
+)
+
+X_scale_demo = pd.DataFrame({
+    "Age": age,
+    "Income": income
+})
 ```
 
 Inspect:
@@ -797,8 +803,6 @@ This is the same data-leakage principle encountered in supervised learning.
 For the unsupervised examples where clustering is being demonstrated on one complete dataset, there may be no separate test set. When a separate validation or test set is used, the same principle applies.
 
 ---
-
-### Module 3: Hierarchical Linkage & Dendrogram Cuts
 
 # Part B: Hierarchical Clustering in More Detail
 
@@ -939,86 +943,7 @@ Different results do not automatically mean that one method is wrong.
 
 ---
 
-# 29. Divisive Hierarchical Clustering: A Top-Down Approach
-
-Agglomerative clustering is a **bottom-up** approach: it starts with every observation in its own cluster and repeatedly merges clusters.
-
-Divisive clustering uses the opposite strategy. It is a **top-down** approach:
-
-```text
-Start:
-All observations belong to one cluster
-        ↓
-Choose a cluster to split
-        ↓
-Divide it into smaller clusters
-        ↓
-Select a cluster and split it again
-        ↓
-Repeat until a stopping condition is reached
-```
-
-The stopping condition might be:
-
-* a desired number of clusters;
-* a minimum cluster size;
-* a maximum number of splits; or
-* a rule based on cluster quality.
-
-## Example: Splitting Customer Profiles
-
-Suppose a dataset contains customers described by:
-
-```text
-Age
-Income
-Spending
-```
-
-A divisive procedure could begin with all customers in one group:
-
-```text
-All customers
-     ↓
-Split into:
-- Lower-spending customers
-- Higher-spending customers
-```
-
-The algorithm could then split one of those groups again:
-
-```text
-Higher-spending customers
-     ↓
-Split into:
-- High-income, high-spending customers
-- Moderate-income, high-spending customers
-```
-
-This produces a hierarchy of progressively smaller groups.
-
-## Question 10: Compare Agglomerative and Divisive Clustering
-
-Explain the difference between the two approaches.
-
-| Method | Starting point | Main operation |
-|---|---|---|
-| Agglomerative | Each observation is its own cluster | Repeatedly merge clusters |
-| Divisive | All observations are in one cluster | Repeatedly split clusters |
-
-### LLM Hint Prompt
-
-> Explain the difference between agglomerative and divisive hierarchical clustering. Describe why agglomerative clustering is called bottom-up and divisive clustering is called top-down. Include one customer-segmentation example.
-
-### Important Practical Note
-
-Scikit-learn provides `AgglomerativeClustering`, but it does not provide a general-purpose divisive hierarchical clustering estimator with the same interface. Divisive clustering can be implemented using recursive splitting, or studied through algorithms such as DIANA (DIvisive ANAlysis) in suitable libraries.
-
-For this activity, the divisive example is intended to explain the algorithmic idea rather than require students to implement a complete divisive clustering algorithm.
-
----
-
-# 31.. Dendrogram
+# 29. Dendrogram
 
 A major advantage of hierarchical clustering is that the merging process can be visualized as a **dendrogram**.
 
@@ -1070,7 +995,7 @@ plt.show()
 
 ---
 
-# 31.. Understanding the Dendrogram
+# 30. Understanding the Dendrogram
 
 The bottom of the dendrogram represents individual observations.
 
@@ -1092,7 +1017,7 @@ A large vertical jump can suggest that groups being merged are relatively far ap
 
 ---
 
-# 32.. Question 8: Where Could the Hierarchy Be Cut?
+# 31. Question 8: Where Could the Hierarchy Be Cut?
 
 Consider a dendrogram with a large vertical gap between two sets of merges.
 
@@ -1115,7 +1040,7 @@ Cutting before the large merge can preserve those separate groups and produce a 
 
 ---
 
-# 33.. Try Different Linkage Methods
+# 32. Try Different Linkage Methods
 
 Run:
 
@@ -1156,7 +1081,7 @@ The exact cluster sizes can change with linkage.
 
 ---
 
-# 34.. Question 9: Why Does Linkage Matter?
+# 33. Question 9: Why Does Linkage Matter?
 
 Why might changing:
 
@@ -1186,13 +1111,9 @@ Because the hierarchy is built from those merges, the final clusters can also ch
 
 ---
 
-## Part 2: Other Unsupervised Learning Tasks
-
-### Module 4: Anomaly Detection via Isolation Forest
-
 # Part C: Anomaly Detection
 
-# 35.. What Is Anomaly Detection?
+# 34. What Is Anomaly Detection?
 
 Clustering asks:
 
@@ -1223,39 +1144,45 @@ Find unusual observations
 
 ---
 
-# 36.. Create Data with Potentially Unusual Transactions
+# 35. Create Data with Anomalies
 
-Use the **Credit Card Dataset for Clustering** from Kaggle:
-
-https://www.kaggle.com/datasets/arjunbhasin2013/ccdata
-
-This dataset contains aggregated customer-level credit-card usage information. It is useful for exploring customer segmentation and unusual customer profiles, but it should **not** be treated as a transaction-level fraud dataset. An observation flagged as unusual represents an unusual customer profile according to the selected features, not confirmed fraudulent activity.
-
-Download `CC GENERAL.csv` from Kaggle and place it in the working directory.
+Create a normal group:
 
 ### Code Cell
 
-```python
-import pandas as pd
-
-credit_card = pd.read_csv("CC GENERAL.csv")
-
-# Remove the identifier because it is not a behavioral feature.
-credit_card = credit_card.drop(columns=["CUST_ID"])
-
-# Use numeric features and handle missing values.
-X_anomaly_df = credit_card.select_dtypes(
-    include="number"
-).copy()
-
-X_anomaly_df = X_anomaly_df.fillna(
-    X_anomaly_df.median()
+```python id="7l2jwh"
+X_normal, _ = make_blobs(
+    n_samples=300,
+    centers=1,
+    cluster_std=1.0,
+    random_state=42
 )
-
-X_anomaly_demo = X_anomaly_df.to_numpy()
 ```
 
-The features represent aggregated customer behavior, such as purchase activity, cash advances, balances, and payment patterns. Select a smaller set of features when visualization is required. Because the dataset contains many variables, a two-dimensional visualization may require selecting two features or applying dimensionality reduction.
+Create several unusual points manually:
+
+### Code Cell
+
+```python id="u9ri0u"
+X_anomalies = np.array([
+    [8, 8],
+    [-8, 7],
+    [7, -7],
+    [-7, -8],
+    [9, -6]
+])
+```
+
+Combine them:
+
+### Code Cell
+
+```python id="iy74wq"
+X_anomaly_demo = np.vstack([
+    X_normal,
+    X_anomalies
+])
+```
 
 Visualize:
 
@@ -1269,16 +1196,16 @@ plt.scatter(
     X_anomaly_demo[:, 1]
 )
 
-plt.xlabel("Selected customer feature 1")
-plt.ylabel("Selected customer feature 2")
-plt.title("Customer Profiles with Potential Anomalies")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("Dataset with Potential Anomalies")
 
 plt.show()
 ```
 
 ---
 
-# 37.. Question 10: Identify the Potential Anomalies
+# 36. Question 10: Identify the Potential Anomalies
 
 Looking at the plot:
 
@@ -1294,7 +1221,7 @@ Looking at the plot:
 <details>
 <summary>Solution</summary>
 
-Some customer profiles may appear unusual because their combination of credit-card usage features differs from the main pattern. Such observations are candidates for investigation, not automatically fraudulent transactions.
+The manually added points far from the main group appear unusual because they are spatially separated from most observations.
 
 Visual inspection works for simple two-dimensional datasets but becomes difficult with many observations or many features.
 
@@ -1304,7 +1231,7 @@ This motivates automated anomaly-detection methods.
 
 ---
 
-# 38.. Isolation Forest
+# 37. Isolation Forest
 
 One anomaly-detection method available in scikit-learn is **Isolation Forest**.
 
@@ -1316,18 +1243,11 @@ Anomalies tend to be isolated with fewer random splits because they are unusual 
 
 ---
 
-# 39.. Create the Isolation Forest Model
+# 38. Create the Isolation Forest Model
 
 ### Code Cell
 
 ```python id="flx5cb"
-from sklearn.preprocessing import StandardScaler
-
-anomaly_scaler = StandardScaler()
-X_anomaly_scaled = anomaly_scaler.fit_transform(
-    X_anomaly_demo
-)
-
 isolation_model = IsolationForest(
     contamination=0.02,
     random_state=42
@@ -1346,13 +1266,13 @@ The contamination parameter should therefore be chosen carefully; it is not simp
 
 ---
 
-# 40.. Fit and Predict
+# 39. Fit and Predict
 
 ### Code Cell
 
 ```python id="xj8h2d"
 anomaly_labels = isolation_model.fit_predict(
-    X_anomaly_scaled
+    X_anomaly_demo
 )
 ```
 
@@ -1377,7 +1297,7 @@ print(
 
 ---
 
-# 41.. Visualize the Anomalies
+# 40. Visualize the Anomalies
 
 ### Code Cell
 
@@ -1401,9 +1321,9 @@ plt.scatter(
     label="Anomaly"
 )
 
-plt.xlabel("Selected customer feature 1")
-plt.ylabel("Selected customer feature 2")
-plt.title("Isolation Forest on Customer Profiles")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("Isolation Forest")
 
 plt.legend()
 plt.show()
@@ -1411,7 +1331,7 @@ plt.show()
 
 ---
 
-# 42.. Question 11: Anomaly vs Cluster
+# 41. Question 11: Anomaly vs Cluster
 
 Suppose an observation is far away from all clusters.
 
@@ -1436,7 +1356,7 @@ An isolated point may still be assigned to a K-Means cluster, while an anomaly-d
 
 ---
 
-# 43.. Important Caution About Anomalies
+# 42. Important Caution About Anomalies
 
 An anomaly is not automatically:
 
@@ -1481,11 +1401,9 @@ It does not automatically provide the explanation.
 
 ---
 
-### Module 5: Association Rule Learning via Apriori
-
 # Part D: Association Rule Learning
 
-# 44.. A Different Type of Unsupervised Learning
+# 43. A Different Type of Unsupervised Learning
 
 Clustering and anomaly detection work with observations represented by features.
 
@@ -1530,7 +1448,7 @@ Again, association is not causation.
 
 ---
 
-# 45.. Install `mlxtend`
+# 44. Install `mlxtend`
 
 A convenient Python library for association-rule learning is `mlxtend`.
 
@@ -1554,7 +1472,7 @@ from mlxtend.frequent_patterns import (
 
 ---
 
-# 46.. Create a Transaction Dataset
+# 45. Create a Transaction Dataset
 
 ### Code Cell
 
@@ -1575,7 +1493,7 @@ Each list represents one transaction.
 
 ---
 
-# 47.. Convert Transactions into a Matrix
+# 46. Convert Transactions into a Matrix
 
 Machine-learning algorithms need a numerical representation.
 
@@ -1620,7 +1538,7 @@ The result will look approximately like:
 
 ---
 
-# 48.. Frequent Itemsets
+# 47. Frequent Itemsets
 
 The first step is to find **frequent itemsets**.
 
@@ -1652,7 +1570,7 @@ frequent_itemsets
 
 ---
 
-# 49.. Support
+# 48. Support
 
 **Support** measures how frequently an itemset occurs in the transactions.
 
@@ -1691,12 +1609,12 @@ $$
 So:
 
 $$
-**Support(Bread) = 0.75**
+\boxed{Support(Bread)=0.75}
 $$
 
 ---
 
-# 50.. Question 12: Calculate Support
+# 49. Question 12: Calculate Support
 
 Suppose there are 10 transactions.
 
@@ -1739,14 +1657,14 @@ $$
 So:
 
 $$
-**Support = 0.70**
+\boxed{Support=0.70}
 $$
 
 </details>
 
 ---
 
-# 51.. Generate Association Rules
+# 50. Generate Association Rules
 
 Now generate rules.
 
@@ -1774,7 +1692,7 @@ The actual output depends on the transaction data and selected thresholds.
 
 ---
 
-# 52.. Confidence
+# 51. Confidence
 
 Confidence measures how often the consequent appears when the antecedent appears.
 
@@ -1815,7 +1733,7 @@ $$
 So:
 
 $$
-**Confidence ≈ 71.4%**
+\boxed{Confidence\approx71.4\%}
 $$
 
 Interpretation:
@@ -1824,7 +1742,7 @@ Interpretation:
 
 ---
 
-# 53.. Question 13: Calculate Confidence
+# 52. Question 13: Calculate Confidence
 
 There are:
 
@@ -1881,7 +1799,7 @@ $$
 Therefore:
 
 $$
-**Confidence = 75%**
+\boxed{Confidence=75\%}
 $$
 
 This means that among transactions containing bread, 75% also contain butter.
@@ -1890,7 +1808,7 @@ This means that among transactions containing bread, 75% also contain butter.
 
 ---
 
-# 54.. Lift
+# 53. Lift
 
 Confidence alone can sometimes be misleading.
 
@@ -1934,7 +1852,7 @@ The items occur together less often than expected.
 
 ---
 
-# 55.. Worked Lift Example
+# 54. Worked Lift Example
 
 Suppose:
 
@@ -1962,14 +1880,14 @@ $$
 Therefore:
 
 $$
-**Lift = 1.5**
+\boxed{Lift=1.5}
 $$
 
 A lift of 1.5 indicates that bread and butter co-occur more often than would be expected under independence, according to this measure.
 
 ---
 
-# 56.. Question 14: Interpret Lift
+# 55. Question 14: Interpret Lift
 
 Suppose the following rules are produced:
 
@@ -2008,7 +1926,7 @@ Confidence alone would not necessarily produce the same ranking because it does 
 
 ---
 
-# 57.. Association Is Not Causation
+# 56. Association Is Not Causation
 
 Suppose:
 
@@ -2040,7 +1958,7 @@ It does not establish causal relationships.
 
 ---
 
-# 58.. Question 15: Association or Causation?
+# 57. Question 15: Association or Causation?
 
 Suppose a supermarket discovers:
 
@@ -2073,11 +1991,9 @@ Other variables or purchasing habits could explain the relationship.
 
 ---
 
-### Module 6: Comparative Synthesis & Case Scenarios
-
 # Part E: Comparing the Unsupervised-Learning Techniques
 
-# 59.. Different Questions, Different Methods
+# 58. Different Questions, Different Methods
 
 The techniques covered in this session solve different problems.
 
@@ -2095,7 +2011,7 @@ These methods should not be treated as interchangeable.
 
 ---
 
-# 60.. Clustering vs Anomaly Detection
+# 59. Clustering vs Anomaly Detection
 
 Consider a dataset of customer spending.
 
@@ -2133,7 +2049,7 @@ A customer can belong to a cluster and still be unusual relative to that cluster
 
 ---
 
-# 61.. Clustering vs Association Rules
+# 60. Clustering vs Association Rules
 
 These methods use data differently.
 
@@ -2167,7 +2083,7 @@ The goal is to discover co-occurrence relationships between items.
 
 ---
 
-# 62.. Question 16: Choose the Technique
+# 61. Question 16: Choose the Technique
 
 Choose an appropriate unsupervised-learning technique.
 
@@ -2214,7 +2130,7 @@ The objective is to represent high-dimensional data using fewer dimensions, such
 
 ---
 
-# 63.. Choosing Between K-Means and Hierarchical Clustering
+# 62. Choosing Between K-Means and Hierarchical Clustering
 
 Consider:
 
@@ -2246,7 +2162,7 @@ The choice also depends on:
 
 ---
 
-# 64.. Question 17: Algorithm Selection
+# 63. Question 17: Algorithm Selection
 
 A dataset contains 50 observations and the main interest is understanding which observations are closely related to one another at several levels.
 
@@ -2271,7 +2187,7 @@ K-Means instead directly creates a selected number of centroid-based clusters.
 
 ---
 
-# 65.. A More Detailed K-Means Experiment
+# 64. A More Detailed K-Means Experiment
 
 Return to the blob data.
 
@@ -2328,7 +2244,7 @@ results_df
 
 ---
 
-# 66.. Question 18: Model Selection
+# 65. Question 18: Model Selection
 
 Use the results table.
 
@@ -2361,7 +2277,7 @@ Other useful information includes:
 
 ---
 
-# 67.. Cluster Profiling
+# 66. Cluster Profiling
 
 Once clusters are created, the numerical cluster labels are often not enough.
 
@@ -2405,7 +2321,7 @@ The resulting summary can provide meaning to the clusters.
 
 ---
 
-# 68.. Question 19: Why Profile Clusters?
+# 67. Question 19: Why Profile Clusters?
 
 Why is a cluster label such as `Cluster 2` not sufficient for interpreting a real-world clustering result?
 
@@ -2428,7 +2344,7 @@ For example, it may reveal that one cluster contains younger customers with lowe
 
 # Part F: Integrated Analysis
 
-# 69.. Complete Unsupervised-Learning Workflow
+# 68. Complete Unsupervised-Learning Workflow
 
 The workflow can now be summarized as:
 
@@ -2460,7 +2376,7 @@ This workflow is different from supervised learning because there is no target v
 
 ---
 
-# 70.. Integrated Scenario
+# 69. Integrated Scenario
 
 Consider the following dataset:
 
@@ -2506,7 +2422,7 @@ Answer:
 
 ---
 
-# 71.. Integrated Scenario: Anomaly Detection
+# 70. Integrated Scenario: Anomaly Detection
 
 A bank has transaction data containing:
 
@@ -2542,7 +2458,7 @@ Answer:
 
 ---
 
-# 72.. Integrated Scenario: Association Rules
+# 71. Integrated Scenario: Association Rules
 
 A supermarket records:
 
@@ -2580,7 +2496,7 @@ Answer:
 
 ---
 
-# 73.. Final Comparison
+# 72. Final Comparison
 
 The most important distinctions are:
 
@@ -2624,7 +2540,7 @@ Each technique solves a different problem.
 
 ---
 
-# 74.. Final Knowledge Check
+# 73. Final Knowledge Check
 
 Answer the following questions without immediately looking at the solutions.
 
@@ -2854,7 +2770,7 @@ Association rule learning.
 
 ---
 
-# 75.. Final Reflection
+# 74. Final Reflection
 
 Consider the following statement:
 
@@ -2898,7 +2814,7 @@ Find products frequently purchased together.
 
 ---
 
-# 76.. Activity Summary
+# 75. Activity Summary
 
 The activity has extended the basic concepts from Activity 1.
 

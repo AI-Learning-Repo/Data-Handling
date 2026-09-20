@@ -1,18 +1,5 @@
 # Activity 1: Introduction to Unsupervised Learning with Clustering
 
-## Table of Contents
-
-1. **Module 1: Unsupervised Foundations & Distance Metrics**
-   - Unsupervised learning and clustering
-   - Similarity, Euclidean distance, and the role of feature space
-2. **Module 2: Centroid-Based Clustering (K-Means)**
-   - K-Means workflow, centroids, labels, and experiments with `K`
-3. **Module 3: Connectivity-Based Clustering (Hierarchical Agglomerative)**
-   - Agglomerative clustering, hierarchy, linkage, and dendrograms
-4. **Module 4: Evaluation, Interpretation & Practical Limitations**
-   - Feature scale, interpreting clusters, limitations, and reflection
-
-
 ## Learning Objectives
 
 By the end of this activity, the following concepts should be understood:
@@ -33,8 +20,6 @@ By the end of this activity, the following concepts should be understood:
 The activity uses a small synthetic dataset so that the structure of the data can be visualized clearly.
 
 ---
-
-# Module 1: Unsupervised Foundations & Distance Metrics
 
 # 1. What Is Unsupervised Learning?
 
@@ -363,14 +348,11 @@ K-Means is based on assigning observations to nearby cluster centers.
 
 # 7. Create a Dataset
 
-For the first clustering experiment, use a small real-world automobile dataset.
+For the first clustering experiment, use a synthetic dataset.
 
-The Seaborn `mpg` dataset contains familiar vehicle measurements. We will use:
+Scikit-learn provides `make_blobs()` for generating datasets with groups of observations around specified centers. It is designed specifically for clustering examples. ([scikit-learn.org](https://scikit-learn.org/dev/modules/generated/sklearn.datasets.make_blobs.html))
 
-- `horsepower`
-- `weight`
-
-The target-like column `mpg` is deliberately excluded from clustering so that the exercise remains unsupervised. Rows missing either selected feature are removed because the clustering algorithms require numeric values.
+Because the dataset is synthetic, the groups will be easy to visualize.
 
 ---
 
@@ -397,7 +379,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-import seaborn as sns
+from sklearn.datasets import make_blobs
 
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
@@ -427,25 +409,44 @@ Provides:
 
 ---
 
-# 10. Load the Automobile Data
+# 10. Generate the Data
 
 Run:
 
 ### Code Cell
 
 ```python id="k3r7hs"
-mpg = sns.load_dataset("mpg")
-
-X_df = mpg[["horsepower", "weight"]].dropna()
-
-X = X_df.to_numpy()
+X, _ = make_blobs(
+    n_samples=300,
+    centers=3,
+    cluster_std=1.2,
+    random_state=42
+)
 ```
 
-The resulting `X` array contains only the two selected input features.
+The function returns two objects:
 
-The dataset may also contain columns such as vehicle name, origin, and `mpg`, but these are not used in this clustering experiment. In particular, `mpg` is not supplied as a target variable.
+```text
+X
+```
 
-This keeps the example aligned with the central unsupervised-learning idea: the algorithm receives feature values and attempts to discover structure without known cluster labels.
+contains the feature values.
+
+The second object contains the generated group information.
+
+It is assigned to:
+
+```python id="h0q6xk"
+_
+```
+
+because it will not be used by the clustering algorithm.
+
+This is important.
+
+We are deliberately asking an **unsupervised** algorithm to discover groups without giving it the generated group labels.
+
+The current scikit-learn documentation describes `make_blobs` as a function for generating isotropic Gaussian blobs for clustering and supports parameters such as `n_samples`, `centers`, `cluster_std`, and `random_state`. ([scikit-learn.org](https://scikit-learn.org/dev/modules/generated/sklearn.datasets.make_blobs.html))
 
 ---
 
@@ -457,7 +458,11 @@ This keeps the example aligned with the central unsupervised-learning idea: the 
 print(X.shape)
 ```
 
-The exact shape depends on the available rows after removing missing values. The second value is `2` because we selected two features.
+The expected result is approximately:
+
+```text
+(300, 2)
+```
 
 This means:
 
@@ -499,7 +504,10 @@ answer:
 <details>
 <summary>Solution</summary>
 
-There are two features (`horsepower` and `weight`). The number of observations is the number of complete rows in the selected dataset.
+There are:
+
+* 300 observations;
+* 2 features.
 
 A two-feature dataset is convenient because the two features can be plotted directly on the x-axis and y-axis of a two-dimensional graph.
 
@@ -563,8 +571,6 @@ A clustering algorithm can use the locations of the observations and distances b
 </details>
 
 ---
-
-# Module 2: Centroid-Based Clustering (K-Means)
 
 # 15. K-Means Clustering
 
@@ -1179,8 +1185,6 @@ The data do not always contain one uniquely correct number of clusters, so the c
 
 ---
 
-# Module 3: Connectivity-Based Clustering (Hierarchical Agglomerative)
-
 # 33. Hierarchical Clustering
 
 K-Means is not the only clustering approach.
@@ -1513,8 +1517,6 @@ Therefore:
 > **Clustering results depend on how the data and problem are represented.**
 
 ---
-
-# Module 4: Evaluation, Interpretation & Practical Limitations
 
 # 44. Question 11: Change the Features
 
