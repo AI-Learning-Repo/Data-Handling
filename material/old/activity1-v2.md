@@ -382,7 +382,7 @@ Run the installation cell separately.
 
 ### Code Cell
 
-```python id="p1x5nd"
+```python
 !pip install -q scikit-learn pandas matplotlib
 ```
 
@@ -392,7 +392,7 @@ Run the installation cell separately.
 
 ### Code Cell
 
-```python id="g7q2vw"
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -433,7 +433,7 @@ Run:
 
 ### Code Cell
 
-```python id="k3r7hs"
+```python
 mpg = sns.load_dataset("mpg")
 
 X_df = mpg[["horsepower", "weight"]].dropna()
@@ -453,7 +453,7 @@ This keeps the example aligned with the central unsupervised-learning idea: the 
 
 ### Code Cell
 
-```python id="8m4x4g"
+```python
 print(X.shape)
 ```
 
@@ -462,7 +462,7 @@ The exact shape depends on the available rows after removing missing values. The
 This means:
 
 ```text
-300 observations
+392 observations
 2 features
 ```
 
@@ -483,7 +483,7 @@ Observation 2 → [7.1, 8.2]
 If:
 
 ```text
-X.shape = (300, 2)
+X.shape = (392, 2)
 ```
 
 answer:
@@ -494,7 +494,7 @@ answer:
 
 ### LLM Hint Prompt
 
-> Explain what `X.shape = (300, 2)` means in a machine-learning dataset. Then explain why a dataset with two numerical features is useful for demonstrating clustering visually.
+> Explain what `X.shape = (392, 2)` means in a machine-learning dataset. Then explain why a dataset with two numerical features is useful for demonstrating clustering visually.
 
 <details>
 <summary>Solution</summary>
@@ -513,7 +513,7 @@ Create a scatter plot.
 
 ### Code Cell
 
-```python id="q8oe7s"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -664,7 +664,7 @@ Use:
 
 ### Code Cell
 
-```python id="e8c8kv"
+```python
 kmeans = KMeans(
     n_clusters=3,
     random_state=42,
@@ -694,7 +694,7 @@ Now run:
 
 ### Code Cell
 
-```python id="h3rxr1"
+```python
 kmeans.fit(X)
 ```
 
@@ -722,7 +722,7 @@ After fitting:
 
 ### Code Cell
 
-```python id="9yk0bc"
+```python
 labels = kmeans.labels_
 
 print(labels[:20])
@@ -819,7 +819,7 @@ Create a plot.
 
 ### Code Cell
 
-```python id="5x0edx"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -931,7 +931,7 @@ The mean is calculated separately for each feature because the centroid must hav
 
 The centroids are stored in:
 
-```python id="9m30hk"
+```python
 kmeans.cluster_centers_
 ```
 
@@ -939,7 +939,7 @@ Run:
 
 ### Code Cell
 
-```python id="d4k0cw"
+```python
 print(kmeans.cluster_centers_)
 ```
 
@@ -1080,7 +1080,7 @@ K-Means requires the number of clusters to be specified.
 
 For example:
 
-```python id="4ys6qj"
+```python
 KMeans(n_clusters=3)
 ```
 
@@ -1106,7 +1106,7 @@ This topic will be examined in more detail later.
 
 Try:
 
-```python id="jry12d"
+```python
 kmeans_2 = KMeans(
     n_clusters=2,
     random_state=42,
@@ -1120,7 +1120,7 @@ Visualize it:
 
 ### Code Cell
 
-```python id="2c2f3g"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -1249,7 +1249,7 @@ We can use:
 
 ### Code Cell
 
-```python id="6wnwge"
+```python
 hierarchical = AgglomerativeClustering(
     n_clusters=3
 )
@@ -1271,13 +1271,13 @@ The current scikit-learn implementation supports `metric`, `linkage`, and other 
 
 ### Code Cell
 
-```python id="p9n6v3"
+```python
 hierarchical_labels = hierarchical.fit_predict(X)
 ```
 
 Unlike the two-step K-Means example:
 
-```python id="w6fzw0"
+```python
 kmeans.fit(X)
 labels = kmeans.labels_
 ```
@@ -1290,7 +1290,7 @@ labels = kmeans.labels_
 
 ### Code Cell
 
-```python id="t8vfhi"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -1411,13 +1411,13 @@ For Activity 1, the dendrogram is introduced conceptually. Detailed dendrogram a
 
 ---
 
-# 41. Optional Dendrogram Demonstration
+# 41. Dendrogram Demonstration
 
 If SciPy is available in the Colab environment, a dendrogram can be created.
 
 ### Code Cell
 
-```python id="wvw3n2"
+```python
 !pip install -q scipy
 ```
 
@@ -1425,7 +1425,7 @@ Then:
 
 ### Code Cell
 
-```python id="zctojy"
+```python
 from scipy.cluster.hierarchy import linkage, dendrogram
 
 Z = linkage(
@@ -1668,7 +1668,7 @@ However, the concept is important for real datasets.
 
 A common scikit-learn transformer is:
 
-```python id="7qzn61"
+```python
 from sklearn.preprocessing import StandardScaler
 ```
 
@@ -1676,7 +1676,7 @@ It can standardize features.
 
 For example:
 
-```python id="a2b6cv"
+```python
 scaler = StandardScaler()
 
 X_scaled = scaler.fit_transform(X)
@@ -2140,7 +2140,7 @@ Additional evaluation and domain knowledge are often needed.
 
 The original dataset used:
 
-```python id="qf9y8r"
+```python
 cluster_std=1.2
 ```
 
@@ -2148,7 +2148,8 @@ Create another dataset with more overlap:
 
 ### Code Cell
 
-```python id="o50a9j"
+```python
+from sklearn.datasets import make_blobs
 X_overlap, _ = make_blobs(
     n_samples=300,
     centers=3,
@@ -2161,7 +2162,7 @@ Visualize:
 
 ### Code Cell
 
-```python id="q8vxxd"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -2180,7 +2181,7 @@ Now fit K-Means:
 
 ### Code Cell
 
-```python id="5v20vx"
+```python
 kmeans_overlap = KMeans(
     n_clusters=3,
     random_state=42,
@@ -2196,7 +2197,7 @@ Visualize:
 
 ### Code Cell
 
-```python id="a0b9fj"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -2257,7 +2258,7 @@ A clustering algorithm can produce clusters even when the data do not contain cl
 
 For example, specifying:
 
-```python id="6b6vne"
+```python
 KMeans(n_clusters=5)
 ```
 
@@ -2279,7 +2280,7 @@ For example:
 
 ### Code Cell
 
-```python id="7e3k9q"
+```python
 rng = np.random.default_rng(42)
 
 X_random = rng.uniform(
@@ -2293,7 +2294,7 @@ Plot:
 
 ### Code Cell
 
-```python id="5j78w2"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -2312,7 +2313,7 @@ Now apply K-Means:
 
 ### Code Cell
 
-```python id="3h7v7m"
+```python
 random_kmeans = KMeans(
     n_clusters=3,
     random_state=42,

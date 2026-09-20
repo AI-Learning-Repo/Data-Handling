@@ -74,7 +74,7 @@ This activity uses a real-world automobile dataset so that the clustering result
 
 ### Code Cell
 
-```python id="0z7jmf"
+```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -95,7 +95,7 @@ Generate the data:
 
 ### Code Cell
 
-```python id="3lqkmq"
+```python
 mpg = sns.load_dataset("mpg")
 
 X_df = mpg[["horsepower", "weight"]].dropna()
@@ -142,7 +142,7 @@ The important point is that the visual structure provides an initial hypothesis.
 
 ### Code Cell
 
-```python id="5y9fcl"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -171,7 +171,7 @@ Run:
 
 ### Code Cell
 
-```python id="y8z1b2"
+```python
 kmeans = KMeans(
     n_clusters=4,
     random_state=42,
@@ -193,7 +193,7 @@ Count them:
 
 ### Code Cell
 
-```python id="k2hqnw"
+```python
 cluster_counts = pd.Series(
     labels
 ).value_counts().sort_index()
@@ -238,7 +238,7 @@ Cluster size alone does not determine whether a clustering is good.
 
 ### Code Cell
 
-```python id="a0y2c6"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -281,7 +281,7 @@ kmeans.inertia_
 
 ### Code Cell
 
-```python id="l2gg4m"
+```python
 print("Inertia:", kmeans.inertia_)
 ```
 
@@ -386,7 +386,7 @@ Run K-Means for several values of `K`.
 
 ### Code Cell
 
-```python id="j7g1zz"
+```python
 inertias = []
 
 k_values = range(1, 9)
@@ -410,7 +410,7 @@ Plot:
 
 ### Code Cell
 
-```python id="khdnqs"
+```python
 plt.figure(figsize=(8, 5))
 
 plt.plot(
@@ -516,7 +516,7 @@ Run K-Means for several K values.
 
 ### Code Cell
 
-```python id="63h7cq"
+```python
 silhouette_results = []
 
 for k in range(2, 9):
@@ -550,7 +550,7 @@ Plot:
 
 ### Code Cell
 
-```python id="b8n0gl"
+```python
 plt.figure(figsize=(8, 5))
 
 plt.plot(
@@ -657,7 +657,7 @@ It means that its numerical units contribute more strongly to the distance.
 
 ### Code Cell
 
-```python id="pr1i82"
+```python
 tips = sns.load_dataset("tips").dropna()
 
 X_scale_demo = tips[["total_bill", "size"]].copy()
@@ -667,7 +667,7 @@ Inspect:
 
 ### Code Cell
 
-```python id="ob2p1o"
+```python
 X_scale_demo.describe()
 ```
 
@@ -679,7 +679,7 @@ Use:
 
 ### Code Cell
 
-```python id="6g0muj"
+```python
 scaler = StandardScaler()
 
 X_scaled = scaler.fit_transform(
@@ -735,7 +735,7 @@ Return to the earlier blob dataset and compare.
 
 ### Code Cell
 
-```python id="vvdn43"
+```python
 scaler = StandardScaler()
 
 X_scaled = scaler.fit_transform(X)
@@ -745,7 +745,7 @@ Fit K-Means:
 
 ### Code Cell
 
-```python id="fve06n"
+```python
 kmeans_scaled = KMeans(
     n_clusters=4,
     random_state=42,
@@ -761,7 +761,7 @@ Compare labels:
 
 ### Code Cell
 
-```python id="f0u8un"
+```python
 print(labels[:20])
 print(labels_scaled[:20])
 ```
@@ -870,7 +870,7 @@ The exact mathematical differences are not required for the basic workflow, but 
 
 ### Code Cell
 
-```python id="z9s55j"
+```python
 hierarchical = AgglomerativeClustering(
     n_clusters=4,
     linkage="ward"
@@ -889,7 +889,7 @@ The `ward` linkage is a common starting point.
 
 ### Code Cell
 
-```python id="8kld4m"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -1018,7 +1018,7 @@ For this activity, the divisive example is intended to explain the algorithmic i
 
 ---
 
-# 31.. Dendrogram
+# 31. Dendrogram
 
 A major advantage of hierarchical clustering is that the merging process can be visualized as a **dendrogram**.
 
@@ -1026,7 +1026,7 @@ Install SciPy if needed.
 
 ### Code Cell
 
-```python id="u9w0hm"
+```python
 !pip install -q scipy
 ```
 
@@ -1034,7 +1034,7 @@ Import:
 
 ### Code Cell
 
-```python id="k4u4j1"
+```python
 from scipy.cluster.hierarchy import (
     linkage,
     dendrogram
@@ -1045,7 +1045,7 @@ Calculate the hierarchy:
 
 ### Code Cell
 
-```python id="ce7zpl"
+```python
 Z = linkage(
     X_scaled,
     method="ward"
@@ -1056,7 +1056,7 @@ Visualize:
 
 ### Code Cell
 
-```python id="w74dsv"
+```python
 plt.figure(figsize=(12, 6))
 
 dendrogram(Z)
@@ -1070,7 +1070,7 @@ plt.show()
 
 ---
 
-# 31.. Understanding the Dendrogram
+# 31. Understanding the Dendrogram
 
 The bottom of the dendrogram represents individual observations.
 
@@ -1092,7 +1092,7 @@ A large vertical jump can suggest that groups being merged are relatively far ap
 
 ---
 
-# 32.. Question 8: Where Could the Hierarchy Be Cut?
+# 32. Question 8: Where Could the Hierarchy Be Cut?
 
 Consider a dendrogram with a large vertical gap between two sets of merges.
 
@@ -1115,13 +1115,13 @@ Cutting before the large merge can preserve those separate groups and produce a 
 
 ---
 
-# 33.. Try Different Linkage Methods
+# 33. Try Different Linkage Methods
 
 Run:
 
 ### Code Cell
 
-```python id="j0h81t"
+```python
 linkage_methods = [
     "ward",
     "complete",
@@ -1156,7 +1156,7 @@ The exact cluster sizes can change with linkage.
 
 ---
 
-# 34.. Question 9: Why Does Linkage Matter?
+# 34. Question 9: Why Does Linkage Matter?
 
 Why might changing:
 
@@ -1192,7 +1192,7 @@ Because the hierarchy is built from those merges, the final clusters can also ch
 
 # Part C: Anomaly Detection
 
-# 35.. What Is Anomaly Detection?
+# 35. What Is Anomaly Detection?
 
 Clustering asks:
 
@@ -1223,22 +1223,30 @@ Find unusual observations
 
 ---
 
-# 36.. Create Data with Potentially Unusual Transactions
+# 36. Create Data with Potentially Unusual Transactions
 
-Use the **Credit Card Dataset for Clustering** from Kaggle:
+Use the **Credit Card Dataset for Clustering**:
 
-https://www.kaggle.com/datasets/arjunbhasin2013/ccdata
+<!-- https://www.kaggle.com/datasets/arjunbhasin2013/ccdata -->
 
 This dataset contains aggregated customer-level credit-card usage information. It is useful for exploring customer segmentation and unusual customer profiles, but it should **not** be treated as a transaction-level fraud dataset. An observation flagged as unusual represents an unusual customer profile according to the selected features, not confirmed fraudulent activity.
 
-Download `CC GENERAL.csv` from Kaggle and place it in the working directory.
+
+### Code Cell
+
+Download `credit_card.csv` dataset
+
+```sh
+!wget https://raw.githubusercontent.com/AI-Learning-Repo/Data-Handling/refs/heads/week5/datasets/credit_card.csv
+```
+
 
 ### Code Cell
 
 ```python
 import pandas as pd
 
-credit_card = pd.read_csv("CC GENERAL.csv")
+credit_card = pd.read_csv("credit_card.csv")
 
 # Remove the identifier because it is not a behavioral feature.
 credit_card = credit_card.drop(columns=["CUST_ID"])
@@ -1261,7 +1269,7 @@ Visualize:
 
 ### Code Cell
 
-```python id="n9s7dm"
+```python
 plt.figure(figsize=(8, 6))
 
 plt.scatter(
@@ -1278,7 +1286,7 @@ plt.show()
 
 ---
 
-# 37.. Question 10: Identify the Potential Anomalies
+# 37. Question 10: Identify the Potential Anomalies
 
 Looking at the plot:
 
@@ -1304,7 +1312,7 @@ This motivates automated anomaly-detection methods.
 
 ---
 
-# 38.. Isolation Forest
+# 38. Isolation Forest
 
 One anomaly-detection method available in scikit-learn is **Isolation Forest**.
 
@@ -1316,11 +1324,11 @@ Anomalies tend to be isolated with fewer random splits because they are unusual 
 
 ---
 
-# 39.. Create the Isolation Forest Model
+# 39. Create the Isolation Forest Model
 
 ### Code Cell
 
-```python id="flx5cb"
+```python
 from sklearn.preprocessing import StandardScaler
 
 anomaly_scaler = StandardScaler()
@@ -1346,11 +1354,11 @@ The contamination parameter should therefore be chosen carefully; it is not simp
 
 ---
 
-# 40.. Fit and Predict
+# 40. Fit and Predict
 
 ### Code Cell
 
-```python id="xj8h2d"
+```python
 anomaly_labels = isolation_model.fit_predict(
     X_anomaly_scaled
 )
@@ -1369,7 +1377,7 @@ Count them:
 
 ### Code Cell
 
-```python id="7my4v9"
+```python
 print(
     pd.Series(anomaly_labels).value_counts()
 )
@@ -1377,11 +1385,11 @@ print(
 
 ---
 
-# 41.. Visualize the Anomalies
+# 41. Visualize the Anomalies
 
 ### Code Cell
 
-```python id="2vrw5u"
+```python
 normal = anomaly_labels == 1
 anomalies = anomaly_labels == -1
 
@@ -1411,7 +1419,7 @@ plt.show()
 
 ---
 
-# 42.. Question 11: Anomaly vs Cluster
+# 42. Question 11: Anomaly vs Cluster
 
 Suppose an observation is far away from all clusters.
 
@@ -1436,7 +1444,7 @@ An isolated point may still be assigned to a K-Means cluster, while an anomaly-d
 
 ---
 
-# 43.. Important Caution About Anomalies
+# 43. Important Caution About Anomalies
 
 An anomaly is not automatically:
 
@@ -1485,7 +1493,7 @@ It does not automatically provide the explanation.
 
 # Part D: Association Rule Learning
 
-# 44.. A Different Type of Unsupervised Learning
+# 44. A Different Type of Unsupervised Learning
 
 Clustering and anomaly detection work with observations represented by features.
 
@@ -1530,13 +1538,13 @@ Again, association is not causation.
 
 ---
 
-# 45.. Install `mlxtend`
+# 45. Install `mlxtend`
 
 A convenient Python library for association-rule learning is `mlxtend`.
 
 ### Code Cell
 
-```python id="5yab76"
+```python
 !pip install -q mlxtend
 ```
 
@@ -1544,7 +1552,10 @@ Import:
 
 ### Code Cell
 
-```python id="5iy2gy"
+```python
+import warnings
+warnings.filterwarnings('ignore', category=DeprecationWarning)
+
 from mlxtend.preprocessing import TransactionEncoder
 from mlxtend.frequent_patterns import (
     apriori,
@@ -1554,11 +1565,11 @@ from mlxtend.frequent_patterns import (
 
 ---
 
-# 46.. Create a Transaction Dataset
+# 46. Create a Transaction Dataset
 
 ### Code Cell
 
-```python id="5kz8r1"
+```python
 transactions = [
     ["Bread", "Butter", "Milk"],
     ["Bread", "Butter"],
@@ -1575,7 +1586,7 @@ Each list represents one transaction.
 
 ---
 
-# 47.. Convert Transactions into a Matrix
+# 47. Convert Transactions into a Matrix
 
 Machine-learning algorithms need a numerical representation.
 
@@ -1583,7 +1594,7 @@ Use `TransactionEncoder`.
 
 ### Code Cell
 
-```python id="t7f3vb"
+```python
 encoder = TransactionEncoder()
 
 encoded = encoder.fit(
@@ -1597,7 +1608,7 @@ Create a DataFrame:
 
 ### Code Cell
 
-```python id="k7ff4h"
+```python
 transaction_df = pd.DataFrame(
     encoded,
     columns=encoder.columns_
@@ -1620,7 +1631,7 @@ The result will look approximately like:
 
 ---
 
-# 48.. Frequent Itemsets
+# 48. Frequent Itemsets
 
 The first step is to find **frequent itemsets**.
 
@@ -1640,7 +1651,7 @@ Run Apriori:
 
 ### Code Cell
 
-```python id="0c7qq0"
+```python
 frequent_itemsets = apriori(
     transaction_df,
     min_support=0.3,
@@ -1652,7 +1663,7 @@ frequent_itemsets
 
 ---
 
-# 49.. Support
+# 49. Support
 
 **Support** measures how frequently an itemset occurs in the transactions.
 
@@ -1696,7 +1707,7 @@ $$
 
 ---
 
-# 50.. Question 12: Calculate Support
+# 50. Question 12: Calculate Support
 
 Suppose there are 10 transactions.
 
@@ -1746,13 +1757,13 @@ $$
 
 ---
 
-# 51.. Generate Association Rules
+# 51. Generate Association Rules
 
 Now generate rules.
 
 ### Code Cell
 
-```python id="qy1x2q"
+```python
 rules = association_rules(
     frequent_itemsets,
     metric="confidence",
@@ -1774,7 +1785,7 @@ The actual output depends on the transaction data and selected thresholds.
 
 ---
 
-# 52.. Confidence
+# 52. Confidence
 
 Confidence measures how often the consequent appears when the antecedent appears.
 
@@ -1824,7 +1835,7 @@ Interpretation:
 
 ---
 
-# 53.. Question 13: Calculate Confidence
+# 53. Question 13: Calculate Confidence
 
 There are:
 
@@ -1890,7 +1901,7 @@ This means that among transactions containing bread, 75% also contain butter.
 
 ---
 
-# 54.. Lift
+# 54. Lift
 
 Confidence alone can sometimes be misleading.
 
@@ -1934,7 +1945,7 @@ The items occur together less often than expected.
 
 ---
 
-# 55.. Worked Lift Example
+# 55. Worked Lift Example
 
 Suppose:
 
@@ -1969,7 +1980,7 @@ A lift of 1.5 indicates that bread and butter co-occur more often than would be 
 
 ---
 
-# 56.. Question 14: Interpret Lift
+# 56. Question 14: Interpret Lift
 
 Suppose the following rules are produced:
 
@@ -2008,7 +2019,7 @@ Confidence alone would not necessarily produce the same ranking because it does 
 
 ---
 
-# 57.. Association Is Not Causation
+# 57. Association Is Not Causation
 
 Suppose:
 
@@ -2040,7 +2051,7 @@ It does not establish causal relationships.
 
 ---
 
-# 58.. Question 15: Association or Causation?
+# 58. Question 15: Association or Causation?
 
 Suppose a supermarket discovers:
 
@@ -2077,7 +2088,7 @@ Other variables or purchasing habits could explain the relationship.
 
 # Part E: Comparing the Unsupervised-Learning Techniques
 
-# 59.. Different Questions, Different Methods
+# 59. Different Questions, Different Methods
 
 The techniques covered in this session solve different problems.
 
@@ -2095,7 +2106,7 @@ These methods should not be treated as interchangeable.
 
 ---
 
-# 60.. Clustering vs Anomaly Detection
+# 60. Clustering vs Anomaly Detection
 
 Consider a dataset of customer spending.
 
@@ -2133,7 +2144,7 @@ A customer can belong to a cluster and still be unusual relative to that cluster
 
 ---
 
-# 61.. Clustering vs Association Rules
+# 61. Clustering vs Association Rules
 
 These methods use data differently.
 
@@ -2167,7 +2178,7 @@ The goal is to discover co-occurrence relationships between items.
 
 ---
 
-# 62.. Question 16: Choose the Technique
+# 62. Question 16: Choose the Technique
 
 Choose an appropriate unsupervised-learning technique.
 
@@ -2214,7 +2225,7 @@ The objective is to represent high-dimensional data using fewer dimensions, such
 
 ---
 
-# 63.. Choosing Between K-Means and Hierarchical Clustering
+# 63. Choosing Between K-Means and Hierarchical Clustering
 
 Consider:
 
@@ -2246,7 +2257,7 @@ The choice also depends on:
 
 ---
 
-# 64.. Question 17: Algorithm Selection
+# 64. Question 17: Algorithm Selection
 
 A dataset contains 50 observations and the main interest is understanding which observations are closely related to one another at several levels.
 
@@ -2271,7 +2282,7 @@ K-Means instead directly creates a selected number of centroid-based clusters.
 
 ---
 
-# 65.. A More Detailed K-Means Experiment
+# 65. A More Detailed K-Means Experiment
 
 Return to the blob data.
 
@@ -2295,7 +2306,7 @@ Silhouette
 
 ### Code Cell
 
-```python id="2sh4c6"
+```python
 results = []
 
 for k in range(2, 7):
@@ -2328,7 +2339,7 @@ results_df
 
 ---
 
-# 66.. Question 18: Model Selection
+# 66. Question 18: Model Selection
 
 Use the results table.
 
@@ -2361,7 +2372,7 @@ Other useful information includes:
 
 ---
 
-# 67.. Cluster Profiling
+# 67. Cluster Profiling
 
 Once clusters are created, the numerical cluster labels are often not enough.
 
@@ -2385,12 +2396,41 @@ It is useful to calculate the average characteristics of each group.
 
 Example:
 
-```python id="v7lh75"
+```python
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+# Create a sample customer dataset
+customer_df = pd.DataFrame({
+    "Age": [22, 25, 28, 35, 40, 45, 50, 52, 60],
+    "Income": [25, 30, 35, 50, 55, 65, 75, 80, 90],
+    "Spending": [80, 75, 70, 60, 55, 45, 35, 30, 20]
+})
+
+# Select the features used for clustering
+features = ["Age", "Income", "Spending"]
+
+X_customer = customer_df[features]
+
+# Standardize the features
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X_customer)
+
+# Apply K-Means clustering
+kmeans = KMeans(
+    n_clusters=3,
+    random_state=42,
+    n_init=10
+)
+
+labels = kmeans.fit_predict(X_scaled)
+
+# Add the cluster labels to the original DataFrame
 customer_df["Cluster"] = labels
 
-profile = customer_df.groupby(
-    "Cluster"
-)[
+# Calculate the average characteristics of each cluster
+profile = customer_df.groupby("Cluster")[
     [
         "Age",
         "Income",
@@ -2405,7 +2445,7 @@ The resulting summary can provide meaning to the clusters.
 
 ---
 
-# 68.. Question 19: Why Profile Clusters?
+# 68. Question 19: Why Profile Clusters?
 
 Why is a cluster label such as `Cluster 2` not sufficient for interpreting a real-world clustering result?
 
@@ -2428,7 +2468,7 @@ For example, it may reveal that one cluster contains younger customers with lowe
 
 # Part F: Integrated Analysis
 
-# 69.. Complete Unsupervised-Learning Workflow
+# 69. Complete Unsupervised-Learning Workflow
 
 The workflow can now be summarized as:
 
@@ -2460,7 +2500,7 @@ This workflow is different from supervised learning because there is no target v
 
 ---
 
-# 70.. Integrated Scenario
+# 70. Integrated Scenario
 
 Consider the following dataset:
 
@@ -2506,7 +2546,7 @@ Answer:
 
 ---
 
-# 71.. Integrated Scenario: Anomaly Detection
+# 71. Integrated Scenario: Anomaly Detection
 
 A bank has transaction data containing:
 
@@ -2542,7 +2582,7 @@ Answer:
 
 ---
 
-# 72.. Integrated Scenario: Association Rules
+# 72. Integrated Scenario: Association Rules
 
 A supermarket records:
 
@@ -2580,7 +2620,7 @@ Answer:
 
 ---
 
-# 73.. Final Comparison
+# 73. Final Comparison
 
 The most important distinctions are:
 
@@ -2624,7 +2664,7 @@ Each technique solves a different problem.
 
 ---
 
-# 74.. Final Knowledge Check
+# 74. Final Knowledge Check
 
 Answer the following questions without immediately looking at the solutions.
 
@@ -2854,7 +2894,7 @@ Association rule learning.
 
 ---
 
-# 75.. Final Reflection
+# 75. Final Reflection
 
 Consider the following statement:
 
@@ -2898,7 +2938,7 @@ Find products frequently purchased together.
 
 ---
 
-# 76.. Activity Summary
+# 76. Activity Summary
 
 The activity has extended the basic concepts from Activity 1.
 
