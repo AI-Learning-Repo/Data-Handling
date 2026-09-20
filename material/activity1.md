@@ -441,16 +441,13 @@ The dataset can be loaded directly from the supplied GitHub raw URL.
 ### Code Cell
 
 ```python
-url = (
-    "https://raw.githubusercontent.com/PatrickJWalsh/"
-    "Mall-Customer-Segmentation/refs/heads/master/"
-    "Mall%20Customers.csv"
-)
+url="https://raw.githubusercontent.com/AI-Learning-Repo/Data-Handling/refs/heads/week5/datasets/mall-customers.csv"
 
 customers = pd.read_csv(url)
 
 customers.head()
 ```
+
 
 The `read_csv()` function downloads the CSV file and stores it as a pandas DataFrame.
 
