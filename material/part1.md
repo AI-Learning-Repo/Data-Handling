@@ -404,28 +404,18 @@ $$
 Then:
 
 $$
-d=
-\sqrt{
-(4-1)^2+
-(6-2)^2
-}
+d=\sqrt{(4-1)^2+(6-2)^2}
 $$
 
 $$
-=
-\sqrt{
-3^2+4^2
-}
+d=\sqrt{3^2+4^2}$$
+
+$$
+d=\sqrt{9+16}
 $$
 
 $$
-=
-\sqrt{9+16}
-$$
-
-$$
-=
-\sqrt{25}
+d=\sqrt{25}
 $$
 
 Therefore:
@@ -710,7 +700,7 @@ which specifies the desired number of clusters.
 
 The `random_state` makes the result reproducible.
 
-The `n_init` parameter controls initialization runs. Current scikit-learn documentation recommends/defines `n_init="auto"` as an automatic choice based on the initialization strategy. ([scikit-learn.org](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html?utm_source=chatgpt.com))
+The `n_init` parameter controls initialization runs. Current scikit-learn documentation recommends/defines `n_init="auto"` as an automatic choice based on the initialization strategy. (scikit-learn.org)
 
 ---
 
@@ -1024,7 +1014,7 @@ $$
 1
 $$
 
-A value closer to 1 generally indicates that observations are well matched to their own cluster and separated from nearby clusters. A value near zero indicates observations near cluster boundaries. Negative values can indicate potentially poor assignments. ([scikit-learn.org](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html?utm_source=chatgpt.com))
+A value closer to 1 generally indicates that observations are well matched to their own cluster and separated from nearby clusters. A value near zero indicates observations near cluster boundaries. Negative values can indicate potentially poor assignments. (scikit-learn.org)
 
 Detailed silhouette analysis belongs to the more advanced clustering activity.
 
