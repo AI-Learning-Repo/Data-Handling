@@ -59,12 +59,6 @@
 
 There are two versions for **Activity 3 (Vector Retrieval)** and **Activity 4 (Augmented Generation)**. The short version uses intentional simplifications to keep the lab interactive and accessible within session time limits. For full technical accuracy, refer to the long version.
 
-| Version | Focus | Best For |
-| :--- | :--- | :--- |
-| **Short Version (Interactive Lab)** | Hands-on execution, minimal boilerplate, high-level intuition | Completing the in-class exercise, following along in Google Colab, and testing core pipeline steps. |
-| **Long Version (Comprehensive Reference)** | Edge cases and detailed technical review | Deep understanding. |
-
-
 -  [Theory](./material/part3-4.md)
 - Activity 3: 
   - [Short Version](./material/activity3.md)
@@ -74,8 +68,12 @@ There are two versions for **Activity 3 (Vector Retrieval)** and **Activity 4 (A
   - [Long Version](./material/activity4-l.md)
 
 
-
-
+<!-- 
+| Version | Focus | Best For |
+| :--- | :--- | :--- |
+| **Short Version (Interactive Lab)** | Hands-on execution, minimal boilerplate, high-level intuition | Completing the in-class exercise, following along in Google Colab, and testing core pipeline steps. |
+| **Long Version (Comprehensive Reference)** | Edge cases and detailed technical review | Deep understanding. |
+ -->
 
 
 
