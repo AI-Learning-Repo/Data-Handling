@@ -1,4 +1,4 @@
-# Activity 3: Semantic Search and Vector Retrieval with ChromaDB
+# Activity 3: Semantic Search and Vector Retrieval with ChromaDB (RAG Part 1)
 
 ## Learning Objectives
 

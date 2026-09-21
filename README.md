@@ -22,18 +22,18 @@
 
 ----
 
-## Morning:
+## Morning: Unsupervised Learning
 
 
 ### Part 1:
 
-- [Unsupervised Learning: Clustering](./material/part1.md)
+- [Introduction to Unsupervised Learning and Clustering](./material/part1.md)
 - [Activity 1](./material/activity1.md)
 
 
 ### Part 2: 
 
-- [Unsupervised Learning: Clustering, Anomaly detection](./material/part2.md)
+- [Unsupervised Learning: Clustering, Anomaly Detection, and Association Rules](./material/part2.md)
 - [Activity 2](./material/activity2.md)
 
 
@@ -54,7 +54,7 @@
 
 ----
 
-## Afternoon:
+## Afternoon: Retrieval-Augmented Generation (RAG)
 
 
 There are two versions for **Activity 3 (Vector Retrieval)** and **Activity 4 (Augmented Generation)**. The short version uses intentional simplifications to keep the lab interactive and accessible within session time limits. For full technical accuracy, refer to the long version.
@@ -67,6 +67,14 @@ There are two versions for **Activity 3 (Vector Retrieval)** and **Activity 4 (A
   - [Short Version](./material/activity4.md)
   - [Long Version](./material/activity4-l.md)
 
+
+
+<details>
+<summary>Links used in Session</summary>
+
+- https://github.com/microsoft/generative-ai-for-beginners/tree/main/15-rag-and-vector-databases
+- https://github.com/polzerdo55862/RAG-with-Python-Cookbook
+</details> 
 
 <!-- 
 | Version | Focus | Best For |
