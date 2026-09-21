@@ -295,8 +295,8 @@ Inertia=\sum_{i=1}^{n}\left\|x_i-\mu_{c_i}\right\|^
 
 where:
 
-* \(x_i\) is an observation;
-* \(\mu_{c_i}\) is the centroid of its assigned cluster.
+* $x_i$ is an observation;
+* $\mu_{c_i}$ is the centroid of its assigned cluster.
 
 Lower inertia means that observations are, overall, closer to their assigned centroids.
 
@@ -693,9 +693,9 @@ $$
 
 where:
 
-* \(x\) is the original value;
-* \(\mu\) is the feature mean;
-* \(\sigma\) is the feature standard deviation.
+* $x$ is the original value;
+* $\mu$ is the feature mean;
+* $\sigma$ is the feature standard deviation.
 
 ---
 
