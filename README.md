@@ -25,7 +25,7 @@
 ## Morning:
 
 
-### Part 1: About the course
+### Part 1:
 
 - [Unsupervised Learning: Clustering](./material/part1.md)
 - [Activity 1](./material/activity1.md)
@@ -62,7 +62,7 @@ There are two versions for **Activity 3 (Vector Retrieval)** and **Activity 4 (A
 | Version | Focus | Best For |
 | :--- | :--- | :--- |
 | **Short Version (Interactive Lab)** | Hands-on execution, minimal boilerplate, high-level intuition | Completing the in-class exercise, following along in Google Colab, and testing core pipeline steps. |
-| **Long Version (Comprehensive Reference)** | Mathematical rigor, error analysis, edge cases, production caveats, and detailed technical review | Deep understanding, exam preparation, debugging strange retrieval behaviors, and capstone project design. |
+| **Long Version (Comprehensive Reference)** | Edge cases and detailed technical review | Deep understanding. |
 
 
 -  [Theory](./material/part3-4.md)
