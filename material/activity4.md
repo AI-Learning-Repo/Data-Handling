@@ -34,7 +34,13 @@ Install the Hugging Face ecosystem alongside ChromaDB and sentence transformers:
 
 ```python
 # [Cell 0] Install Dependencies
-!pip install -q -U transformers accelerate torch chromadb sentence-transformers
+!pip install -q \
+    "opentelemetry-api>=1.39.0,<=1.42.1" \
+    "opentelemetry-sdk>=1.39.0,<=1.42.1" \
+    transformers \
+    accelerate \
+    chromadb \
+    sentence-transformers
 ```
 
 #### Code Explanation:

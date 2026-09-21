@@ -30,16 +30,25 @@ Run this cell to install the vector database and embedding libraries:
 
 ```python
 # [Cell 0] Install Dependencies
-!pip install -q chromadb sentence-transformers pypdf python-docx
+!pip install -q \
+    "opentelemetry-api>=1.39.0,<=1.42.1" \
+    "opentelemetry-sdk>=1.39.0,<=1.42.1" \
+    chromadb \
+    sentence-transformers \
+    pypdf \
+    python-docx
 ```
 
 #### Code Explanation:
+
 <details>
-<summary><b>Code Explanation</b></summary>
+<summary><b>Code Explanation:</b></summary>
 
 * `chromadb`: An open-source, lightweight vector database designed to store document chunks, compute embeddings, and perform fast similarity search.
 * `sentence-transformers`: A PyTorch-based framework that provides access to pre-trained transformer models engineered specifically to produce dense vector representations of sentences and paragraphs.
+* `opentelemetry-api` & `opentelemetry-sdk`: Observability and telemetry libraries used internally by ChromaDB to trace operations and log metrics. We explicitly pin their versions (`>=1.39.0,<=1.42.1`) to maintain compatibility with Google Colab's pre-installed environment packages (specifically `google-adk`) and prevent pip resolver dependency conflicts.
 * `pypdf` & `python-docx`: Lightweight text extraction libraries used in the appendix to read unstructured documents.
+
 </details>
 
 ---
@@ -283,28 +292,51 @@ Even though the word "helipad" was not present in the query, the embedding model
 In Activity 4, updating an existing fact required retraining the model. In a vector database, changing a fact is an instantaneous database operation.
 
 ```python
-# [Cell 5] Instant Knowledge Update
-print("BEFORE UPDATE:")
-initial_search = collection.query(query_texts=["Who leads the neurology department?"], n_results=1)
-print(initial_search["documents"][0][0])
+# [Cell 5] Instant Knowledge Update (CEO Leadership Transition)
 
-# Scenario: Dr. Elena Varga has stepped down; Dr. Arto Virtanen is the new department head
+target_id = "medicore_fact_71"
+query = "Who is the CEO of MediCore Hospital?"
+
+# Step 1: Ensure the record is set to the baseline value (allows clean re-runs)
 collection.update(
-    ids=["medicore_fact_56"],  # The ID corresponding to the neurology lead record
-    documents=["Dr. Arto Virtanen leads the neurology department at MediCore Hospital."]
+    ids=[target_id],
+    documents=["The CEO of MediCore Hospital is Juhani Aho."]
 )
 
-print("\nAFTER UPDATE:")
-updated_search = collection.query(query_texts=["Who leads the neurology department?"], n_results=1)
-print(updated_search["documents"][0][0])
+# Step 2: Query the database before modification
+print("--- BEFORE UPDATE ---")
+search_before = collection.query(query_texts=[query], n_results=1)
+doc_before = search_before["documents"][0][0]
+dist_before = search_before["distances"][0][0]
+print(f"Rank 1 [Distance: {dist_before:.4f}]: {doc_before}")
+
+# Step 3: Mutate the record in the vector database
+# Scenario: Juhani Aho retires; Milla Kallio is appointed as the new CEO
+collection.update(
+    ids=[target_id],
+    documents=["The CEO of MediCore Hospital is Milla Kallio."]
+)
+
+# Step 4: Query the database after modification
+print("\n--- AFTER UPDATE ---")
+search_after = collection.query(query_texts=[query], n_results=1)
+doc_after = search_after["documents"][0][0]
+dist_after = search_after["distances"][0][0]
+print(f"Rank 1 [Distance: {dist_after:.4f}]: {doc_after}")
 ```
 
 #### Code Explanation:
 <details>
-<summary><b>Code Explanation</b></summary>
+<summary><b>Code Explanation:</b></summary>
 
-* `collection.update(...)`: Replaces the specified text chunk and recomputes its vector embedding immediately.
-* This operation takes only a few milliseconds. In the next lab, when Qwen reads from this collection, it will immediately generate answers based on the new personnel without needing any model retraining.
+* `target_id = "medicore_fact_71"`: Refers to the specific index assigned to the CEO record during ingestion in Step 3 (`lines[71]`).
+* `collection.update(ids=[target_id], documents=[...])`: 
+  1. Locates the existing document key in the ChromaDB index.
+  2. Passes the updated text string (`"The CEO of MediCore Hospital is Milla Kallio."`) through `all-MiniLM-L6-v2` to compute a new 384-dimensional vector coordinate.
+  3. Overwrites both the document text and the vector in the index.
+* **Why the result is clean at $k=1$:** Unlike the neurology department (which had a general department description competing with the leadership record), the CEO topic has only one reference in the database. As a result, the distance score is very low ($\approx 0.12$), and the document holds Rank 1 with no semantic interference.
+* **Idempotence:** Step 1 explicitly sets the document back to *"Juhani Aho"* before querying. This guarantees that whether a student runs the cell once or ten times in succession, the output will always demonstrate a clear before-and-after transition.
+
 </details>
 
 ---
@@ -313,101 +345,132 @@ print(updated_search["documents"][0][0])
 
 In real applications, source knowledge rarely arrives in a pre-parsed `.json` file. It typically lives in `.pdf` manuals, `.docx` policies, or plain text files.
 
-Below are standalone proofs-of-concept showing how to extract text from these file types so they can be chunked and indexed into ChromaDB.
-
-### A. Extracting Text from a PDF (`pypdf`)
+Here's an  end-to-end proof-of-Concept. It programmatically generates a sample .docx and .pdf file in Colab, extracts their text, chunks them, loads them into ChromaDB, and performs a semantic search with source attribution.
 
 ```python
-# [Appendix Cell A] PDF Extraction Proof-of-Concept
+# [Appendix Cell] End-to-End Proof of Concept: Unstructured Files (DOCX & PDF) to ChromaDB
+!pip install -q reportlab
+
+import os
+import docx
 from pypdf import PdfReader
-import io
+from reportlab.pdfgen import canvas
+import chromadb
+from chromadb.utils import embedding_functions
 
-# 1. Create a minimal in-memory PDF for demonstration purposes
-# (In practice, you would pass a path like: reader = PdfReader("hospital_policy.pdf"))
-from pypdf import PdfWriter
-writer = PdfWriter()
-writer.add_blank_page(width=200, height=200)
-pdf_stream = io.BytesIO()
-writer.write(pdf_stream)
-pdf_stream.seek(0)
+# =====================================================================
+# Step 1: Create sample DOCX and PDF files directly in Colab
+# =====================================================================
 
-# 2. Extract text page-by-page
-def extract_text_from_pdf(file_source):
-    reader = PdfReader(file_source)
-    extracted_text = []
-    
-    for page_num, page in enumerate(reader.pages):
+# 1a. Create sample Word Document
+doc_path = "hospital_policy.docx"
+doc = docx.Document()
+doc.add_heading("MediCore Hospital Acute Care Protocols", level=1)
+doc.add_paragraph(
+    "All patients arriving with acute chest pain must receive an immediate 12-lead ECG "
+    "within 10 minutes of registration. The attending cardiologist must be paged immediately."
+)
+doc.add_paragraph(
+    "Emergency stroke patients require an immediate non-contrast head CT scan. "
+    "Thrombolytic therapy must be evaluated within 45 minutes of door arrival."
+)
+doc.save(doc_path)
+
+# 1b. Create sample PDF Document
+pdf_path = "surgical_protocols.pdf"
+c = canvas.Canvas(pdf_path)
+c.drawString(72, 750, "MediCore Hospital Surgical Division Policy:")
+c.drawString(72, 730, "Robotic-assisted surgery suites require full UV-C terminal sterilization.")
+c.drawString(72, 710, "Surgeons must complete 3D virtual simulation before operating with the MediBot.")
+c.save()
+
+print("Generated sample files: hospital_policy.docx, surgical_protocols.pdf")
+
+# =====================================================================
+# Step 2: Extraction Functions
+# =====================================================================
+
+def extract_from_docx(file_path):
+    d = docx.Document(file_path)
+    paragraphs = [p.text.strip() for p in d.paragraphs if p.text.strip()]
+    return "\n".join(paragraphs)
+
+def extract_from_pdf(file_path):
+    reader = PdfReader(file_path)
+    pages_text = []
+    for page in reader.pages:
         text = page.extract_text()
         if text:
-            extracted_text.append(text)
-            
-    return "\n".join(extracted_text)
+            pages_text.append(text.strip())
+    return "\n".join(pages_text)
 
-# Example usage:
-# full_text = extract_text_from_pdf("my_policy.pdf")
-print("PDF extraction function defined successfully.")
-```
+docx_text = extract_from_docx(doc_path)
+pdf_text = extract_from_pdf(pdf_path)
 
-### B. Extracting Text from a Word Document (`python-docx`)
+# =====================================================================
+# Step 3: Fixed-Size Text Chunking with Overlap
+# =====================================================================
 
-```python
-# [Appendix Cell B] DOCX Extraction Proof-of-Concept
-import docx
-
-def extract_text_from_docx(file_path):
-    doc = docx.Document(file_path)
-    full_text = []
-    
-    # Extract text from every paragraph
-    for para in doc.paragraphs:
-        if para.text.strip():  # Skip empty lines
-            full_text.append(para.text.strip())
-            
-    return "\n".join(full_text)
-
-print("DOCX extraction function defined successfully.")
-```
-
-### C. Basic Fixed-Size Text Chunking
-
-Once text is extracted from a PDF or DOCX file, it is usually too long to embed as a single vector. You divide it into smaller segments:
-
-```python
-# [Appendix Cell C] Simple Text Chunking Strategy
-sample_long_document = """
-MediCore Hospital Emergency Protocol:
-All patients arriving with acute chest pain must undergo an immediate ECG within 10 minutes of arrival.
-The triage nurse must assign an emergency severity index (ESI) of level 2 or higher.
-The attending cardiologist on duty must be notified immediately via the direct emergency line.
-Blood samples for cardiac troponin testing must be drawn at bedside upon triage completion.
-"""
-
-def chunk_text(text, chunk_size=150, overlap=30):
-    """Splits text into chunks of roughly chunk_size characters with overlap."""
+def chunk_text(text, source_name, chunk_size=150, overlap=30):
     chunks = []
+    metadatas = []
     start = 0
     while start < len(text):
         end = start + chunk_size
         chunk = text[start:end].strip()
         if chunk:
             chunks.append(chunk)
+            metadatas.append({"source": source_name, "char_start": start})
         start += (chunk_size - overlap)
-    return chunks
+    return chunks, metadatas
 
-chunks = chunk_text(sample_long_document, chunk_size=120, overlap=20)
+docx_chunks, docx_meta = chunk_text(docx_text, source_name="hospital_policy.docx")
+pdf_chunks, pdf_meta = chunk_text(pdf_text, source_name="surgical_protocols.pdf")
 
-print(f"Divided long text into {len(chunks)} chunks:")
-for i, c in enumerate(chunks):
-    print(f"Chunk {i+1}: {c}")
+all_chunks = docx_chunks + pdf_chunks
+all_metadatas = docx_meta + pdf_meta
+all_ids = [f"unstructured_chunk_{i}" for i in range(len(all_chunks))]
+
+# =====================================================================
+# Step 4: Ingest into a Dedicated ChromaDB Collection
+# =====================================================================
+
+chroma_client = chromadb.Client()
+st_embed = embedding_functions.SentenceTransformerEmbeddingFunction(model_name="all-MiniLM-L6-v2")
+
+unstructured_collection = chroma_client.create_collection(
+    name="unstructured_demo",
+    embedding_function=st_embed
+)
+
+unstructured_collection.add(
+    documents=all_chunks,
+    metadatas=all_metadatas,
+    ids=all_ids
+)
+
+print(f"Indexed {unstructured_collection.count()} chunks from DOCX and PDF into ChromaDB.\n")
+
+# =====================================================================
+# Step 5: Query Across Document Types
+# =====================================================================
+
+query = "What is the procedure for emergency chest pain?"
+
+results = unstructured_collection.query(
+    query_texts=[query],
+    n_results=1
+)
+
+retrieved_doc = results["documents"][0][0]
+source_file = results["metadatas"][0][0]["source"]
+distance = results["distances"][0][0]
+
+print(f"QUERY: {query}")
+print(f"MATCH FROM SOURCE: [{source_file}] (Distance: {distance:.4f})")
+print(f"CONTENT: {retrieved_doc}")
 ```
 
-#### Code Explanation:
-<details>
-<summary><b>Code Explanation</b></summary>
-
-* `chunk_size`: The maximum character or token length of each chunk. Small chunks (e.g., 100–300 words) ensure the embedding model focuses on specific facts rather than diluting meaning across multiple topics.
-* `overlap`: Keeps a small portion of overlapping text between adjacent chunks (e.g., 20–50 characters). This prevents sentences or thoughts from being abruptly cut in half across a boundary, ensuring context is preserved across splits.
-</details>
 
 ---
 
@@ -421,3 +484,9 @@ In this lab, you:
 5. explored how raw text is extracted from `.pdf` and `.docx` files and divided into chunks.
 
 In **Activity 4**, you will connect this retrieval mechanism to the base `Qwen2.5-1.5B-Instruct` model to produce grounded, hallucination-free answers.
+
+---
+
+## Links
+
+- [RAG with Python Cookbook](https://github.com/polzerdo55862/RAG-with-Python-Cookbook/tree/main)
