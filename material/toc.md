@@ -179,7 +179,7 @@ Module 6: Comparative Synthesis & Case Scenarios
 67. Cluster Profiling
 68. Question 19: Why Profile Clusters?
 
-Part F: Integrated Analysis
+<!-- Part F: Integrated Analysis -->
 
 69. Complete Unsupervised-Learning Workflow
 70. Integrated Scenario
