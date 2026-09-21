@@ -99,16 +99,13 @@ Conceptually:
 A simplified representation is:
 
 $$
-\text{Inertia}
-=
-\sum_{i=1}^{n}
-\left\|x_i-c_{z_i}\right\|^2
+\text{Inertia}=\sum_{i=1}^{n}\left\|x_i-c_{z_i}\right\|^2
 $$
 
 where:
 
-* \(x_i\) is an observation,
-* \(c_{z_i}\) is the centroid of the cluster assigned to the observation,
+* $x_i$ is an observation,
+* $c_{z_i}$ is the centroid of the cluster assigned to the observation,
 * the squared distance measures how far the observation is from that centroid.
 
 Increasing `K` generally decreases inertia.
@@ -365,9 +362,9 @@ $$
 
 where:
 
-* \(x\) is the original value,
-* \(\mu\) is the feature mean,
-* \(\sigma\) is the feature standard deviation.
+* $x$ is the original value,
+* $\mu$ is the feature mean,
+* $\sigma$ is the feature standard deviation.
 
 In scikit-learn:
 
@@ -860,10 +857,7 @@ Support measures how frequently an itemset appears in the dataset.
 Conceptually:
 
 $$
-Support(A)
-=
-\frac{\text{transactions containing }A}
-{\text{total transactions}}
+Support(A)=\frac{\text{transactions containing }A}{\text{total transactions}}
 $$
 
 For example, if:
@@ -907,10 +901,7 @@ $$
 confidence is:
 
 $$
-Confidence(A\rightarrow B)
-=
-\frac{Support(A\cup B)}
-{Support(A)}
+Confidence(A\rightarrow B)=\frac{Support(A\cup B)}{Support(A)}
 $$
 
 Suppose:
@@ -923,11 +914,7 @@ Suppose:
 Then:
 
 $$
-Confidence(Bread\rightarrow Butter)
-=
-\frac{30}{40}
-=
-0.75
+Confidence(Bread\rightarrow Butter)=\frac{30}{40}=0.75
 $$
 
 Therefore, the confidence is:
@@ -959,10 +946,7 @@ could have high confidence simply because butter is already very common.
 Conceptually:
 
 $$
-Lift(A\rightarrow B)
-=
-\frac{Confidence(A\rightarrow B)}
-{Support(B)}
+Lift(A\rightarrow B)=\frac{Confidence(A\rightarrow B)}{Support(B)}
 $$
 
 Interpretation is commonly:
@@ -1607,7 +1591,7 @@ What does confidence measure?
 
 Confidence measures how frequently the consequent appears among transactions that contain the antecedent.
 
-For a rule \(A \rightarrow B\), it measures how often \(B\) occurs when \(A\) occurs.
+For a rule $A \rightarrow B$, it measures how often $B$ occurs when $A$ occurs.
 
 </details>
 
