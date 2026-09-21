@@ -1235,12 +1235,6 @@ In a real RAG application, you might retrieve multiple chunks and combine them w
 
 # Additional Topic: Metadata Filtering
 
-Your original learning objectives include metadata filtering, but the provided lab does not have a dedicated metadata filtering exercise.
-
-Here is a useful addition.
-
-## What is metadata filtering?
-
 Metadata filtering allows us to restrict retrieval to documents that satisfy a structured condition.
 
 For example, imagine the database contains documents from different hospital departments:
@@ -1290,107 +1284,6 @@ This requires that the `department` key exists in the dataset. Do not add this l
 
 ---
 
-# Technical Review and Corrections
-
-This section summarizes the main changes and important limitations in the original lab.
-
-## 1. ChromaDB distance metric
-
-* **Original issue:** The lab says that ChromaDB calculates squared L2 distance or cosine distance by default.
-* **Correction:** ChromaDB returns distances according to the collection's configured distance space. The exact metric should be specified rather than presenting multiple metrics as though they are interchangeable.
-* **Learning point:** Lower distance means greater proximity under the chosen metric, but the scale cannot be interpreted without knowing the metric.
-
-## 2. Hard-coded similarity scores
-
-* **Original issue:** The lab suggests that semantic similarity will be around `0.80` or higher and that a CEO query will have a distance near `0.12`.
-* **Correction:** These are not guaranteed values.
-* **Learning point:** Students should run the code, record the observed values, and evaluate whether the retrieved content is relevant.
-
-## 3. JSON Lines assumption
-
-* **Original issue:** The ingestion code assumes that each line is a JSON object.
-* **Correction:** Confirm that `MediCore.json` uses JSON Lines format. If it is a conventional JSON array, the parser needs to be changed.
-* **Learning point:** Data format validation is part of building a reliable RAG pipeline.
-
-## 4. Metadata filtering
-
-* **Original issue:** Metadata filtering is included in the learning objectives but is not demonstrated in the original lab.
-* **Correction:** Add a metadata filtering exercise using fields that actually exist in the dataset.
-* **Learning point:** Semantic retrieval and structured filtering can be combined to improve search behavior.
-
-## 5. Chunking
-
-* **Original issue:** The appendix uses character-based chunking without discussing its limitations.
-* **Correction:** Explain that character-based chunking can split sentences and concepts.
-* **Learning point:** Chunk size, overlap, and document structure affect retrieval quality.
-
-## 6. PDF extraction
-
-* **Original issue:** The appendix demonstrates PDF text extraction without explaining that scanned PDFs may require OCR.
-* **Correction:** Add a limitation note.
-* **Learning point:** Extracted text should be inspected before being indexed. A vector database cannot recover information that was never extracted correctly.
-
-## 7. Knowledge updates
-
-* **Original issue:** The original explanation suggests that the update is instantaneous and implies a very low distance.
-* **Correction:** Updating a document avoids retraining the generation model, but the updated text still needs to be embedded and stored. The exact timing and distance depend on the system and configuration.
-* **Learning point:** RAG allows knowledge updates without retraining the LLM, but the retrieval index still needs to be maintained.
-
-## 8. Hallucination-free generation
-
-* **Original issue:** *"Produce grounded, hallucination-free answers."*
-* **Correction:** *"Produce answers grounded in retrieved context."*
-* **Learning point:** Retrieval can reduce unsupported responses, but it cannot guarantee that the LLM will always generate correct or hallucination-free answers.
-
-A model may still:
-* Misinterpret the retrieved information.
-* Use incorrect information from the context.
-* Ignore relevant context.
-* Generate claims that are not supported by the retrieved documents.
-
----
-
-# Suggested Additional Experiment: Evaluate Retrieval Quality
-
-Your lab currently demonstrates that retrieval works, but it does not formally evaluate retrieval quality.
-
-You can add a simple experiment.
-
-## Create test queries
-
-```python
-test_queries = [
-    "Who leads the neurology department?",
-    "Where do helicopters land?",
-    "What is the hospital's emergency chest pain procedure?"
-]
-```
-
-For each query, students should:
-1. Run the query against the database.
-2. Inspect the top-k retrieved documents.
-3. Decide whether the documents are relevant.
-4. Record the distance values.
-5. Identify cases where the correct information is missing from the top-k results.
-
-### Why is this useful?
-
-A system that returns documents is not necessarily a good retrieval system.
-
-Retrieval quality should be evaluated based on whether relevant documents appear in the results.
-
-For a more advanced exercise, students can learn:
-
-| Metric | Meaning |
-| :--- | :--- |
-| **Recall@k** | Whether a relevant document appears in the top-k results. |
-| **Precision@k** | The proportion of the top-k results that are relevant. |
-| **MRR** | How high the first relevant result appears in the ranking. |
-
-These metrics require a set of queries with known relevant documents.
-
----
-
 # Summary and Next Steps
 
 In this lab, you:
@@ -1436,3 +1329,44 @@ The retrieval system provides the information, while the generation model uses t
 
 **Key takeaway:** A strong RAG system depends on both retrieval quality and generation quality. An LLM cannot reliably answer from context that the retrieval system failed to find or extracted incorrectly.
 
+
+<!-- 
+----
+# Suggested Additional Experiment: Evaluate Retrieval Quality
+
+The lab currently demonstrates that retrieval works, but it does not formally evaluate retrieval quality.
+
+## Create test queries
+
+```python
+test_queries = [
+    "Who leads the neurology department?",
+    "Where do helicopters land?",
+    "What is the hospital's emergency chest pain procedure?"
+]
+```
+
+For each query, you should:
+1. Run the query against the database.
+2. Inspect the top-k retrieved documents.
+3. Decide whether the documents are relevant.
+4. Record the distance values.
+5. Identify cases where the correct information is missing from the top-k results.
+
+**Why is this useful?**
+
+A system that returns documents is not necessarily a good retrieval system.
+
+Retrieval quality should be evaluated based on whether relevant documents appear in the results.
+
+For a more advanced exercise:
+
+| Metric | Meaning |
+| :--- | :--- |
+| **Recall@k** | Whether a relevant document appears in the top-k results. |
+| **Precision@k** | The proportion of the top-k results that are relevant. |
+| **MRR** | How high the first relevant result appears in the ranking. |
+
+These metrics require a set of queries with known relevant documents.
+
+-->
