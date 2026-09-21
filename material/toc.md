@@ -6,58 +6,59 @@ Module 1: Unsupervised Foundations & Distance Metrics
 2. What Is Clustering?
 3. Clustering Does Not Know the "Correct" Groups
 4. Similarity and Distance
-  5. Question 1: Calculate a Distance
+5. Question 1: Calculate a Distance
 6. Why Does Distance Matter in Clustering?
 7. Use a Real-World Dataset: Mall Customers
-  8. Install the Required Libraries
-  9. Import the Libraries
-  10. Load the Mall Customers Data
-  11. Inspect the Dataset
+8. Install the Required Libraries
+9. Import the Libraries
+10. Load the Mall Customers Data
+11. Inspect the Dataset
 12. Select the Clustering Features
-  13. Inspect the Shape of the Data
-  14. Visualize the Customer Data
-  15. Question 3: Examine the Customer Data
+13. Inspect the Shape of the Data
+14. Visualize the Customer Data
+15. Question 3: Examine the Customer Data
 
 Module 2: Centroid-Based Clustering (K-Means)
+
 15. K-Means Clustering
-  16. What Does K Mean?
-  17. The Basic K-Means Algorithm
-  18. Create a K-Means Model
-  19. Fit the Model
+16. What Does K Mean?
+17. The Basic K-Means Algorithm
+18. Create a K-Means Model
+19. Fit the Model
 20. Obtain the Cluster Labels
 21. Important: Cluster Numbers Have No Inherent Meaning
-  22. Question 4: Understand Cluster Labels
-  23. Visualize the K-Means Clusters
+22. Question 4: Understand Cluster Labels
+23. Visualize the K-Means Clusters
 24. What Is a Centroid?  
-  25. Question 5: Calculate a Centroid
-  26. Inspect the Centroids Numerically
-  27. Question 6: Understand cluster_centers_
+25. Question 5: Calculate a Centroid
+26. Inspect the Centroids Numerically
+27. Question 6: Understand cluster_centers_
 28. How Does K-Means Decide Which Cluster Gets an Observation?
 29. Question 7: Assign an Observation to a Cluster
 30. A First Limitation of K-Means
 31. Experiment with a Different K
-  32. Question 8: Changing K
+32. Question 8: Changing K
 
 Module 3: Connectivity-Based Clustering (Hierarchical Agglomerative)
 
 33. Hierarchical Clustering
 34. K-Means vs Hierarchical Clustering
 35. Create an Agglomerative Model
-  36. Fit the Hierarchical Model
-  37. Visualize the Hierarchical Clusters
+36. Fit the Hierarchical Model
+37. Visualize the Hierarchical Clusters
 38. Question 9: Compare the Two Methods
 39. The Meaning of "Hierarchical"
 40. Dendrograms
 41. Dendrogram Demonstration
-  42. Question 10: Read the Dendrogram Conceptually
+42. Question 10: Read the Dendrogram Conceptually
 43. Understanding Cluster Membership
 
 Module 4: Evaluation, Interpretation & Practical Limitations
 
 44. Question 11: Change the Features
 45. A Very Important Issue: Feature Scale
-  46. A Small Example of Scale
-  47. Question 12: Why Can Scale Matter?
+46. A Small Example of Scale
+47. Question 12: Why Can Scale Matter?
 48. First Clustering Experiment with Scaling
 49. K-Means Limitations
 50. Hierarchical Clustering Limitations 
@@ -112,6 +113,7 @@ Module 1: Diagnostics & Choosing K
 17. Why Is K Not Always Objective?
 
 Module 2: Feature Geometry & Scaling
+
 18. Feature Scaling and Clustering
 19. Create a Dataset with Different Feature Scales
 20. Standardize the Features
@@ -121,7 +123,7 @@ Module 2: Feature Geometry & Scaling
 
 
 Module 3: Hierarchical Linkage & Dendrogram Cuts
-Part B: Hierarchical Clustering in More Detail
+
 24. Agglomerative Hierarchical Clustering
 25. Linkage
 26. Run Agglomerative Clustering
@@ -135,7 +137,7 @@ Part B: Hierarchical Clustering in More Detail
 34. Question 9: Why Does Linkage Matter?
 
 Module 4: Anomaly Detection via Isolation Forest
-Part C: Anomaly Detection
+
 35. What Is Anomaly Detection?
 36. Create Data with Potentially Unusual Transactions
 37. Question 10: Identify the Potential Anomalies
@@ -147,7 +149,7 @@ Part C: Anomaly Detection
 43. Important Caution About Anomalies
 
 Module 5: Association Rule Learning via Apriori
-Part D: Association Rule Learning
+
 44. A Different Type of Unsupervised Learning
 45. Install mlxtend
 46. Create a Transaction Dataset
@@ -165,7 +167,7 @@ Part D: Association Rule Learning
 58. Question 15: Association or Causation?
 
 Module 6: Comparative Synthesis & Case Scenarios
-Part E: Comparing the Unsupervised-Learning Techniques
+
 59. Different Questions, Different Methods
 60. Clustering vs Anomaly Detection
 61. Clustering vs Association Rules
@@ -178,6 +180,7 @@ Part E: Comparing the Unsupervised-Learning Techniques
 68. Question 19: Why Profile Clusters?
 
 Part F: Integrated Analysis
+
 69. Complete Unsupervised-Learning Workflow
 70. Integrated Scenario
 71. Integrated Scenario: Anomaly Detection
