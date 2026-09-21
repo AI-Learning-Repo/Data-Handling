@@ -1,825 +1,423 @@
-# Laboratory Exercise: Sentence Embeddings and ChromaDB
+# Activity 3: Semantic Search and Vector Retrieval with ChromaDB  (RAG Part 1)
 
-## 1. Objectives
+In this lab, you will:
 
-The objective of this laboratory exercise is to introduce sentence embeddings, semantic similarity, and vector databases using ChromaDB.
+1. prepare the Colab environment for vector operations,
+2. understand how text embeddings convert natural language into mathematical coordinates,
+3. calculate semantic similarity between concepts without using keyword matching,
+4. initialize and configure **ChromaDB**, an embedded vector database,
+5. load and index domain knowledge from `MediCore.json`,
+6. execute semantic queries using top-$k$ similarity retrieval,
+7. filter query results using document metadata,
+8. explore how to extract raw text from unstructured formats (PDF and DOCX).
 
-After completing the exercise, you should be able to:
-
-1. Explain the purpose of text embeddings.
-2. Generate sentence embeddings using Sentence Transformers.
-3. Calculate similarity between text embeddings.
-4. Distinguish between keyword search and semantic search.
-5. Explain the purpose of a vector database.
-6. Create and use a ChromaDB collection.
-7. Store documents and metadata in ChromaDB.
-8. Perform semantic similarity searches.
-9. Interpret retrieved documents and similarity/distance information.
-10. Explain the role of ChromaDB and sentence embeddings in a RAG system.
+> [!NOTE]
+> This lab focuses entirely on the **Retrieval ("R")** component of Retrieval-Augmented Generation (RAG). You will not generate responses with an LLM in this lab. Instead, you will build and evaluate the semantic search engine that supplies retrieved context to Qwen in the next lab.
 
 ---
 
-# 2. Background
+### Prerequisite: Compute Environment
 
-## 2.1 Text Search
-
-A conventional keyword-based search identifies documents according to matching words or terms.
-
-For example, a query such as:
-
-```text
-programming language used for data science
-```
-
-may retrieve a document containing the words `programming`, `language`, and `data science`.
-
-Keyword matching does not directly represent the semantic relationship between different expressions. For example:
-
-```text
-automobile
-car
-vehicle
-```
-
-are related concepts, although they are different words.
-
-Semantic search addresses this limitation by representing text as numerical vectors and comparing those vectors.
-
-The general process is:
-
-```text
-Text
-  ↓
-Embedding model
-  ↓
-Vector representation
-  ↓
-Similarity comparison
-  ↓
-Relevant documents
-```
+Vector generation and database indexing in this lab use small embedding models (`all-MiniLM-L6-v2`). These run efficiently on standard CPU runtimes. However, if you already have a **T4 GPU** runtime active in Colab, the libraries will automatically take advantage of it.
 
 ---
 
-# 3. Sentence Embeddings
+## Core Workflow
 
-An embedding is a numerical representation of an object such as text, an image, or an audio signal.
+### Step 0: Install Dependencies
 
-A sentence embedding represents a sentence or a larger text segment as a vector.
-
-For example:
-
-```text
-Python is commonly used for data science.
-```
-
-may be represented by a vector of the following form:
-
-```text
-[0.021, -0.143, 0.782, 0.091, ...]
-```
-
-The individual values do not normally have an independent human-interpretable meaning. The vector as a whole is used to represent the text in a numerical space.
-
-A sentence embedding model is trained so that semantically related texts tend to have similar representations.
-
-For example:
-
-```text
-Python is used for data science.
-Python is commonly used by data scientists.
-```
-
-are expected to have more similar embeddings than:
-
-```text
-Python is used for data science.
-Paris is the capital of France.
-```
-
----
-
-# 4. Sentence Transformers
-
-In this exercise, sentence embeddings are generated using the Sentence Transformers library.
-
-Install the required packages:
+Run this cell to install the vector database and embedding libraries:
 
 ```python
-!pip install -q sentence-transformers chromadb scikit-learn
+# [Cell 0] Install Dependencies
+!pip install -q chromadb sentence-transformers pypdf python-docx
 ```
 
-Import the required libraries:
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
+
+* `chromadb`: An open-source, lightweight vector database designed to store document chunks, compute embeddings, and perform fast similarity search.
+* `sentence-transformers`: A PyTorch-based framework that provides access to pre-trained transformer models engineered specifically to produce dense vector representations of sentences and paragraphs.
+* `pypdf` & `python-docx`: Lightweight text extraction libraries used in the appendix to read unstructured documents.
+</details>
+
+---
+
+### Step 1: Semantic Intuition and Vector Embeddings
+
+Before working with a vector database, examine what an embedding actually looks like and how mathematical distance relates to semantic meaning.
 
 ```python
-import chromadb
-
+# [Cell 1] Vector Embedding Intuition
 from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
-```
+import numpy as np
 
-Load the embedding model:
+# Load a lightweight, industry-standard sentence embedding model
+embed_model = SentenceTransformer("all-MiniLM-L6-v2")
 
-```python
-model = SentenceTransformer("all-MiniLM-L6-v2")
-```
-
-Encode a sentence:
-
-```python
-sentence = "Python is used for data science."
-
-embedding = model.encode(sentence)
-
-print(embedding)
-```
-
-Inspect the dimensionality:
-
-```python
-print(embedding.shape)
-```
-
-The output should be:
-
-```text
-(384,)
-```
-
-The model therefore represents each input text as a vector with 384 dimensions.
-
----
-
-# 5. Exercise 1: Comparing Sentence Embeddings
-
-Create the following collection of sentences:
-
-```python
+# Three sentences: two share meaning, one is unrelated
 sentences = [
-    "Python is a popular programming language.",
-    "Python is commonly used for data science.",
-    "Machine learning allows computers to learn patterns from data.",
-    "Paris is the capital city of France."
+    "The physician examined the patient.",
+    "A doctor checked the sick individual.",
+    "The sports car drove down the highway."
 ]
+
+# Generate dense vector embeddings (384 floating-point numbers each)
+embeddings = embed_model.encode(sentences)
+
+print(f"Embedding shape for each sentence: {embeddings[0].shape}")
+print(f"First 5 dimensions of sentence 1:\n{embeddings[0][:5]}\n")
+
+# Define Cosine Similarity calculation
+def cosine_similarity(v1, v2):
+    return np.dot(v1, v2) / (np.linalg.norm(v1) * np.linalg.norm(v2))
+
+sim_1_2 = cosine_similarity(embeddings[0], embeddings[1])
+sim_1_3 = cosine_similarity(embeddings[0], embeddings[2])
+
+print(f"Similarity between 'physician' and 'doctor' sentences: {sim_1_2:.4f}")
+print(f"Similarity between 'physician' and 'sports car' sentences: {sim_1_3:.4f}")
 ```
 
-Generate embeddings:
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
 
-```python
-embeddings = model.encode(sentences)
-
-print(embeddings.shape)
-```
-
-Calculate cosine similarity:
-
-```python
-similarities = cosine_similarity(embeddings)
-
-print(similarities)
-```
-
-The result is a matrix in which each row and column corresponds to one sentence.
-
-Display the values together with the corresponding sentences:
-
-```python
-for i in range(len(sentences)):
-    print(f"\nSentence {i}: {sentences[i]}")
-    
-    for j in range(len(sentences)):
-        print(
-            f"  Similarity with sentence {j}: "
-            f"{similarities[i][j]:.3f}"
-        )
-```
-
-### Task
-
-Examine the similarity values and identify:
-
-1. The two sentences with the strongest semantic relationship.
-2. The two sentences with the weakest semantic relationship.
-
-Briefly explain whether the numerical results correspond to your expectations.
+* `SentenceTransformer("all-MiniLM-L6-v2")`: Loads a compact 22-million parameter model. It converts any arbitrary string into a fixed-size array of 384 numbers.
+* `embeddings[0].shape`: Shows `(384,)`. Regardless of whether an input sentence has 3 words or 50 words, its embedding vector always has the exact same coordinate dimension.
+* `cosine_similarity(v1, v2)`: Measures the cosine of the angle between two vectors in 384-dimensional space.
+  * A value near `1.0` means the two sentences point in nearly the identical direction in concept-space (high semantic similarity).
+  * A value near `0.0` means the vectors are orthogonal (no semantic relationship).
+</details>
 
 ---
 
-# 6. Exercise 2: Creating Your Own Examples
+#### 🧪 Checkpoint Challenge 1: Exploring Vector Geometry
 
-Create at least five sentences covering two or three different topics.
+> **Question:**  
+> Sentence 1 (*"The physician examined the patient"*) and Sentence 2 (*"A doctor checked the sick individual"*) share almost no common words except "the". Why does their cosine similarity score remain close to `0.80` or higher, while a standard SQL `LIKE %doctor%` or Python string search would score this as a zero match?
 
-For example:
+💡 **Gemini Prompt Hint:**  
+> *"Explain how dense sentence embeddings capture semantic similarity between synonyms compared to lexical/keyword matching. Keep the explanation concise and technical."*
 
-```python
-my_sentences = [
-    "Python is useful for data analysis.",
-    "I use Python to process datasets.",
-    "The weather is cold in winter.",
-    "Machine learning models learn patterns from data.",
-    "Artificial intelligence includes machine learning."
-]
-```
+<details>
+<summary><b>Answer & Explanation</b></summary>
 
-Generate embeddings and calculate the cosine similarity matrix.
+Keyword search (lexical matching) looks only for identical character sequences. Because `"physician"` $\neq$ `"doctor"` and `"examined"` $\neq$ `"checked"`, keyword algorithms register zero overlap.
 
-```python
-my_embeddings = model.encode(my_sentences)
-
-my_similarities = cosine_similarity(my_embeddings)
-
-print(my_similarities)
-```
-
-### Task
-
-Identify:
-
-* two pairs of sentences that should have high semantic similarity;
-* one pair that should have low semantic similarity.
-
-Compare the expected relationships with the calculated values.
+Dense embedding models like `all-MiniLM-L6-v2` were trained on hundreds of millions of sentence pairs using contrastive learning. The model places words and sentences that appear in similar contexts near one another in a continuous 384-dimensional vector space. As a result, the coordinates for medical synonyms point in nearly the same mathematical direction, producing a high cosine similarity score.
+</details>
 
 ---
 
-# 7. Vector Databases
+### Step 2: Initialize ChromaDB and the Embedding Function
 
-A vector database is a database designed to store and retrieve vector representations efficiently.
-
-For a small number of documents, embeddings can be stored in ordinary Python data structures. For larger collections, a dedicated vector database provides functionality for storing, indexing, and searching vectors.
-
-A simplified vector-search workflow is:
-
-```text
-Documents
-    ↓
-Embedding model
-    ↓
-Embeddings
-    ↓
-Vector database
-    ↓
-Similarity search
-    ↓
-Relevant documents
-```
-
-A vector database normally stores more than the vector itself. A record can include:
-
-* a unique identifier;
-* the original document or text;
-* an embedding;
-* metadata.
-
----
-
-# 8. ChromaDB
-
-ChromaDB is a vector database that can be used to store and retrieve embeddings together with their associated documents and metadata.
-
-In this exercise, ChromaDB is used to implement semantic search.
-
-A conceptual representation of a stored record is:
-
-```text
-ID:
-doc1
-
-Document:
-Python is a popular programming language.
-
-Embedding:
-[0.12, -0.31, 0.72, ...]
-
-Metadata:
-{
-    "topic": "programming",
-    "source": "python.txt"
-}
-```
-
-ChromaDB organizes related records into collections.
-
----
-
-# 9. Creating a ChromaDB Collection
-
-Create a ChromaDB client:
+A vector database automates vector computation, indexing, and storage. ChromaDB can run entirely in-memory inside your notebook session.
 
 ```python
-client = chromadb.Client()
-```
+# [Cell 2] Initialize ChromaDB
+import chromadb
+from chromadb.utils import embedding_functions
 
-Create a collection:
+# 1. Instantiate an in-memory client
+chroma_client = chromadb.Client()
 
-```python
-collection = client.create_collection(
-    name="computer_science"
+# 2. Configure Chroma to automatically use all-MiniLM-L6-v2 for all additions and queries
+st_embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
+    model_name="all-MiniLM-L6-v2"
 )
+
+# 3. Create a collection (equivalent to a table in SQL)
+collection = chroma_client.get_or_create_collection(
+    name="medicore_knowledge",
+    embedding_function=st_embedding_function
+)
+
+print(f"Collection '{collection.name}' initialized successfully.")
 ```
 
-The collection will contain the documents used in the semantic search experiments.
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
+
+* `chromadb.Client()`: Creates an ephemeral, in-memory instance of ChromaDB that lives within the Colab RAM. For permanent disk storage, `chromadb.PersistentClient(path="./my_vectordb")` would be used instead.
+* `embedding_functions.SentenceTransformerEmbeddingFunction(...)`: Links the embedding model directly to the collection. Whenever you submit raw text to Chroma, it runs the embedding step internally. You do not need to manually call `.encode()`.
+* `get_or_create_collection(...)`: Creates a storage partition. If the collection already exists, it loads it; if not, it creates a new one.
+</details>
 
 ---
 
-# 10. Adding Documents
+### Step 3: Load and Ingest the MediCore Knowledge Base
 
-Create a small document collection:
+Download the same `MediCore.json` dataset used in Activity 4 and ingest it into ChromaDB. Each entry will be indexed as a standalone document chunk with metadata.
 
 ```python
-documents = [
-    "Python is a popular programming language used for data science.",
-    "Machine learning allows computers to learn patterns from data.",
-    "Neural networks are computational models inspired by the human brain.",
-    "Paris is the capital city of France.",
-    "The Eiffel Tower is one of the most famous landmarks in Paris."
-]
+# [Cell 3a] Download the dataset if not already present
+!wget -nc -q https://raw.githubusercontent.com/AI-Learning-Repo/Data-Handling/refs/heads/week4/datasets/MediCore.json
 ```
 
-Create unique identifiers:
-
 ```python
-ids = [
-    "doc1",
-    "doc2",
-    "doc3",
-    "doc4",
-    "doc5"
-]
-```
+# [Cell 3b] Ingest Data into ChromaDB
+import json
 
-Create metadata:
+# 1. Read the JSON file
+with open("MediCore.json", "r", encoding="utf-8") as f:
+    lines = f.readlines()
 
-```python
-metadatas = [
-    {"topic": "programming"},
-    {"topic": "machine learning"},
-    {"topic": "deep learning"},
-    {"topic": "geography"},
-    {"topic": "travel"}
-]
-```
+documents = []
+metadatas = []
+ids = []
 
-Add the records to the collection:
+for idx, line in enumerate(lines):
+    item = json.loads(line.strip())
+    
+    # Store the factual completion as the searchable text
+    documents.append(item["completion"])
+    
+    # Extract simple metadata: associate the question prompt as context
+    metadatas.append({"source_prompt": item["prompt"], "doc_index": idx})
+    ids.append(f"medicore_fact_{idx}")
 
-```python
+# 2. Add records to the vector collection in a single batch
 collection.add(
     documents=documents,
-    ids=ids,
-    metadatas=metadatas
+    metadatas=metadatas,
+    ids=ids
 )
+
+print(f"Successfully indexed {collection.count()} document chunks into ChromaDB.")
 ```
 
-The collection now contains the documents and their associated metadata and embeddings.
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
+
+* `documents.append(item["completion"])`: The actual text that will be embedded and searched. In our dataset, each `completion` is a self-contained factual statement about MediCore Hospital (e.g., *"Dr. Elena Varga leads the neurology department at MediCore Hospital."*).
+* `metadatas`: A list of key-value dictionaries attached to each document. Metadata is not transformed into vectors, but it allows for filtering results later (e.g., filtering by department or category).
+* `ids`: Every item in ChromaDB requires a unique string identifier.
+* `collection.add(...)`: Passes the text chunks to the configured embedding function, calculates their vectors, and writes them into Chroma's search index.
+</details>
 
 ---
 
-# 11. Semantic Search
+#### 🧪 Checkpoint Challenge 2: Understanding Vector Chunks
 
-Define a query:
+> **Question:**  
+> In `activity4.md` (LoRA fine-tuning), we trained the model on pairs of `{"prompt": ..., "completion": ...}` formatted with `<|im_start|>` and `<|im_end|>` ChatML tags. Why do we store only the factual completion sentences in ChromaDB here, without any ChatML tags?
+
+💡 **Gemini Prompt Hint:**  
+> *"In a RAG retrieval pipeline, why should documents stored in a vector database be clean factual prose rather than chat-templated prompts? Consider embedding distance and relevance."*
+
+<details>
+<summary><b>Answer & Explanation</b></summary>
+
+Embedding models measure semantic similarity between concepts. If you embed special tokens like `<|im_start|>assistant`, they add noise to the vector representation without adding semantic value. 
+
+Furthermore, during RAG retrieval, the user asks a factual question (e.g., *"Who leads neurology?"*). The vector for this query should align directly with the vector for the factual answer (*"Dr. Elena Varga leads the neurology department..."*). Special prompt formatting is only applied later when constructing the generation prompt for the LLM.
+</details>
+
+---
+
+### Step 4: Semantic Querying (Top-$k$ Retrieval)
+
+Query ChromaDB using natural language queries that differ from the exact sentences stored in the database.
 
 ```python
-query = "What programming language is useful for data science?"
-```
+# [Cell 4] Query ChromaDB
+query_text = "Who is in charge of brain and nervous system conditions?"
 
-Query the collection:
-
-```python
+# Retrieve the top 2 closest semantic matches
 results = collection.query(
-    query_texts=[query],
-    n_results=3
-)
-```
-
-Inspect the retrieved documents:
-
-```python
-print(results["documents"])
-```
-
-Inspect the identifiers:
-
-```python
-print(results["ids"])
-```
-
-Inspect the metadata:
-
-```python
-print(results["metadatas"])
-```
-
-Inspect the distances:
-
-```python
-print(results["distances"])
-```
-
-The retrieved documents are ranked according to their distance from the query embedding.
-
-The exact interpretation of the numerical distance depends on the distance metric configured for the collection. In general, documents that are closer according to the selected metric are considered more similar to the query.
-
----
-
-# 12. Exercise 3: Semantic Search
-
-Test the collection with the following queries:
-
-```python
-queries = [
-    "Which language can be used for analysing data?",
-    "How do computers learn from data?",
-    "What are neural networks?",
-    "Where is the Eiffel Tower located?",
-    "Which city is the capital of France?"
-]
-```
-
-For each query, retrieve the three most relevant documents.
-
-### Task
-
-Create a table with the following columns:
-
-| Query | Top Result | Relevant?        |
-| ----- | ---------- | ---------------- |
-| ...   | ...        | Yes/No/Partially |
-
-Evaluate the relevance of the top result for each query.
-
----
-
-# 13. Creating a Search Function
-
-The search operation can be placed in a Python function:
-
-```python
-def semantic_search(query, n_results=3):
-    results = collection.query(
-        query_texts=[query],
-        n_results=n_results
-    )
-
-    for i, document in enumerate(results["documents"][0]):
-        print(f"\nResult {i + 1}")
-        print("-" * 50)
-        print(document)
-        print("Metadata:", results["metadatas"][0][i])
-```
-
-Test the function:
-
-```python
-semantic_search(
-    "How can computers learn from examples?"
-)
-```
-
-Test several additional queries and inspect the retrieved documents.
-
----
-
-# 14. Metadata
-
-Metadata is information associated with a document that describes or identifies the document.
-
-For example:
-
-```python
-{
-    "source": "machine_learning.pdf",
-    "page": 15,
-    "section": "Introduction"
-}
-```
-
-Metadata is useful when the source of retrieved information needs to be identified.
-
-In a RAG system, metadata can also be used to:
-
-* identify the source document;
-* identify a page or section;
-* filter documents;
-* display citations or references;
-* distinguish between different document collections.
-
----
-
-# 15. Exercise 4: Metadata
-
-Create a new collection:
-
-```python
-collection2 = client.create_collection(
-    name="documents_with_sources"
-)
-```
-
-Create the documents:
-
-```python
-documents2 = [
-    "Python is widely used for data analysis.",
-    "Machine learning algorithms learn patterns from data.",
-    "Neural networks are used in many deep learning applications."
-]
-```
-
-Create metadata:
-
-```python
-metadatas2 = [
-    {
-        "source": "python_guide.pdf",
-        "page": 4,
-        "topic": "programming"
-    },
-    {
-        "source": "ml_guide.pdf",
-        "page": 10,
-        "topic": "machine learning"
-    },
-    {
-        "source": "deep_learning.pdf",
-        "page": 18,
-        "topic": "deep learning"
-    }
-]
-```
-
-Add the documents:
-
-```python
-collection2.add(
-    documents=documents2,
-    ids=["a", "b", "c"],
-    metadatas=metadatas2
-)
-```
-
-Perform a search:
-
-```python
-results = collection2.query(
-    query_texts=["How do computers learn patterns?"],
+    query_texts=[query_text],
     n_results=2
 )
+
+# Inspect the returned results
+print(f"QUERY: {query_text}\n")
+for i in range(len(results["documents"][0])):
+    doc = results["documents"][0][i]
+    distance = results["distances"][0][i]
+    doc_id = results["ids"][0][i]
+    print(f"Rank {i+1} [Distance: {distance:.4f}] [ID: {doc_id}]:")
+    print(f"Content: {doc}\n")
 ```
 
-Display the results:
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
+
+* `collection.query(...)`:
+  1. Automatically embeds `query_text` into a 384-dimensional query vector using `all-MiniLM-L6-v2`.
+  2. Measures the distance between the query vector and every document vector in the collection.
+  3. Returns the top `n_results` closest matches.
+* `results["distances"]`: By default, ChromaDB calculates **Squared $L2$ Distance** (Euclidean) or Cosine Distance. Lower distance values indicate higher similarity.
+</details>
+
+---
+
+#### 🧪 Checkpoint Challenge 3: Evaluating Semantic Retrieval
+
+> **Question:**  
+> Notice that the query asked about *"brain and nervous system conditions"*, but the top returned result mentions *"Dr. Elena Varga leads the neurology department"* and *"The neurology department handles brain and nervous system diseases"*.  
+> 
+> Try modifying `query_text` to: `"Where do the helicopters land?"`  
+> What does ChromaDB return, and what is its distance score? Does it work even though the word "pad" or "helipad" was not in your query?
+
+💡 **Gemini Prompt Hint:**  
+> *"In ChromaDB vector retrieval, run a conceptual query that uses no matching nouns from the underlying document and explain how nearest-neighbor search identifies the correct concept."*
+
+<details>
+<summary><b>Answer & Explanation</b></summary>
+
+When you query `"Where do the helicopters land?"`, ChromaDB returns:
+`"MediCore Hospital has a rooftop helipad for emergency patient transport."`
+
+Even though the word "helipad" was not present in the query, the embedding model maps the phrase "helicopters land" to virtually the same area in vector space as "helipad". This illustrates why semantic retrieval is significantly more flexible for question answering than traditional keyword searching.
+</details>
+
+---
+
+### Step 5: Updating Knowledge in Real Time (The RAG Advantage)
+
+In Activity 4, updating an existing fact required retraining the model. In a vector database, changing a fact is an instantaneous database operation.
 
 ```python
-for i, document in enumerate(results["documents"][0]):
-    print("Document:")
-    print(document)
-    print()
-    
-    print("Metadata:")
-    print(results["metadatas"][0][i])
-    
-    print("-" * 50)
+# [Cell 5] Instant Knowledge Update
+print("BEFORE UPDATE:")
+initial_search = collection.query(query_texts=["Who leads the neurology department?"], n_results=1)
+print(initial_search["documents"][0][0])
+
+# Scenario: Dr. Elena Varga has stepped down; Dr. Arto Virtanen is the new department head
+collection.update(
+    ids=["medicore_fact_56"],  # The ID corresponding to the neurology lead record
+    documents=["Dr. Arto Virtanen leads the neurology department at MediCore Hospital."]
+)
+
+print("\nAFTER UPDATE:")
+updated_search = collection.query(query_texts=["Who leads the neurology department?"], n_results=1)
+print(updated_search["documents"][0][0])
 ```
 
-### Task
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
 
-Explain why the source and page information would be useful in a document retrieval system.
+* `collection.update(...)`: Replaces the specified text chunk and recomputes its vector embedding immediately.
+* This operation takes only a few milliseconds. In the next lab, when Qwen reads from this collection, it will immediately generate answers based on the new personnel without needing any model retraining.
+</details>
 
 ---
 
-# 16. Retrieval and RAG
+## Appendix: Handling Unstructured Documents (PDF & DOCX)
 
-The semantic search system developed in this laboratory represents the retrieval component of a RAG system.
+In real applications, source knowledge rarely arrives in a pre-parsed `.json` file. It typically lives in `.pdf` manuals, `.docx` policies, or plain text files.
 
-The current workflow is:
+Below are standalone proofs-of-concept showing how to extract text from these file types so they can be chunked and indexed into ChromaDB.
 
-```text
-User query
-    ↓
-Query embedding
-    ↓
-ChromaDB
-    ↓
-Relevant documents
-```
-
-A complete RAG system adds a language model:
-
-```text
-User query
-    ↓
-Query embedding
-    ↓
-ChromaDB
-    ↓
-Relevant document chunks
-    ↓
-Prompt containing retrieved information
-    ↓
-Language model
-    ↓
-Generated answer
-```
-
-In the next laboratory, Qwen 2.5 will be used as the language model.
-
-The distinction between the components is:
-
-| Component            | Main function                          |
-| -------------------- | -------------------------------------- |
-| Sentence Transformer | Generates embeddings                   |
-| ChromaDB             | Stores and retrieves vectors/documents |
-| Qwen 2.5             | Generates natural-language responses   |
-
----
-
-# 17. Final Exercise
-
-Create a semantic search system using a collection of at least **10 documents**.
-
-The documents should cover a technical topic such as:
-
-* artificial intelligence;
-* machine learning;
-* programming;
-* databases;
-* cybersecurity;
-* cloud computing;
-* computer networks;
-* data science.
-
-Each document must have:
-
-1. a unique identifier;
-2. document text;
-3. at least two metadata fields.
-
-For example:
+### A. Extracting Text from a PDF (`pypdf`)
 
 ```python
-{
-    "source": "ai_introduction.pdf",
-    "topic": "artificial intelligence"
-}
+# [Appendix Cell A] PDF Extraction Proof-of-Concept
+from pypdf import PdfReader
+import io
+
+# 1. Create a minimal in-memory PDF for demonstration purposes
+# (In practice, you would pass a path like: reader = PdfReader("hospital_policy.pdf"))
+from pypdf import PdfWriter
+writer = PdfWriter()
+writer.add_blank_page(width=200, height=200)
+pdf_stream = io.BytesIO()
+writer.write(pdf_stream)
+pdf_stream.seek(0)
+
+# 2. Extract text page-by-page
+def extract_text_from_pdf(file_source):
+    reader = PdfReader(file_source)
+    extracted_text = []
+    
+    for page_num, page in enumerate(reader.pages):
+        text = page.extract_text()
+        if text:
+            extracted_text.append(text)
+            
+    return "\n".join(extracted_text)
+
+# Example usage:
+# full_text = extract_text_from_pdf("my_policy.pdf")
+print("PDF extraction function defined successfully.")
 ```
 
-Your implementation must:
+### B. Extracting Text from a Word Document (`python-docx`)
 
-1. Create a ChromaDB client.
-2. Create a collection.
-3. Add the documents.
-4. Add metadata.
-5. Perform semantic searches.
-6. Retrieve the top three results for each query.
-7. Display the retrieved documents and metadata.
-8. Test at least five queries.
-9. Evaluate the relevance of the retrieved results.
+```python
+# [Appendix Cell B] DOCX Extraction Proof-of-Concept
+import docx
 
-For each query, record whether the top result is:
+def extract_text_from_docx(file_path):
+    doc = docx.Document(file_path)
+    full_text = []
+    
+    # Extract text from every paragraph
+    for para in doc.paragraphs:
+        if para.text.strip():  # Skip empty lines
+            full_text.append(para.text.strip())
+            
+    return "\n".join(full_text)
 
-* relevant;
-* partially relevant;
-* not relevant.
+print("DOCX extraction function defined successfully.")
+```
+
+### C. Basic Fixed-Size Text Chunking
+
+Once text is extracted from a PDF or DOCX file, it is usually too long to embed as a single vector. You divide it into smaller segments:
+
+```python
+# [Appendix Cell C] Simple Text Chunking Strategy
+sample_long_document = """
+MediCore Hospital Emergency Protocol:
+All patients arriving with acute chest pain must undergo an immediate ECG within 10 minutes of arrival.
+The triage nurse must assign an emergency severity index (ESI) of level 2 or higher.
+The attending cardiologist on duty must be notified immediately via the direct emergency line.
+Blood samples for cardiac troponin testing must be drawn at bedside upon triage completion.
+"""
+
+def chunk_text(text, chunk_size=150, overlap=30):
+    """Splits text into chunks of roughly chunk_size characters with overlap."""
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = start + chunk_size
+        chunk = text[start:end].strip()
+        if chunk:
+            chunks.append(chunk)
+        start += (chunk_size - overlap)
+    return chunks
+
+chunks = chunk_text(sample_long_document, chunk_size=120, overlap=20)
+
+print(f"Divided long text into {len(chunks)} chunks:")
+for i, c in enumerate(chunks):
+    print(f"Chunk {i+1}: {c}")
+```
+
+#### Code Explanation:
+<details>
+<summary><b>Code Explanation</b></summary>
+
+* `chunk_size`: The maximum character or token length of each chunk. Small chunks (e.g., 100–300 words) ensure the embedding model focuses on specific facts rather than diluting meaning across multiple topics.
+* `overlap`: Keeps a small portion of overlapping text between adjacent chunks (e.g., 20–50 characters). This prevents sentences or thoughts from being abruptly cut in half across a boundary, ensuring context is preserved across splits.
+</details>
 
 ---
 
-# 18. Questions
+## Summary and Next Steps
 
-Answer the following questions after completing the exercises.
+In this lab, you:
+1. converted sentences into 384-dimensional vectors and evaluated semantic distance using cosine similarity,
+2. indexed the `MediCore.json` factual database into an in-memory **ChromaDB** collection,
+3. performed natural language queries to retrieve context without exact keyword matching,
+4. demonstrated how vector database updates immediately change retrieval results with zero retraining overhead,
+5. explored how raw text is extracted from `.pdf` and `.docx` files and divided into chunks.
 
-### Question 1
-
-What is an embedding?
-
-### Question 2
-
-What is a sentence embedding?
-
-### Question 3
-
-Why are embeddings useful for semantic search?
-
-### Question 4
-
-What is the difference between keyword search and semantic search?
-
-### Question 5
-
-What is a vector database?
-
-### Question 6
-
-What is ChromaDB used for?
-
-### Question 7
-
-What information can be associated with a document in ChromaDB?
-
-### Question 8
-
-What is metadata, and why can it be useful in RAG?
-
-### Question 9
-
-What does `n_results=3` specify in a ChromaDB query?
-
-### Question 10
-
-Does ChromaDB generate the final natural-language answer?
-
-### Question 11
-
-What is the purpose of the Sentence Transformer in this laboratory?
-
-### Question 12
-
-What additional component is required to turn this semantic search system into a basic RAG system?
-
----
-
-# 19. Sample Solutions
-
-## Answer 1
-
-An embedding is a numerical vector representation of an object such as text. It allows the object to be represented in a mathematical space where relationships between objects can be measured.
-
-## Answer 2
-
-A sentence embedding is a vector representation of a sentence or text segment generated by an embedding model.
-
-## Answer 3
-
-Embeddings allow text to be compared numerically. Semantically similar texts tend to have similar vector representations, which makes semantic search possible.
-
-## Answer 4
-
-Keyword search primarily relies on matching terms between a query and documents. Semantic search represents the query and documents as vectors and retrieves documents according to their semantic similarity.
-
-## Answer 5
-
-A vector database is a database designed to store and retrieve vector representations efficiently. It can also store associated documents, identifiers, and metadata.
-
-## Answer 6
-
-ChromaDB is used to store and retrieve embeddings and their associated documents and metadata. In this laboratory, it is used to implement semantic search.
-
-## Answer 7
-
-A ChromaDB record can contain an identifier, document text, an embedding, and metadata.
-
-## Answer 8
-
-Metadata is additional information associated with a document. Examples include the source filename, page number, document type, topic, or section. In RAG, metadata can be used to identify sources, filter documents, and provide source information.
-
-## Answer 9
-
-`n_results=3` specifies that the query should return the three highest-ranked results according to the configured similarity or distance metric.
-
-## Answer 10
-
-No. ChromaDB is a vector database. It retrieves information but does not generate the final natural-language response.
-
-## Answer 11
-
-The Sentence Transformer generates vector representations of the input text. These embeddings allow queries and documents to be compared based on semantic similarity.
-
-## Answer 12
-
-A language model is required to generate an answer from the retrieved information. In the next laboratory, Qwen 2.5 will perform this generation step.
-
----
-
-# 20. Key Concepts
-
-The main concepts from this laboratory can be summarized as follows:
-
-```text
-                    TEXT
-                      ↓
-             Sentence Transformer
-                      ↓
-                  EMBEDDING
-                      ↓
-                 ChromaDB
-                      ↓
-              Semantic Search
-                      ↓
-            Relevant Documents
-```
-
-For RAG, a generation component is added:
-
-```text
-                    TEXT
-                      ↓
-             Sentence Transformer
-                      ↓
-                  ChromaDB
-                      ↓
-            Relevant Documents
-                      ↓
-                   Qwen
-                      ↓
-              Generated Answer
-```
-
-The next laboratory will extend this process to external documents such as PDF, TXT/Markdown, JSON, and CSV files and will implement the complete RAG pipeline.
+In **Activity 4**, you will connect this retrieval mechanism to the base `Qwen2.5-1.5B-Instruct` model to produce grounded, hallucination-free answers.
