@@ -267,9 +267,89 @@ In production systems, these two methodologies are rarely mutually exclusive. Pr
 1. **LoRA Fine-Tuning** trains the model on **how to process and format information** (e.g., adopting a formal clinical tone, refusing disallowed categories, outputting validated JSON).
 2. **RAG** supplies the model with **what information to process** (e.g., current clinic schedules, specific patient files, revised regulatory documents).
 
+
 ---
 
-## 7. References and Further Reading
+## 7. Review and Technical Questions & Answers
+
+
+### Question 1: Does the generative language model care whether the source document was originally a PDF, DOCX, or JSON file?
+
+**Answer:**  
+No. The generation component of a RAG pipeline is completely format-agnostic. 
+
+By the time information reaches the language model, all source files have already undergone upstream extraction and normalization:
+1. Parsers (`pypdf`, `python-docx`, `json.loads()`) strip away file-specific binaries, markup, and layout metadata, converting the content into standard UTF-8 Python strings.
+2. ChromaDB stores and indexes these items strictly as raw text chunks.
+3. The prompt assembly step concatenates these strings into the context window.
+
+The model’s tokenizer only processes a one-dimensional sequence of sub-word token IDs. It has no mechanism to discern whether a sentence originated from a PDF page or a database field. 
+
+The original file format is **only meaningful upstream during parsing and retrieval preprocessing**. If a PDF parser extracts scrambled lines or merged table columns, the text string passed to the context window will be corrupt. The failure occurs because the *content* is degraded, not because the model possesses format awareness.
+
+
+### Question 2: Why did semantic retrieval in activity 3 find the neurology department lead when queried with "Who is in charge of brain conditions?", while lexical search would fail?
+
+**Answer:**  
+Lexical search algorithms (such as SQL `LIKE` operators or BM25) evaluate exact token overlap. Because the query words (*"charge"*, *"brain"*, *"conditions"*) do not share character sequences with the stored document (*"Dr. Elena Varga leads the neurology department..."*), a lexical filter scores the match as zero.
+
+In contrast, the dense embedding model (`all-MiniLM-L6-v2`) maps sequences into a 384-dimensional continuous vector space. Because the model was pre-trained on large-scale corpora where neurological terminology co-occurs with phrases describing brain conditions, both phrases are projected to coordinates that point in nearly the same geometric direction. ChromaDB computes the cosine similarity or squared Euclidean distance between these coordinates, successfully identifying the document as an approximate nearest neighbor regardless of surface-level vocabulary differences.
+
+
+### Question 3: In activity 4, why was it necessary to pass retrieved context through `tokenizer.apply_chat_template()` rather than simply concatenating it to the model input?
+
+**Answer:**  
+Modern instruction-tuned architectures like Qwen 2.5 are trained on specific control tokens (the ChatML schema) that establish conversational boundaries:
+
+```text
+<|im_start|>system ... <|im_end|>
+<|im_start|>user ... <|im_end|>
+<|im_start|>assistant
+```
+
+If retrieved text and queries are concatenated as arbitrary, unstructured text, the model processes them as ambiguous document completions rather than an instruction-following task. 
+
+Using `tokenizer.apply_chat_template()` guarantees two requirements:
+1. It injects behavioral boundaries into the `system` role and context-query pairs into the `user` role using the exact token IDs the network weights were tuned to obey.
+2. Setting `add_generation_prompt=True` appends the trailing `<|im_start|>assistant\n` token sequence. This acts as a mathematical trigger that shifts the model into response generation mode.
+
+
+### Question 4: Nearest-neighbor search always returns $k$ documents, even when the query topic does not exist in the database. How was hallucination prevented in activity 4 when querying about non-existent services?
+
+**Answer:**  
+A vector database has no intrinsic concept of "not found"; it computes distance geometrically and will always return the $k$ closest vectors, even if the absolute distance is high.
+
+To prevent the language model from hallucinating an answer based on irrelevant retrieved chunks, the system prompt enforced a **negative constraint**:
+
+> *"Answer the question using ONLY the provided context. If the answer cannot be determined from the context, state: 'Information not available.'"*
+
+When presented with retrieved passages that lack semantic alignment with the user's question, the negative constraint overrides the model's base training objective (which is to generate plausible-sounding text). The model shifts into a closed-domain verification mode, recognizes the absence of supporting tokens in the input context, and outputs the specified fallback string.
+
+
+### Question 5: When Dr. Elena Varga was replaced by Dr. Arto Virtanen, how did the mechanical update process in RAG (activity 4) contrast with the LoRA approach in Activity 4?
+
+**Answer:**  
+* **In LoRA Fine-Tuning (Activity 4):** The fact was encoded into parametric memory. Updating the fact required modifying the source dataset, instantiating the training loop, running multiple optimization epochs across the GPU, saving new adapter checkpoints, and re-mounting the adapter weights.
+* **In RAG (Lab 5B):** The fact was stored in non-parametric memory. Updating the fact required a single database call (`collection.update()`). ChromaDB replaced the stored string, generated a new 384-dimensional vector via a single forward pass of `all-MiniLM-L6-v2`, and updated its index in milliseconds.
+
+Because the base LLM weights were never modified, the next query immediately retrieved the updated string into its context window, reflecting the personnel change without retraining latency, compute expense, or the risk of catastrophic forgetting.
+
+
+### Question 6: Why is greedy decoding (`do_sample=False`) used when evaluating RAG pipelines instead of stochastic sampling (`do_sample=True`)?
+
+**Answer:**  
+Stochastic sampling methods (such as Top-$p$ or temperature-based sampling) introduce pseudo-randomness by sampling from the tail of the output probability distribution to increase conversational diversity.
+
+In factual question-answering and RAG evaluation, generation must be deterministic and reproducible. Setting `do_sample=False` forces greedy decoding: at every step $t$, the model strictly selects the token $w_t$ with the highest predicted conditional probability:
+
+$$w_t = \arg\max_w P(w \mid w_{1:t-1})$$
+
+This ensures that any error, hallucination, or variance in the output can be attributed directly to the quality of the retrieved context or prompt structure, rather than random decoding noise.
+
+
+---
+
+## 8. References and Further Reading
 
 1. 
 2. 
