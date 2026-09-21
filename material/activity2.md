@@ -290,13 +290,8 @@ Conceptually, inertia measures the total within-cluster squared distance from ob
 A simplified expression is:
 
 $$
-Inertia
-=
-\sum_{i=1}^{n}
-\left\|
-x_i-\mu_{c_i}
-\right\|^2
-$$
+Inertia=\sum_{i=1}^{n}\left\|x_i-\mu_{c_i}\right\|^
+2$$
 
 where:
 
