@@ -1,5 +1,3 @@
-Absolutely. Below is the rewritten theory using your four-module structure. I have retained the important concepts, mathematical explanations, Python examples, and review questions, while reducing repetition and improving the learning progression.
-
 # Activity 1 — Introduction to Unsupervised Learning with Clustering
 
 ## Table of Contents
