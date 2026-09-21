@@ -15,6 +15,8 @@
 6. **Module 6: Comparative Synthesis & Case Scenarios**
 
 
+
+
 ## Overview
 
 This activity extends the clustering concepts introduced in Activity 1.
@@ -60,11 +62,10 @@ By the end of this activity, the following should be understood:
 
 ---
 
-## Part 1: Clustering Algorithms & Diagnostics
+# Part 1: Clustering Algorithms & Diagnostics
 
-### Module 1: Diagnostics & Choosing `K`
+# Module 1: Diagnostics & Choosing `K`
 
-# Part A: K-Means in More Detail
 
 ## 1. Start with a Dataset
 
@@ -625,9 +626,9 @@ Therefore:
 
 ---
 
-### Module 2: Feature Geometry & Scaling
+# Module 2: Feature Geometry & Scaling
 
-# 18. Feature Scaling and Clustering
+## 18. Feature Scaling and Clustering
 
 Consider a dataset containing:
 
@@ -793,11 +794,10 @@ For the unsupervised examples where clustering is being demonstrated on one comp
 
 ---
 
-### Module 3: Hierarchical Linkage & Dendrogram Cuts
+# Module 3: Hierarchical Linkage & Dendrogram Cuts
 
-# Part B: Hierarchical Clustering in More Detail
 
-# 24. Agglomerative Hierarchical Clustering
+## 24. Agglomerative Hierarchical Clustering
 
 The first activity introduced the basic idea.
 
@@ -936,6 +936,8 @@ Different results do not automatically mean that one method is wrong.
 
 # 29. Divisive Hierarchical Clustering: A Top-Down Approach
 
+<img src="./img/lab2/29.jpg" width="50%">
+
 Agglomerative clustering is a **bottom-up** approach: it starts with every observation in its own cluster and repeatedly merges clusters.
 
 Divisive clustering uses the opposite strategy. It is a **top-down** approach:
@@ -992,7 +994,9 @@ Split into:
 
 This produces a hierarchy of progressively smaller groups.
 
-## Question 10: Compare Agglomerative and Divisive Clustering
+# 30. Question 10: Compare Agglomerative and Divisive Clustering
+
+<img src="./img/lab2/30.png" width="50%">
 
 Explain the difference between the two approaches.
 
@@ -1181,11 +1185,10 @@ Because the hierarchy is built from those merges, the final clusters can also ch
 
 ---
 
-## Part 2: Other Unsupervised Learning Tasks
+# Part 2: Other Unsupervised Learning Tasks
 
-### Module 4: Anomaly Detection via Isolation Forest
+# Module 4: Anomaly Detection via Isolation Forest
 
-# Part C: Anomaly Detection
 
 # 35. What Is Anomaly Detection?
 
@@ -1484,11 +1487,9 @@ It does not automatically provide the explanation.
 
 ---
 
-### Module 5: Association Rule Learning via Apriori
+# Module 5: Association Rule Learning via Apriori
 
-# Part D: Association Rule Learning
-
-# 44. A Different Type of Unsupervised Learning
+## 44. A Different Type of Unsupervised Learning
 
 Clustering and anomaly detection work with observations represented by features.
 
@@ -1688,10 +1689,7 @@ Bread appears in 6
 Then:
 
 $$
-Support(Bread)=
-\frac{6}{8}
-=
-0.75
+Support(Bread)=\frac{6}{8}=0.75
 $$
 
 So:
@@ -1793,10 +1791,7 @@ $$
 the formula is:
 
 $$
-Confidence(A\Rightarrow B)
-=
-\frac{Support(A\cap B)}
-{Support(A)}
+Confidence(A\Rightarrow B)=\frac{Support(A\cap B)}{Support(A)}
 $$
 
 Suppose:
@@ -1809,9 +1804,7 @@ Bread and Butter appear together in 5 transactions.
 Then:
 
 $$
-Confidence(Bread\Rightarrow Butter)
-=
-\frac{5}{7}
+Confidence(Bread\Rightarrow Butter)=\frac{5}{7}
 $$
 
 $$
@@ -1915,13 +1908,7 @@ $$
 lift is:
 
 $$
-Lift(A\Rightarrow B)
-=
-\frac{
-Confidence(A\Rightarrow B)
-}{
-Support(B)
-}
+Lift(A\Rightarrow B)=\frac{Confidence(A\Rightarrow B)}{Support(B)}
 $$
 
 Interpretation:
@@ -2079,11 +2066,9 @@ Other variables or purchasing habits could explain the relationship.
 
 ---
 
-### Module 6: Comparative Synthesis & Case Scenarios
+# Module 6: Comparative Synthesis & Case Scenarios
 
-# Part E: Comparing the Unsupervised-Learning Techniques
-
-# 59. Different Questions, Different Methods
+## 59. Different Questions, Different Methods
 
 The techniques covered in this session solve different problems.
 
@@ -2461,7 +2446,6 @@ For example, it may reveal that one cluster contains younger customers with lowe
 
 ---
 
-# Part F: Integrated Analysis
 
 # 69. Complete Unsupervised-Learning Workflow
 

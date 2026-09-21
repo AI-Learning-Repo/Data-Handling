@@ -36,7 +36,9 @@ The activity uses a small customer dataset for the main experiment and synthetic
 
 # Module 1: Unsupervised Foundations & Distance Metrics
 
-# 1. What Is Unsupervised Learning?
+# 1. Supervised vs Unsupervised Learning
+
+<img src="./img/lab1/1.jpg" width="50%">
 
 In supervised learning, a dataset contains both:
 
@@ -118,6 +120,8 @@ This activity focuses on **clustering**.
 
 # 2. What Is Clustering?
 
+<img src="./img/lab1/2.jpg" width="50%">
+
 Clustering attempts to divide observations into groups based on their similarity.
 
 For example, suppose a dataset contains information about customers:
@@ -157,6 +161,8 @@ The important idea is:
 ---
 
 # 3. Clustering Does Not Know the "Correct" Groups
+
+<img src="./img/lab1/3.jpg" width="50%">
 
 A clustering algorithm is not given the correct cluster labels.
 
@@ -262,6 +268,8 @@ The smaller the distance, the more similar the observations are under this parti
 
 # 5. Question 1: Calculate a Distance
 
+<img src="./img/lab1/5.jpg" width="50%">
+
 Consider:
 
 ```text
@@ -361,7 +369,7 @@ K-Means is based on assigning observations to nearby cluster centers.
 
 ---
 
-# 7. Create a Real-World Dataset: Mall Customers
+# 7. Use a Real-World Dataset: Mall Customers
 
 For the main clustering experiment, we will use the **Mall Customers** dataset.
 
@@ -555,7 +563,7 @@ Look for regions where customers appear relatively close together. These regions
 
 ---
 
-# 15. Question 3: Examine the Customer Data
+Question 3: Examine the Customer Data
 
 Look at the scatter plot.
 
@@ -585,6 +593,9 @@ However, the visual pattern does not automatically establish a unique or objecti
 # Module 2: Centroid-Based Clustering (K-Means)
 
 # 15. K-Means Clustering
+
+<img src="./img/lab1/15.png" width="50%">
+
 
 One of the most commonly used clustering algorithms is **K-Means**.
 
@@ -633,6 +644,8 @@ The value of `K` is specified as part of the model configuration.
 ---
 
 # 17. The Basic K-Means Algorithm
+
+<img src="./img/lab1/17.png" width="50%">
 
 K-Means can be understood as an iterative process.
 
@@ -1201,6 +1214,8 @@ The data do not always contain one uniquely correct number of clusters, so the c
 
 # 33. Hierarchical Clustering
 
+<img src="./img/lab1/33.jpg" width="50%">
+
 K-Means is not the only clustering approach.
 
 Another approach is **hierarchical clustering**.
@@ -1404,6 +1419,8 @@ This is different from K-Means, which directly attempts to produce a chosen numb
 ---
 
 # 40. Dendrograms
+
+<img src="./img/lab1/40.jpg" width="50%">
 
 A hierarchy can be visualized with a **dendrogram**.
 
@@ -1838,6 +1855,8 @@ Dimensionality Reduction
 ---
 
 # 53. Clustering vs Classification
+
+<img src="./img/lab1/53.png" width="50%">
 
 These two approaches are especially easy to confuse.
 
