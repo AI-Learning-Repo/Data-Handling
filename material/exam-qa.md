@@ -115,16 +115,16 @@ D) They always generalize to every business purpose.
 
 ## Section B: True or False
 
-**16.** Unsupervised learning normally uses a supplied target variable.
-**17.** K-Means repeatedly assigns observations to centroids and updates the centroids.
-**18.** A feature with a larger numerical scale can have greater influence on Euclidean distance.
-**19.** Scaling guarantees that K-Means finds the correct clusters.
-**20.** Inertia generally decreases as the number of clusters increases.
-**21.** The elbow method guarantees one objectively correct value of `k`.
-**22.** A silhouette score closer to 1 generally indicates compact and separated clusters.
-**23.** A larger `cluster_std` generally creates tighter synthetic clusters.
-**24.** The numerical value of a cluster label has an inherent ranking.
-**25.** Clustering proves that the discovered groups are meaningful for a business decision.
+16. Unsupervised learning normally uses a supplied target variable.
+17. K-Means repeatedly assigns observations to centroids and updates the centroids.
+18. A feature with a larger numerical scale can have greater influence on Euclidean distance.
+19. Scaling guarantees that K-Means finds the correct clusters.
+20. Inertia generally decreases as the number of clusters increases.
+21. The elbow method guarantees one objectively correct value of `k`.
+22. A silhouette score closer to 1 generally indicates compact and separated clusters.
+23. A larger `cluster_std` generally creates tighter synthetic clusters.
+24. The numerical value of a cluster label has an inherent ranking.
+25. Clustering proves that the discovered groups are meaningful for a business decision.
 
 ---
 
@@ -370,34 +370,34 @@ Write a basic K-Means workflow for `customers` that:
 
 ## Section A: Multiple Choice
 
-**1. B** — Unsupervised learning discovers patterns without a supplied target.
-**2. B** — Clustering groups observations according to similarity.
-**3. A** — `CustomerID` is an identifier, not a meaningful customer characteristic.
-**4. C** — The basic example uses annual income and spending score.
-**5. B** — `n_clusters=4` requests four clusters.
-**6. B** — A centroid is the mean position of observations assigned to a cluster.
-**7. A** — K-Means uses distances, so feature scale matters.
-**8. A** — Inertia is the within-cluster sum of squared distances to centroids.
-**9. A** — The elbow method examines the change in inertia as `k` increases.
-**10. A** — Silhouette score considers cohesion and separation.
-**11. A** — Larger spread produces more dispersed clusters and potentially more overlap.
-**12. A** — K-Means should discover structure without using the generated labels.
-**13. B** — Cluster labels are identifiers and have no inherent ranking.
-**14. A** — More centroids generally reduce within-cluster distances.
-**15. B** — Clusters depend on selected features, scaling, and algorithm settings.
+1. B— Unsupervised learning discovers patterns without a supplied target.
+2. B — Clustering groups observations according to similarity.
+3. A — `CustomerID` is an identifier, not a meaningful customer characteristic.
+4. C — The basic example uses annual income and spending score.
+5. B — `n_clusters=4` requests four clusters.
+6. B — A centroid is the mean position of observations assigned to a cluster.
+7. A — K-Means uses distances, so feature scale matters.
+8. A — Inertia is the within-cluster sum of squared distances to centroids.
+9. A — The elbow method examines the change in inertia as `k` increases.
+10. A — Silhouette score considers cohesion and separation.
+11. A — Larger spread produces more dispersed clusters and potentially more overlap.
+12. A — K-Means should discover structure without using the generated labels.
+13. B — Cluster labels are identifiers and have no inherent ranking.
+14. A — More centroids generally reduce within-cluster distances.
+15. B — Clusters depend on selected features, scaling, and algorithm settings.
 
 ## Section B: True or False
 
-**16. False** — Unsupervised learning generally does not use supplied target labels.
-**17. True** — K-Means alternates between assignment and centroid-update steps.
-**18. True** — A larger numerical scale can dominate Euclidean distance.
-**19. False** — Scaling helps comparability but does not guarantee correct clusters.
-**20. True** — Inertia generally decreases as more clusters are allowed.
-**21. False** — The elbow method is a heuristic, not a guarantee.
-**22. True** — A score closer to 1 generally indicates compact and separated clusters.
-**23. False** — Larger `cluster_std` generally creates more dispersed clusters.
-**24. False** — Cluster labels do not have an inherent ranking.
-**25. False** — Clustering does not automatically establish business meaning or causation.
+16. False — Unsupervised learning generally does not use supplied target labels.
+17. True — K-Means alternates between assignment and centroid-update steps.
+18. True — A larger numerical scale can dominate Euclidean distance.
+19. False — Scaling helps comparability but does not guarantee correct clusters.
+20. True — Inertia generally decreases as more clusters are allowed.
+21. False — The elbow method is a heuristic, not a guarantee.
+22. True — A score closer to 1 generally indicates compact and separated clusters.
+23. False — Larger `cluster_std` generally creates more dispersed clusters.
+24. False — Cluster labels do not have an inherent ranking.
+25. False — Clustering does not automatically establish business meaning or causation.
 
 ## Section C: Short Answers
 
