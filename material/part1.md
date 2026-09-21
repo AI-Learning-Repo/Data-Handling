@@ -1,6 +1,6 @@
-# Theory — Introduction to Unsupervised Learning and Clustering
+# Theory: Introduction to Unsupervised Learning and Clustering
 
-This section introduces the concepts required for **Activity 1 — Introduction to Unsupervised Learning with Clustering**.
+This section introduces the concepts required for **Activity 1: Introduction to Unsupervised Learning with Clustering**.
 
 The main topics are:
 
@@ -606,7 +606,7 @@ The centroid represents the center of the observations currently assigned to tha
 
 K-Means can be understood as an iterative process.
 
-## Step 1 — Choose K
+## Step 1: Choose K
 
 Suppose:
 
@@ -614,19 +614,19 @@ $$
 K=3
 $$
 
-## Step 2 — Initialize the centroids
+## Step 2: Initialize the centroids
 
 The algorithm chooses initial cluster centers.
 
-## Step 3 — Assign observations
+## Step 3: Assign observations
 
 Each observation is assigned to the nearest centroid.
 
-## Step 4 — Recalculate the centroids
+## Step 4: Recalculate the centroids
 
 The centroid of each cluster is recalculated from its current observations.
 
-## Step 5 — Repeat
+## Step 5: Repeat
 
 The assignment and centroid updates are repeated until the solution stabilizes according to the algorithm's stopping criteria.
 
@@ -1364,7 +1364,7 @@ and therefore can change the clusters.
 
 ---
 
-# 43. Question — Does Changing the Features Matter?
+# 43. Question: Does Changing the Features Matter?
 
 Suppose:
 

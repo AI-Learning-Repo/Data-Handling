@@ -1,4 +1,4 @@
-# Theory — Unsupervised Learning: Clustering, Anomaly Detection, and Association Rules
+# Theory: Unsupervised Learning: Clustering, Anomaly Detection, and Association Rules
 
 ## 1. From Activity 1 to Activity 2
 

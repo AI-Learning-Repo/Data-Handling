@@ -1233,7 +1233,7 @@ In a real RAG application, you might retrieve multiple chunks and combine them w
 
 ---
 
-# Additional Topic: Metadata Filtering
+# Metadata Filtering
 
 Metadata filtering allows us to restrict retrieval to documents that satisfy a structured condition.
 

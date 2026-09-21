@@ -102,12 +102,12 @@ print(f"Similarity between 'physician' and 'sports car' sentences: {sim_1_3:.4f}
 
 ---
 
-#### 🧪 Checkpoint Challenge 1: Exploring Vector Geometry
+#### Checkpoint Challenge 1: Exploring Vector Geometry
 
 > **Question:**  
 > Sentence 1 (*"The physician examined the patient"*) and Sentence 2 (*"A doctor checked the sick individual"*) share almost no common words except "the". Why does their cosine similarity score remain close to `0.80` or higher, while a standard SQL `LIKE %doctor%` or Python string search would score this as a zero match?
 
-💡 **Gemini Prompt Hint:**  
+**Gemini Prompt Hint:**  
 > *"Explain how dense sentence embeddings capture semantic similarity between synonyms compared to lexical/keyword matching. Keep the explanation concise and technical."*
 
 <details>
@@ -210,12 +210,12 @@ print(f"Successfully indexed {collection.count()} document chunks into ChromaDB.
 
 ---
 
-#### 🧪 Checkpoint Challenge 2: Understanding Vector Chunks
+#### Checkpoint Challenge 2: Understanding Vector Chunks
 
 > **Question:**  
 > In `activity4.md` (LoRA fine-tuning), we trained the model on pairs of `{"prompt": ..., "completion": ...}` formatted with `<|im_start|>` and `<|im_end|>` ChatML tags. Why do we store only the factual completion sentences in ChromaDB here, without any ChatML tags?
 
-💡 **Gemini Prompt Hint:**  
+**Gemini Prompt Hint:**  
 > *"In a RAG retrieval pipeline, why should documents stored in a vector database be clean factual prose rather than chat-templated prompts? Consider embedding distance and relevance."*
 
 <details>
@@ -265,7 +265,7 @@ for i in range(len(results["documents"][0])):
 
 ---
 
-#### 🧪 Checkpoint Challenge 3: Evaluating Semantic Retrieval
+#### Checkpoint Challenge 3: Evaluating Semantic Retrieval
 
 > **Question:**  
 > Notice that the query asked about *"brain and nervous system conditions"*, but the top returned result mentions *"Dr. Elena Varga leads the neurology department"* and *"The neurology department handles brain and nervous system diseases"*.  
@@ -273,7 +273,7 @@ for i in range(len(results["documents"][0])):
 > Try modifying `query_text` to: `"Where do the helicopters land?"`  
 > What does ChromaDB return, and what is its distance score? Does it work even though the word "pad" or "helipad" was not in your query?
 
-💡 **Gemini Prompt Hint:**  
+**Gemini Prompt Hint:**  
 > *"In ChromaDB vector retrieval, run a conceptual query that uses no matching nouns from the underlying document and explain how nearest-neighbor search identifies the correct concept."*
 
 <details>

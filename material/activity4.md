@@ -140,12 +140,12 @@ print("BASELINE UNGROUNDED ANSWER:\n", response)
 
 ---
 
-#### 🧪 Checkpoint Challenge 1: The Knowledge Limit
+#### Checkpoint Challenge 1: The Knowledge Limit
 
 > **Question:**  
 > Why did the model fail to answer or invent a fictional name? In Activity 4, the model knew that Dr. Elena Varga led the neurology department after Cell 7. Why does it not know now?
 
-💡 **Gemini Prompt Hint:**  
+**Gemini Prompt Hint:**  
 > *"Explain the difference between parametric memory updated during LoRA fine-tuning versus an untrained base foundation model encountering private enterprise entities."*
 
 <details>
@@ -282,12 +282,12 @@ print("GROUNDED RAG ANSWER:\n", grounded_response)
 
 ---
 
-#### 🧪 Checkpoint Challenge 2: Inspecting the Raw Prompt
+#### Checkpoint Challenge 2: Inspecting the Raw Prompt
 
 > **Question:**  
 > What does the exact text string passed to the GPU actually look like after `tokenizer.apply_chat_template` runs? Print `formatted_prompt` to the console. Where do the ChatML tags (`<|im_start|>`, `<|im_end|>`) appear relative to your retrieved context?
 
-💡 **Gemini Prompt Hint:**  
+**Gemini Prompt Hint:**  
 > *"Explain how tokenizer.apply_chat_template in Hugging Face wraps user and system roles with ChatML control tokens for Qwen models."*
 
 <details>
@@ -411,12 +411,12 @@ print("UPDATED RAG RESPONSE:\n", updated_response)
 
 ---
 
-#### 🧪 Checkpoint Challenge 3: Synthesis — Architectural Trade-offs
+#### Checkpoint Challenge 3: Synthesis — Architectural Trade-offs
 
 > **Question:**  
 > Contrast this step with your experience in Activity 4 (LoRA fine-tuning). If MediCore Hospital had 50 department heads that changed monthly, why is RAG a more sustainable architectural choice than fine-tuning? Conversely, when would fine-tuning still be necessary?
 
-💡 **Gemini Prompt Hint:**  
+**Gemini Prompt Hint:**  
 > *"Contrast the maintenance overhead of RAG vs fine-tuning for rapidly changing factual data versus style/tone adaptation."*
 
 <details>
