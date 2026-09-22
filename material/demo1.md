@@ -1,4 +1,4 @@
-# Activity 1: Introduction to Unsupervised Learning with Clustering
+# Demo 1: Introduction to Unsupervised Learning with Clustering
 
 ## Table of Contents
 

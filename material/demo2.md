@@ -1,4 +1,4 @@
-# Activity 2: Unsupervised Learning: Clustering, Anomaly Detection, and Association Rules
+# Demo 2: Unsupervised Learning: Clustering, Anomaly Detection, and Association Rules
 
 ## Table of Contents
 

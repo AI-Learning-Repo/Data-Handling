@@ -27,19 +27,23 @@
 
 ### Part 1:
 
-- [ Unsupervised Learning and Clustering](./material/part1.md)
+- [Demo](./material/demo1.md)
+- [Theory: Unsupervised Learning and Clustering](./material/part1.md)
 - [Activity 1](./material/activity1.md)
 
 
 ### Part 2: 
 
-- [Evaluating Clusters and Detecting Anomalies](./material/part2.md)
+- [Demo](./material/demo2.md)
+- [Theory: Evaluating Clusters and Detecting Anomalies](./material/part2.md)
 - [Activity 2](./material/activity2.md)
 
 
 <details>
 <summary>Links used in Session</summary>
 
+- https://www.interactive-ml.com/k-means.html
+- https://www.interactive-ml.com/hclustering.html
 - https://www.geeksforgeeks.org/machine-learning/unsupervised-learning/
 - https://www.geeksforgeeks.org/machine-learning/unsupervised-machine-learning-examples/
 - https://www.geeksforgeeks.org/data-science/choosing-the-right-clustering-algorithm-for-your-dataset/
@@ -47,8 +51,6 @@
 - https://www.geeksforgeeks.org/data-analysis/cluster-analysis/
 - https://www.geeksforgeeks.org/machine-learning/clustering-in-machine-learning/
 - https://www.interactive-ml.com/
-- https://www.interactive-ml.com/k-means.html
-- https://www.interactive-ml.com/hclustering.html
 - https://developers.google.com/
 </details> 
 
