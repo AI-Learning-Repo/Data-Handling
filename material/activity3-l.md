@@ -253,7 +253,7 @@ Suppose the fictional hospital appoints a new CEO. We can edit its stored record
 
 ```python
 # Cell 7 — Locate the record by its question, then compare before and after.
-ceo_question = "Who is the CEO of MediCore Hospital?"
+ceo_question = "Who is in charge of brain and nervous system conditions?"
 matches = [item for item in records if item["prompt"] == ceo_question]
 if len(matches) != 1:
     raise ValueError("Expected one CEO record. Inspect the dataset before updating.")

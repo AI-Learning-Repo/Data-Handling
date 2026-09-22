@@ -234,7 +234,7 @@ def retrieve(question, k=2):
         })
     return passages
 
-passages = retrieve(question, k=2)
+passages = retrieve(question, k=4)
 for passage in passages:
     print(f"\n[{passage['label']}] cosine distance={passage['distance']:.3f}")
     print(passage["text"])

@@ -194,7 +194,7 @@ This collection is temporary. A new Colab runtime needs to run the setup again. 
 
 ```python
 # Cell 4 — A helper that prints and returns the retrieved records.
-def search(query, k=2):
+def search(query, k=5):
     results = collection.query(
         query_texts=[query],
         n_results=k,
