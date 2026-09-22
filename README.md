@@ -27,6 +27,8 @@
 
 ### Part 1:
 
+> No Homework 
+
 - [Demo](./material/demo1.md)
 - [Theory: Unsupervised Learning and Clustering](./material/part1.md)
 - [Activity 1](./material/activity1.md)
@@ -61,6 +63,7 @@
 
 ## Afternoon: Retrieval-Augmented Generation (RAG)
 
+> Next week in campus???
 
 There are two versions for **Activity 3 (Vector Retrieval)** and **Activity 4 (Augmented Generation)**. The short version uses intentional simplifications to keep the lab interactive and accessible within session time limits. For full technical accuracy, refer to the long version.
 
