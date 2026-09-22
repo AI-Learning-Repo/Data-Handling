@@ -1,10 +1,12 @@
 # Activity 2: Evaluating Clusters and Detecting Anomalies
 
+<!-- 
 Activity 1 showed how clustering forms groups. This activity asks how to judge those groups and how to identify unusual observations. You will first investigate automobile clusters, then switch explicitly to customer credit-card profiles for anomaly detection.
 
 Run the code in order in a fresh Google Colab notebook. Predict each experiment's outcome before running it, and attempt questions before opening solutions. The [Part 2 theory](part2.md) follows the same six main sections.
 
-## Table of contents
+## Table of contents 
+-->
 
 - [1. Preparing data and investigating scale](#1-preparing-data-and-investigating-scale)
   - [1.1 Load and inspect automobile data](#11-load-and-inspect-automobile-data)

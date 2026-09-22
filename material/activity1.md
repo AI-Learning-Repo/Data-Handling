@@ -1,10 +1,12 @@
 # Activity 1: Introduction to Unsupervised Learning with Clustering
 
+<!--
 How can we discover groups when nobody has supplied the correct group labels? Investigate that question using customer data, K-Means, and agglomerative hierarchical clustering.
 
 Read each explanation, predict what will happen, and then run the code in Google Colab. Try the questions before opening their hints or solutions. Sections 1–6 follow the same sequence as the [Part 1 theory](part1.md).
 
-## Table of contents
+## Table of contents 
+-->
 
 - [1. From prediction to discovering structure](#1-from-prediction-to-discovering-structure)
   - [1.1 Connect to classification and regression](#11-connect-to-classification-and-regression)
