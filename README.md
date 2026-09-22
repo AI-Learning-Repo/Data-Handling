@@ -42,6 +42,9 @@
 <details>
 <summary>Links used in Session</summary>
 
+- https://github.com/microsoft/ML-For-Beginners/blob/main/5-Clustering/README.md
+  - MIT homework: [Video](https://www.youtube.com/watch?v=esmzYhuFnds), [Slides](https://ocw.mit.edu/courses/6-0002-introduction-to-computational-thinking-and-data-science-fall-2016/367ebcbfde99ec18e14e87b69f564035_MIT6_0002F16_lec12.pdf)
+  - https://user.ceng.metu.edu.tr/~akifakkus/courses/ceng574/k-means/
 - https://www.interactive-ml.com/k-means.html
 - https://www.interactive-ml.com/hclustering.html
 - https://www.geeksforgeeks.org/machine-learning/unsupervised-learning/
