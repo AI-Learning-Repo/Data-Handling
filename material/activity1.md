@@ -1,2925 +1,706 @@
 # Activity 1: Introduction to Unsupervised Learning with Clustering
 
-## Table of Contents
+How can we discover groups when nobody has supplied the correct group labels? Investigate that question using customer data, K-Means, and agglomerative hierarchical clustering.
 
-1. **Module 1: Unsupervised Foundations & Distance Metrics**
-   - Unsupervised learning and clustering
-   - Similarity, Euclidean distance, and the role of feature space
-2. **Module 2: Centroid-Based Clustering (K-Means)**
-   - K-Means workflow, centroids, labels, and experiments with `K`
-3. **Module 3: Connectivity-Based Clustering (Hierarchical Agglomerative)**
-   - Agglomerative clustering, hierarchy, linkage, and dendrograms
-4. **Module 4: Evaluation, Interpretation & Practical Limitations**
-   - Feature scale, interpreting clusters, limitations, and reflection
+Read each explanation, predict what will happen, and then run the code in Google Colab. Try the questions before opening their hints or solutions. Sections 1–6 follow the same sequence as the [Part 1 theory](part1.md).
 
+## Table of contents
 
-## Learning Objectives
+- [1. From prediction to discovering structure](#1-from-prediction-to-discovering-structure)
+  - [1.1 Connect to classification and regression](#11-connect-to-classification-and-regression)
+  - [1.2 Understand the clustering question](#12-understand-the-clustering-question)
+- [2. Representing customers and measuring similarity](#2-representing-customers-and-measuring-similarity)
+  - [2.1 Load and inspect the data](#21-load-and-inspect-the-data)
+  - [2.2 Select features and visualize](#22-select-features-and-visualize)
+  - [2.3 Calculate Euclidean distance](#23-calculate-euclidean-distance)
+  - [2.4 Consider units and scale](#24-consider-units-and-scale)
+- [3. Understanding and applying K-Means](#3-understanding-and-applying-k-means)
+  - [3.1 Understand K and centroids](#31-understand-k-and-centroids)
+  - [3.2 Follow the assignment and update cycle](#32-follow-the-assignment-and-update-cycle)
+  - [3.3 Fit and inspect a model](#33-fit-and-inspect-a-model)
+  - [3.4 Visualize the result](#34-visualize-the-result)
+  - [3.5 Experiment with K](#35-experiment-with-k)
+- [4. Building a hierarchy of clusters](#4-building-a-hierarchy-of-clusters)
+  - [4.1 Understand agglomerative merging](#41-understand-agglomerative-merging)
+  - [4.2 Fit and compare the models](#42-fit-and-compare-the-models)
+  - [4.3 Read a simple dendrogram](#43-read-a-simple-dendrogram)
+- [5. Interpreting results and recognizing limitations](#5-interpreting-results-and-recognizing-limitations)
+  - [5.1 Describe customer profiles](#51-describe-customer-profiles)
+  - [5.2 Investigate overlapping groups](#52-investigate-overlapping-groups)
+  - [5.3 Cluster data without obvious groups](#53-cluster-data-without-obvious-groups)
+  - [5.4 Recognize the limitations](#54-recognize-the-limitations)
+- [6. Consolidation and preparation for Part 2](#6-consolidation-and-preparation-for-part-2)
+  - [6.1 Compare the two methods](#61-compare-the-two-methods)
+  - [6.2 Check your understanding](#62-check-your-understanding)
+  - [6.3 Prepare for evaluation](#63-prepare-for-evaluation)
 
-By the end of this activity, the following concepts should be understood:
+## Learning objectives
 
-* the difference between supervised and unsupervised learning;
-* the idea of learning structure without a target variable;
-* clustering as a form of unsupervised learning;
-* similarity and distance;
-* Euclidean distance;
-* the basic idea of K-Means clustering;
-* the meaning of a cluster centroid;
-* the meaning of cluster labels;
-* how to visualize clusters;
-* the basic idea of hierarchical clustering;
-* the difference between K-Means and hierarchical clustering;
-* some limitations of clustering.
+By the end of this activity, you should be able to:
 
-The activity uses a small customer dataset for the main experiment and synthetic data later for controlled demonstrations of clustering behavior.
+- distinguish clustering from classification and regression;
+- explain how features, distance, and scale define similarity;
+- calculate a simple Euclidean distance and centroid;
+- explain and apply the K-Means assignment and update cycle;
+- interpret cluster labels, plots, and customer profiles;
+- explain agglomerative clustering and read a simple dendrogram;
+- recognize why a clustering result needs evaluation.
 
----
+## 1. From prediction to discovering structure
 
-# Module 1: Unsupervised Foundations & Distance Metrics
+### 1.1 Connect to classification and regression
 
-# 1. Supervised vs Unsupervised Learning
+<img src="./img/lab1/1.jpg" alt="Introduction to supervised and unsupervised learning" width="50%">
 
-<img src="./img/lab1/1.jpg" width="50%">
+In the previous lectures, a model learned from features and a known target. Classification predicted a category, such as a flower species. Regression predicted a numerical value, such as a car's MPG.
 
-In supervised learning, a dataset contains both:
+Unsupervised learning changes the question. The learning process receives features without a target guiding it and looks for structure in those features.
 
-```text
-Features
-   +
-Known target
-```
+| Approach | Example question | Target used during training? |
+|---|---|---|
+| Classification | Which known species does this flower belong to? | Yes: species |
+| Regression | What MPG should we predict for this car? | Yes: MPG |
+| Clustering | Which customers have similar characteristics? | No supplied customer-group target |
 
-The model learns a relationship between the features and the target.
+### 1.2 Understand the clustering question
 
-For example, in regression:
+<img src="./img/lab1/2.jpg" alt="Illustration of grouping similar observations" width="50%">
 
-```text
-Car characteristics
-       ↓
-Regression model
-       ↓
-Predicted MPG
-```
+Clustering groups observations according to similarity. Each observation in our main example is a customer. We will investigate groups using annual income and spending score.
 
-In classification:
+The algorithm does not receive names such as “high-spending customers.” It produces group assignments; we interpret those groups afterward.
 
-```text
-Flower measurements
-       ↓
-Classification model
-       ↓
-Predicted species
-```
+**Question 1 — Is a label being used to learn?**
 
-In both cases, a target value is available during training.
+The Iris dataset contains flower measurements and known species. You give K-Means only the measurements and keep species for a later comparison. Is the clustering supervised or unsupervised? Explain why.
 
-Unsupervised learning is different.
+<details>
+<summary>Optional LLM hint</summary>
 
-There is no target variable guiding the learning process.
+Ask: “Help me distinguish labels that exist in a dataset from labels used to guide training. Ask me what K-Means actually receives before giving an answer.”
 
-Instead, the algorithm receives data such as:
-
-```text
-Feature 1
-Feature 2
-Feature 3
-...
-```
-
-and attempts to discover useful structure.
-
-A simplified view is:
-
-```text
-Supervised learning
-
-X + known y
-     ↓
-learn relationship
-     ↓
-predict y
-
-
-Unsupervised learning
-
-X only
-     ↓
-find structure
-```
-
-Examples of unsupervised-learning tasks include:
-
-* clustering;
-* anomaly detection;
-* association rule learning;
-* dimensionality reduction;
-* density estimation.
-
-This activity focuses on **clustering**.
-
----
-
-# 2. What Is Clustering?
-
-<img src="./img/lab1/2.jpg" width="50%">
-
-Clustering attempts to divide observations into groups based on their similarity.
-
-For example, suppose a dataset contains information about customers:
-
-```text
-Customer
-Age
-Income
-Spending
-```
-
-There may be groups such as:
-
-```text
-Group 1:
-younger customers with lower income
-
-Group 2:
-middle-income customers with moderate spending
-
-Group 3:
-higher-income customers with high spending
-```
-
-If the dataset does not contain a column called:
-
-```text
-Customer_Group
-```
-
-a clustering algorithm can attempt to discover such groups from the available features.
-
-The important idea is:
-
-> **Clustering groups observations that are similar according to the information and distance measure used by the algorithm.**
-
----
-
-# 3. Clustering Does Not Know the "Correct" Groups
-
-<img src="./img/lab1/3.jpg" width="50%">
-
-A clustering algorithm is not given the correct cluster labels.
-
-For example, the following data could be:
-
-```text
-Observation 1
-Observation 2
-Observation 3
-...
-```
-
-The algorithm does not know in advance:
-
-```text
-Group A
-Group B
-Group C
-```
-
-Instead, it tries to find structure.
-
-This is different from classification.
-
-### Classification
-
-```text
-Known:
-Observation → Class A
-
-Observation → Class B
-```
-
-### Clustering
-
-```text
-Observations
-     ↓
-algorithm discovers groups
-```
-
-This distinction is fundamental.
-
----
-
-# 4. Similarity and Distance
-
-To decide which observations are similar, a clustering algorithm needs a way to measure distance or similarity.
-
-A common distance measure is **Euclidean distance**.
-
-Suppose two observations have two features:
-
-```text
-A = (1, 2)
-
-B = (4, 6)
-```
-
-The Euclidean distance is:
-
-$$
-d(A,B)=
-\sqrt{
-(4-1)^2+(6-2)^2
-}
-$$
-
-Calculate the differences:
-
-$$
-4-1=3
-$$
-
-$$
-6-2=4
-$$
-
-Therefore:
-
-$$
-d(A,B)=
-\sqrt{3^2+4^2}
-$$
-
-$$
-d(A,B)=
-\sqrt{9+16}
-$$
-
-$$
-d(A,B)=
-\sqrt{25}
-$$
-
-$$
-**d(A,B)=5**
-$$
-
-The smaller the distance, the more similar the observations are under this particular distance measure.
-
----
-
-# 5. Question 1: Calculate a Distance
-
-<img src="./img/lab1/5.jpg" width="50%">
-
-Consider:
-
-```text
-A = (2, 3)
-
-B = (5, 7)
-```
-
-Calculate the Euclidean distance.
-
-### LLM Hint Prompt
-
-> Help me calculate the Euclidean distance between A = (2, 3) and B = (5, 7). Show the formula and guide me through the calculation step by step, but let me try each arithmetic step myself.
+</details>
 
 <details>
 <summary>Solution</summary>
 
-Use:
-
-$$
-d(A,B)=
-\sqrt{
-(x_2-x_1)^2+
-(y_2-y_1)^2
-}
-$$
-
-Therefore:
-
-$$
-d=
-\sqrt{
-(5-2)^2+
-(7-3)^2
-}
-$$
-
-$$
-=
-\sqrt{3^2+4^2}
-$$
-
-$$
-=
-\sqrt{9+16}
-$$
-
-$$
-=
-\sqrt{25}
-$$
-
-$$
-**d=5**
-$$
+The clustering is unsupervised because species labels do not guide fitting. Labels can exist elsewhere in a dataset without being used to train the clustering model. Comparing the groups with species afterward is a separate analysis.
 
 </details>
 
----
+## 2. Representing customers and measuring similarity
 
-# 6. Why Does Distance Matter in Clustering?
+### 2.1 Load and inspect the data
 
-Suppose we have:
+The main example uses the **Mall Customers** dataset:
 
-```text
-A = (2, 3)
-B = (2.5, 3.2)
-C = (9, 10)
-```
+| Column | Meaning | Role in this experiment |
+|---|---|---|
+| `CustomerID` | Customer identifier | Excluded from distances |
+| `Gender` | Categorical demographic variable | Excluded from this numerical example |
+| `Age` | Age in years | Available for later exploration |
+| `Annual Income (k$)` | Income in thousands of dollars | Clustering feature |
+| `Spending Score (1-100)` | Spending score supplied by the dataset provider | Clustering feature |
 
-A is very close to B.
+The spending score is an input here, not a target to predict. The dataset does not supply a correct customer-segment label.
 
-A is much farther from C.
-
-A clustering algorithm can therefore use distance to identify:
-
-```text
-A and B → similar
-A and C → less similar
-```
-
-This leads to the basic idea:
-
-```text
-small distance
-     ↓
-more similar
-
-large distance
-     ↓
-less similar
-```
-
-Different clustering algorithms use distance or similarity in different ways.
-
-K-Means is based on assigning observations to nearby cluster centers.
-
----
-
-# 7. Use a Real-World Dataset: Mall Customers
-
-For the main clustering experiment, we will use the **Mall Customers** dataset.
-
-The dataset contains 200 customer records and includes:
-
-- `CustomerID`: an identifier for each customer;
-- `Gender`: a categorical demographic variable;
-- `Age`: the customer's age in years;
-- `Annual Income (k$)`: annual income expressed in thousands of dollars;
-- `Spending Score (1-100)`: a score representing the customer's spending behavior as assigned by the dataset provider.
-
-The dataset is useful for introducing clustering because it describes customers rather than providing a predefined customer-segment label. The purpose of clustering is to investigate whether customers can be grouped according to similarities in their characteristics.
-
-> **Important interpretation note:** The spending score is a supplied feature, not a target that K-Means is trained to predict. We can use it as an input feature for clustering, but the resulting clusters should still be treated as analytical groupings rather than objectively correct customer categories.
-
-We will initially focus on:
-
-- `Annual Income (k$)`;
-- `Spending Score (1-100)`.
-
-These two variables are convenient for visualization because they can be plotted directly on a two-dimensional scatter plot. Later, we will also discuss how adding `Age` changes the feature space.
-
----
-
-# 8. Install the Required Libraries
-
-This activity is designed for Google Colab.
-
-Run the installation cell separately. The `scikit-learn` package provides the clustering algorithms, `pandas` handles tabular data, and `matplotlib` and `seaborn` support visualization.
-
-### Code Cell
+Run this setup cell in Colab:
 
 ```python
-!pip install -q scikit-learn pandas matplotlib seaborn
+!pip install -q scikit-learn pandas matplotlib scipy
 ```
 
----
-
-# 9. Import the Libraries
-
-### Code Cell
+Import the libraries. NumPy handles numerical arrays, pandas handles tables, Matplotlib draws plots, and the other imports provide clustering tools.
 
 ```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-from sklearn.cluster import KMeans
-from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import KMeans, AgglomerativeClustering
+from sklearn.datasets import make_blobs
+from scipy.cluster.hierarchy import linkage, dendrogram
 ```
 
-The main components are:
-
-### NumPy
-
-Used for numerical operations and arrays.
-
-### pandas
-
-Used to load, inspect, select, and summarize tabular data.
-
-### matplotlib and seaborn
-
-Used to visualize relationships between variables and inspect the resulting clusters.
-
-### scikit-learn
-
-Provides the K-Means and hierarchical-clustering implementations used in this activity.
-
----
-
-# 10. Load the Mall Customers Data
-
-The dataset can be loaded directly from the supplied GitHub raw URL.
-
-### Code Cell
+Load and inspect the data:
 
 ```python
-url="https://raw.githubusercontent.com/AI-Learning-Repo/Data-Handling/refs/heads/week5/datasets/mall-customers.csv"
-
+url = (
+    "https://raw.githubusercontent.com/AI-Learning-Repo/"
+    "Data-Handling/refs/heads/week5/datasets/mall-customers.csv"
+)
 customers = pd.read_csv(url)
 
-customers.head()
-```
-
-
-The `read_csv()` function downloads the CSV file and stores it as a pandas DataFrame.
-
-The `head()` method displays the first few rows so that we can check whether the data were loaded correctly.
-
-The dataset contains an identifier and a categorical column in addition to numerical features. We will not use `CustomerID` as a clustering feature because it is an identifier, not a meaningful measurement of customer similarity. We will also leave `Gender` out of this first numerical example because the clustering workflow below uses numerical distance calculations.
-
----
-
-# 11. Inspect the Dataset
-
-### Code Cell
-
-```python
-print(customers.shape)
-print(customers.info())
+display(customers.head())
+print("Rows and columns:", customers.shape)
+customers.info()
+print("Missing values per column:")
 print(customers.isna().sum())
 ```
 
-The checks answer three questions:
+Check the actual output. The supplied dataset is expected to contain 200 customers and five columns. Inspection tells us whether that expectation holds and whether cleaning is needed.
 
-1. **Shape:** How many rows and columns are present?
-2. **Data types:** Which columns are numerical and which are categorical?
-3. **Missing values:** Are any values absent?
+### 2.2 Select features and visualize
 
-The dataset is commonly distributed with 200 observations and five columns. The exact result should be checked in your notebook rather than assumed.
-
----
-
-# 12. Select the Clustering Features
-
-We will begin with annual income and spending score.
-
-### Code Cell
+Select the two numerical features. For this introductory experiment, remove rows missing either value and check how many were removed. Keep the DataFrame index so labels can later be attached to the correct rows.
 
 ```python
-feature_names = [
-    "Annual Income (k$)",
-    "Spending Score (1-100)"
-]
-
-X_df = customers[feature_names].dropna()
+feature_names = ["Annual Income (k$)", "Spending Score (1-100)"]
+X_df = customers[feature_names].dropna().copy()
 X = X_df.to_numpy()
+
+print("Rows removed:", len(customers) - len(X_df))
+print("Clustering data shape:", X.shape)
 ```
 
-`X_df` is a DataFrame containing only the selected numerical features.
+Each row represents one customer; each column represents one feature. A shape of `(200, 2)` means 200 observations described by two features.
 
-`X` is a NumPy array that can be passed to scikit-learn. Each row represents one customer, and each column represents one feature.
-
-We intentionally exclude:
-
-- `CustomerID`, because it is an identifier;
-- `Gender`, because it is categorical and is not needed for this first numerical example;
-- any target-like cluster label, because the dataset does not provide a predefined cluster target.
-
----
-
-# 13. Inspect the Shape of the Data
-
-### Code Cell
-
-```python
-print(X.shape)
-```
-
-The expected shape is approximately:
-
-```text
-(200, 2)
-```
-
-This means that the dataset contains approximately 200 customer observations and two selected features.
-
-A two-feature dataset is useful at this stage because it can be displayed directly in a two-dimensional plot. In contrast, a dataset with three or more features cannot be displayed directly on a standard two-dimensional scatter plot without selecting features or using dimensionality reduction.
-
----
-
-# 14. Visualize the Customer Data
-
-Before applying clustering, inspect the feature space.
-
-### Code Cell
+Differences between customer identifiers are not meaningful measurements of similarity. Leaving `Gender` out keeps this example numerical and easy to visualize; it does not establish that categorical information is never useful.
 
 ```python
 plt.figure(figsize=(8, 6))
-
-plt.scatter(
-    X[:, 0],
-    X[:, 1]
-)
-
+plt.scatter(X[:, 0], X[:, 1], alpha=0.8)
 plt.xlabel("Annual Income (k$)")
 plt.ylabel("Spending Score (1-100)")
-plt.title("Mall Customers: Income and Spending Score")
-
+plt.title("Mall Customers: before clustering")
 plt.show()
 ```
 
-Each point represents one customer:
+**Question 2 — Read the feature space**
 
-- the horizontal position represents annual income;
-- the vertical position represents spending score.
+1. Which regions appear relatively crowded or separated?
+2. Are there customers between apparent groups?
+3. Why might these two features be useful for segmentation?
+4. Does the plot prove one correct number of clusters?
 
-Look for regions where customers appear relatively close together. These regions may suggest possible groups, but visual separation alone does not prove that a particular number of clusters is correct.
+<details>
+<summary>Optional LLM hint</summary>
 
----
+Ask: “Help me describe a customer scatter plot using income and spending score. Separate what I can observe from what I would need more evidence to conclude.”
 
-Question 3: Examine the Customer Data
+</details>
 
-Look at the scatter plot.
+<details>
+<summary>Possible answer</summary>
 
-Answer:
+Describe the regions visible in your plot using the axis names. Income and spending score distinguish customers with different combinations of income and spending behavior. Some observations may lie between apparent groups.
 
-1. Does the data appear to contain visibly different groups?
-2. Are the groups equally dense?
-3. Are some customers located between apparent groups?
-4. Why might annual income and spending score be useful features for customer segmentation?
-5. Why should the visual pattern not automatically be treated as proof of a correct clustering solution?
+The plot suggests possible groupings, but does not establish a unique correct number. Features, scale, algorithm, and the purpose of the analysis also matter.
 
-### LLM Hint Prompt
+</details>
 
-> Help me interpret a scatter plot of annual income and spending score for mall customers. Ask me to distinguish visible patterns from conclusions that would require additional clustering evaluation.
+### 2.3 Calculate Euclidean distance
+
+Euclidean distance measures the straight-line distance between two points. For two features:
+
+$$
+d(A,B)=\sqrt{(x_B-x_A)^2+(y_B-y_A)^2}
+$$
+
+For $A=(1,2)$ and $B=(4,6)$:
+
+$$
+d(A,B)=\sqrt{(4-1)^2+(6-2)^2}=\sqrt{9+16}=5
+$$
+
+Smaller distance means greater similarity **under the selected features and units**. It does not mean two customers are similar in every respect.
+
+**Question 3 — Calculate a distance**
+
+Calculate the Euclidean distance between $A=(2,3)$ and $B=(5,7)$. Show the coordinate differences before calculating the final distance.
+
+<details>
+<summary>Optional LLM hint</summary>
+
+Ask: “Guide me through the Euclidean distance between (2,3) and (5,7). Let me calculate the differences, their squares, and the square root myself.”
+
+</details>
 
 <details>
 <summary>Solution</summary>
 
-The plot may show regions with different combinations of income and spending score. These regions can motivate a clustering experiment.
+The coordinate differences are 3 and 4:
 
-However, the visual pattern does not automatically establish a unique or objectively correct number of clusters. The result depends on the selected features, distance measure, algorithm, and parameters.
+```math
+d(A,B)=\sqrt{(5-2)^2+(7-3)^2}=\sqrt{3^2+4^2}=\sqrt{25}=5
+```
 
 </details>
 
----
+### 2.4 Consider units and scale
 
-# Module 2: Centroid-Based Clustering (K-Means)
+Suppose two customers differ by 5 years in age and 1,000 dollars in income. In a raw Euclidean distance calculation, the squared income difference is much larger than the squared age difference. That reflects numerical units, not necessarily the importance of income.
 
-# 15. K-Means Clustering
+Standardization is one way to put features on comparable scales. We will investigate it practically in Activity 2.
 
-<img src="./img/lab1/15.png" width="50%">
+For this first experiment, we deliberately use income in thousands of dollars and spending score in their original units. This makes plots and centroids easy to read. It is a modeling choice, not a claim that these units give the best weighting.
 
+**Checkpoint:** If we converted income from thousands of dollars to dollars, could the clustering change even though the customers had not changed?
 
-One of the most commonly used clustering algorithms is **K-Means**.
+<details>
+<summary>Answer</summary>
 
-The basic idea is:
+Yes. Income differences would become 1,000 times larger, changing their contribution to distance relative to spending-score differences. The geometry seen by the algorithm would change.
 
-> Divide the observations into `K` groups so that observations within a cluster are relatively close to their cluster center.
+</details>
 
-K-Means uses **centroids**.
+## 3. Understanding and applying K-Means
 
-A centroid is the center of a cluster.
+### 3.1 Understand K and centroids
 
-The scikit-learn implementation uses `n_clusters` to specify the number of clusters and provides the resulting cluster centers through `cluster_centers_`. ([scikit-learn.org](https://scikit-learn.org/dev/modules/generated/sklearn.cluster.k_means.html))
+<img src="./img/lab1/15.png" alt="Illustration of K-Means clustering" width="50%">
 
----
+K-Means partitions observations into a chosen number of groups, **K**, around centers called **centroids**. A centroid is the mean position of its assigned observations. It has one coordinate per feature and need not coincide with an actual observation.
 
-# 16. What Does `K` Mean?
-
-If:
-
-```text
-K = 3
-```
-
-the algorithm attempts to create:
-
-```text
-3 clusters
-```
-
-If:
-
-```text
-K = 4
-```
-
-it attempts to create:
-
-```text
-4 clusters
-```
-
-The algorithm does not automatically know that the dataset shown above was generated using three centers.
-
-The value of `K` is specified as part of the model configuration.
-
----
-
-# 17. The Basic K-Means Algorithm
-
-<img src="./img/lab1/17.png" width="50%">
-
-K-Means can be understood as an iterative process.
-
-### Step 1: Choose K
-
-For example:
+For `(1,2)`, `(2,3)`, and `(3,4)`, take the mean of each coordinate:
 
 $$
-K=3
+\mu=\left(\frac{1+2+3}{3},\frac{2+3+4}{3}\right)=(2,3)
 $$
 
-### Step 2: Initialize centroids
+**Question 4 — Calculate a centroid**
 
-The algorithm starts with initial cluster centers.
+A cluster contains `(2,4)`, `(4,6)`, and `(6,8)`. Calculate its centroid. Why do we calculate the two means separately?
 
-### Step 3: Assign observations
+<details>
+<summary>Optional LLM hint</summary>
 
-Each observation is assigned to the nearest centroid.
+Ask: “Help me calculate a centroid. Ask me to average each feature separately and explain what each coordinate represents.”
 
-### Step 4: Recalculate centroids
+</details>
 
-Each centroid is moved to the center of the observations currently assigned to it.
+<details>
+<summary>Solution</summary>
 
-### Step 5: Repeat
-
-The assignment and centroid calculations are repeated until the solution stabilizes according to the algorithm's stopping criteria.
-
-Conceptually:
-
-```text
-Choose K
-   ↓
-Choose initial centers
-   ↓
-Assign points to nearest center
-   ↓
-Recalculate centers
-   ↓
-Repeat
+```math
+\mu=\left(\frac{2+4+6}{3},\frac{4+6+8}{3}\right)=(4,6)
 ```
 
----
+Each feature is a separate dimension, so the centroid needs a mean for each dimension.
 
-# 18. Create a K-Means Model
+</details>
 
-Use:
+### 3.2 Follow the assignment and update cycle
 
-### Code Cell
+<img src="./img/lab1/17.png" alt="Illustration of the K-Means assignment and update process" width="50%">
 
-```python
-kmeans = KMeans(
-    n_clusters=3,
-    random_state=42,
-    n_init="auto"
-)
-```
+1. Choose K.
+2. Initialize K centroids.
+3. Assign every observation to its nearest centroid.
+4. Recalculate each centroid as the mean of its assigned observations.
+5. Repeat assignment and updating until a stopping condition is reached.
 
-The important arguments are:
+The algorithm tries to reduce the total squared distances from observations to their assigned centroids. Different initial centers can lead to different results; a single run is not guaranteed to find the best possible partition.
 
-### `n_clusters=3`
+**Question 5 — Assign an observation**
 
-Requests three clusters.
+An observation has distances `3.2`, `1.5`, and `4.0` to the centroids of clusters `0`, `1`, and `2`. Which cluster receives it? What happens to the centroids after all observations have been assigned?
 
-### `random_state=42`
+<details>
+<summary>Solution</summary>
 
-Makes the random initialization reproducible.
+Cluster `1` receives it because `1.5` is the smallest distance. After assignment, each centroid is recalculated from its current observations. Subsequent assignments may change as the centers move.
 
-### `n_init="auto"`
+</details>
 
-Controls the number of K-Means initializations considered by the scikit-learn implementation. The current documentation specifies that the exact number of runs depends on the initialization strategy when `n_init="auto"` is used. ([scikit-learn.org](https://scikit-learn.org/dev/modules/generated/sklearn.cluster.k_means.html))
+### 3.3 Fit and inspect a model
 
----
-
-# 19. Fit the Model
-
-Now run:
-
-### Code Cell
+Use three clusters as an initial experiment. We have not established that three is the best number for these customers.
 
 ```python
+kmeans = KMeans(n_clusters=3, random_state=42, n_init=10)
 kmeans.fit(X)
-```
 
-Unlike supervised learning, there is no:
-
-```text
-y
-```
-
-being supplied.
-
-The algorithm receives:
-
-```text
-X
-```
-
-and attempts to identify groups from the observations.
-
----
-
-# 20. Obtain the Cluster Labels
-
-After fitting:
-
-### Code Cell
-
-```python
 labels = kmeans.labels_
-
-print(labels[:20])
+print("First 20 cluster labels:", labels[:20])
+print("Centroid array shape:", kmeans.cluster_centers_.shape)
 ```
 
-The result might look like:
+| Setting | Meaning |
+|---|---|
+| `n_clusters=3` | Request three clusters |
+| `random_state=42` | Make random initialization reproducible in the same setup |
+| `n_init=10` | Try ten initializations and retain the result with the lowest within-cluster sum of squared distances |
 
-```text
-[1 2 0 1 0 2 2 0 ...]
-```
+Notice `fit(X)`: no target `y` is supplied. The model learns centers and assignments from features. See the [K-Means documentation](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) for the API details.
 
-These numbers are **cluster identifiers**.
+Labels are **arbitrary identifiers**. Cluster `0` is not better than cluster `1`, and neither number automatically names a customer category.
 
-They are not target classes.
+**Question 6 — Interpret the outputs**
 
----
-
-# 21. Important: Cluster Numbers Have No Inherent Meaning
-
-Suppose one model gives:
-
-```text
-Cluster 0
-Cluster 1
-Cluster 2
-```
-
-Another run might label exactly the same groups:
-
-```text
-Cluster 2
-Cluster 0
-Cluster 1
-```
-
-The numbers themselves are arbitrary.
-
-Cluster `0` does not mean:
-
-> "The best cluster."
-
-Cluster `1` does not mean:
-
-> "The second most important cluster."
-
-They are simply identifiers.
-
----
-
-# 22. Question 4: Understand Cluster Labels
-
-Suppose two clustering algorithms produce:
-
-```text
-Algorithm A:
-Cluster 0 → upper-left group
-Cluster 1 → lower group
-Cluster 2 → upper-right group
-```
-
-and:
-
-```text
-Algorithm B:
-Cluster 1 → upper-left group
-Cluster 2 → lower group
-Cluster 0 → upper-right group
-```
-
-Are the algorithms necessarily producing different clusters?
-
-### LLM Hint Prompt
-
-> Explain why cluster labels such as 0, 1, and 2 should not be interpreted as meaningful class names. Show how two algorithms can assign different numbers to the same groups.
+1. Why does `cluster_centers_.shape` equal `(3, 2)`?
+2. If another run calls the same groups `2`, `0`, and `1`, has their membership necessarily changed?
 
 <details>
 <summary>Solution</summary>
 
-No.
-
-The numerical cluster labels are arbitrary identifiers.
-
-Two algorithms can assign different label numbers to the same groups.
-
-The actual locations and membership of the observations matter, not whether a group is called `0`, `1`, or `2`.
+There are three centroids, each with two feature coordinates. Renaming groups does not change which observations belong together. Compare membership and feature patterns rather than numerical label names alone.
 
 </details>
 
----
+### 3.4 Visualize the result
 
-# 23. Visualize the K-Means Clusters
-
-Create a plot.
-
-### Code Cell
+Plot customers using their labels, then add the centroids:
 
 ```python
 plt.figure(figsize=(8, 6))
-
+plt.scatter(X[:, 0], X[:, 1], c=labels, cmap="tab10", alpha=0.8)
 plt.scatter(
-    X[:, 0],
-    X[:, 1],
-    c=labels
+    kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1],
+    marker="X", s=220, c="black", label="Centroids"
 )
-
-plt.scatter(
-    kmeans.cluster_centers_[:, 0],
-    kmeans.cluster_centers_[:, 1],
-    marker="X",
-    s=200
-)
-
 plt.xlabel("Annual Income (k$)")
 plt.ylabel("Spending Score (1-100)")
-plt.title("K-Means Clustering")
-
+plt.title("K-Means customer groups: K = 3")
+plt.legend()
 plt.show()
+
+centroids = pd.DataFrame(kmeans.cluster_centers_, columns=feature_names)
+centroids.index.name = "Cluster"
+display(centroids.round(2))
 ```
 
-The observations are shown according to their cluster assignment.
+Match the centers in the plot to the table. Because the model used original units, their coordinates represent income in thousands of dollars and spending score.
 
-The large `X` markers represent the cluster centroids.
+Describe where the groups lie. Do not infer motives or customer value from a label or plot alone.
 
----
+### 3.5 Experiment with K
 
-# 24. What Is a Centroid?
-
-A centroid is the mean position of the observations assigned to a cluster.
-
-Suppose one cluster contains:
-
-```text
-(1, 2)
-(2, 3)
-(3, 4)
-```
-
-The centroid is calculated by taking the mean of each feature.
-
-For the first coordinate:
-
-$$
-\frac{1+2+3}{3}=2
-$$
-
-For the second coordinate:
-
-$$
-\frac{2+3+4}{3}=3
-$$
-
-So:
-
-$$
-**Centroid=(2,3)**
-$$
-
-The centroid represents the center of the cluster according to the feature space.
-
----
-
-# 25. Question 5: Calculate a Centroid
-
-Consider the following observations:
-
-```text
-A = (2, 4)
-B = (4, 6)
-C = (6, 8)
-```
-
-Calculate the centroid.
-
-### LLM Hint Prompt
-
-> Help me calculate the centroid of the points (2,4), (4,6), and (6,8). Explain why the mean is calculated separately for each feature.
-
-<details>
-<summary>Solution</summary>
-
-For the first feature:
-
-$$
-\frac{2+4+6}{3}=4
-$$
-
-For the second feature:
-
-$$
-\frac{4+6+8}{3}=6
-$$
-
-Therefore:
-
-$$
-**Centroid=(4,6)**
-$$
-
-The mean is calculated separately for each feature because the centroid must have one coordinate for each dimension.
-
-</details>
-
----
-
-# 26. Inspect the Centroids Numerically
-
-The centroids are stored in:
+**Predict first:** What might change if we request two groups instead of three?
 
 ```python
-kmeans.cluster_centers_
-```
-
-Run:
-
-### Code Cell
-
-```python
-print(kmeans.cluster_centers_)
-```
-
-If the result is:
-
-```text
-[[... ...]
- [... ...]
- [... ...]]
-```
-
-there are three rows because:
-
-```text
-n_clusters = 3
-```
-
-and two columns because:
-
-```text
-n_features = 2
-```
-
----
-
-# 27. Question 6: Understand `cluster_centers_`
-
-If:
-
-```text
-cluster_centers_.shape = (3, 2)
-```
-
-what does this mean?
-
-### LLM Hint Prompt
-
-> Explain why `cluster_centers_.shape = (3, 2)` when K-Means uses three clusters and the dataset has two features.
-
-<details>
-<summary>Solution</summary>
-
-There are three centroids because the algorithm was asked to create three clusters.
-
-Each centroid has two coordinates because each observation has two features.
-
-Therefore:
-
-$$
-(3,2)
-$$
-
-means:
-
-```text
-3 cluster centers
-2 feature coordinates per center
-```
-
-</details>
-
----
-
-# 28. How Does K-Means Decide Which Cluster Gets an Observation?
-
-Suppose there are three centroids:
-
-```text
-C1
-C2
-C3
-```
-
-and a new observation:
-
-```text
-P
-```
-
-K-Means conceptually calculates the distance from `P` to each centroid.
-
-For example:
-
-```text
-distance(P, C1) = 2.1
-distance(P, C2) = 5.4
-distance(P, C3) = 1.3
-```
-
-The closest centroid is:
-
-```text
-C3
-```
-
-so the observation is assigned to cluster 3.
-
-This is the central intuition behind K-Means.
-
----
-
-# 29. Question 7: Assign an Observation to a Cluster
-
-Suppose an observation has these distances:
-
-```text
-Distance to Cluster 0 = 3.2
-Distance to Cluster 1 = 1.5
-Distance to Cluster 2 = 4.0
-```
-
-Which cluster should K-Means assign the observation to?
-
-### LLM Hint Prompt
-
-> I have distances from one observation to three K-Means centroids. Explain how K-Means uses those distances to determine the cluster assignment.
-
-<details>
-<summary>Solution</summary>
-
-The observation should be assigned to Cluster 1 because:
-
-$$
-1.5
-$$
-
-is the smallest distance.
-
-K-Means assigns the observation to the nearest centroid.
-
-</details>
-
----
-
-# 30. A First Limitation of K-Means
-
-K-Means requires the number of clusters to be specified.
-
-For example:
-
-```python
-KMeans(n_clusters=3)
-```
-
-requires a choice of:
-
-$$
-K=3
-$$
-
-But how do we know that 3 is correct?
-
-For the synthetic dataset, the answer can be visually obvious.
-
-For real data, it may not be.
-
-Choosing the number of clusters is an important part of clustering analysis.
-
-This topic will be examined in more detail later.
-
----
-
-# 31. Experiment with a Different K
-
-Try:
-
-```python
-kmeans_2 = KMeans(
-    n_clusters=2,
-    random_state=42,
-    n_init="auto"
-)
-
+kmeans_2 = KMeans(n_clusters=2, random_state=42, n_init=10)
 labels_2 = kmeans_2.fit_predict(X)
-```
 
-Visualize it:
-
-### Code Cell
-
-```python
-plt.figure(figsize=(8, 6))
-
-plt.scatter(
-    X[:, 0],
-    X[:, 1],
-    c=labels_2
-)
-
-plt.scatter(
-    kmeans_2.cluster_centers_[:, 0],
-    kmeans_2.cluster_centers_[:, 1],
-    marker="X",
-    s=200
-)
-
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("K-Means with K = 2")
-
+fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharex=True, sharey=True)
+for ax, model, group_labels, k in [
+    (axes[0], kmeans_2, labels_2, 2),
+    (axes[1], kmeans, labels, 3)
+]:
+    ax.scatter(X[:, 0], X[:, 1], c=group_labels, cmap="tab10", alpha=0.8)
+    ax.scatter(
+        model.cluster_centers_[:, 0], model.cluster_centers_[:, 1],
+        marker="X", s=180, c="black"
+    )
+    ax.set_xlabel("Annual Income (k$)")
+    ax.set_title(f"K-Means: K = {k}")
+axes[0].set_ylabel("Spending Score (1-100)")
+plt.tight_layout()
 plt.show()
 ```
 
-Compare this with the previous result using:
+`fit_predict(X)` fits the model and returns its labels in one step.
 
-$$
-K=3
-$$
+**Question 7 — Interpret the experiment**
 
----
-
-# 32. Question 8: Changing K
-
-Answer:
-
-1. What changes when `K=2` instead of `K=3`?
-2. Are the observations assigned to the same groups?
-3. Why does the choice of `K` matter?
-4. Can an algorithm automatically know the "correct" number of clusters?
-
-### LLM Hint Prompt
-
-> Help me understand the effect of changing K in K-Means from 3 to 2. Explain why the number of clusters is a modeling decision and why there may not always be one objectively correct value of K.
+What changed in the grouping? Is K = 2 necessarily a simple merge of the K = 3 groups? Can either plot establish the correct K by itself?
 
 <details>
-<summary>Solution</summary>
+<summary>Optional LLM hint</summary>
 
-Changing K changes the number of groups the algorithm is required to create.
-
-With `K=2`, some groups that were separate under `K=3` may be merged.
-
-The choice matters because it changes the structure discovered by the algorithm.
-
-The data do not always contain one uniquely correct number of clusters, so the choice of K often requires additional analysis.
+Ask: “Help me compare K-Means plots for K = 2 and K = 3. Focus on which observations belong together, not whether the colors match.”
 
 </details>
 
----
+<details>
+<summary>Possible answer</summary>
 
-# Module 3: Connectivity-Based Clustering (Hierarchical Agglomerative)
+The number of groups and centroid positions change. Boundaries and memberships may also change. K-Means fits a new partition for each K, so its solutions need not form a nested sequence of merges.
 
-# 33. Hierarchical Clustering
+Neither plot establishes one objectively correct K. The choice requires evaluation and interpretation, developed in Activity 2.
 
-<img src="./img/lab1/33.jpg" width="50%">
+</details>
 
-K-Means is not the only clustering approach.
+## 4. Building a hierarchy of clusters
 
-Another approach is **hierarchical clustering**.
+### 4.1 Understand agglomerative merging
 
-In this activity, the focus is on **agglomerative hierarchical clustering**.
+<img src="./img/lab1/33.jpg" alt="Illustration of hierarchical clustering" width="50%">
 
-The basic idea is:
+Agglomerative hierarchical clustering starts with every observation in its own cluster. It repeatedly merges two clusters according to a **linkage criterion**, producing a hierarchy of larger groups.
 
-```text
-Start with every observation as its own cluster
-             ↓
-Find clusters that are close
-             ↓
-Merge them
-             ↓
-Repeat
-             ↓
-Build a hierarchy
-```
-
-Scikit-learn's `AgglomerativeClustering` recursively merges pairs of clusters according to a linkage distance. ([scikit-learn.org](https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.AgglomerativeClustering.html))
-
----
-
-# 34. K-Means vs Hierarchical Clustering
-
-The approaches start differently.
-
-### K-Means
+For four observations, one possible sequence is:
 
 ```text
-Choose K
-   ↓
-Initialize centroids
-   ↓
-Assign observations
-   ↓
-Update centroids
+{A} {B} {C} {D}
+        ↓
+{A,B}   {C} {D}
+        ↓
+{A,B}   {C,D}
+        ↓
+    {A,B,C,D}
 ```
 
-### Hierarchical clustering
+This procedure builds nested groups. Once two groups merge in agglomerative clustering, that merge is not undone later.
 
-```text
-Each observation starts alone
-   ↓
-Merge nearby clusters
-   ↓
-Continue merging
-   ↓
-Create hierarchy
-```
+### 4.2 Fit and compare the models
 
-A useful conceptual distinction is:
-
-> K-Means builds a fixed number of clusters by repeatedly updating cluster centers.
-
-> Hierarchical clustering builds a hierarchy of merged observations or clusters.
-
----
-
-# 35. Create an Agglomerative Model
-
-We can use:
-
-### Code Cell
+Use the same customer features and units as K-Means:
 
 ```python
-hierarchical = AgglomerativeClustering(
-    n_clusters=3
-)
-```
-
-The parameter:
-
-```text
-n_clusters=3
-```
-
-requests three final clusters.
-
-The current scikit-learn implementation supports `metric`, `linkage`, and other parameters; the default linkage is Ward's method, which uses Euclidean distance. ([scikit-learn.org](https://scikit-learn.org/1.5/modules/generated/sklearn.cluster.AgglomerativeClustering.html))
-
----
-
-# 36. Fit the Hierarchical Model
-
-### Code Cell
-
-```python
+hierarchical = AgglomerativeClustering(n_clusters=3, linkage="ward")
 hierarchical_labels = hierarchical.fit_predict(X)
-```
 
-Unlike the two-step K-Means example:
-
-```python
-kmeans.fit(X)
-labels = kmeans.labels_
-```
-
-`fit_predict()` performs the fitting and returns the cluster labels.
-
----
-
-# 37. Visualize the Hierarchical Clusters
-
-### Code Cell
-
-```python
-plt.figure(figsize=(8, 6))
-
-plt.scatter(
-    X[:, 0],
-    X[:, 1],
-    c=hierarchical_labels
-)
-
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("Hierarchical Clustering")
-
+fig, axes = plt.subplots(1, 2, figsize=(13, 5), sharex=True, sharey=True)
+for ax, group_labels, title in [
+    (axes[0], labels, "K-Means: three clusters"),
+    (axes[1], hierarchical_labels, "Agglomerative: three clusters")
+]:
+    ax.scatter(X[:, 0], X[:, 1], c=group_labels, cmap="tab10", alpha=0.8)
+    ax.set_xlabel("Annual Income (k$)")
+    ax.set_title(title)
+axes[0].set_ylabel("Spending Score (1-100)")
+plt.tight_layout()
 plt.show()
 ```
 
----
+Ward linkage chooses merges that produce the smallest increase in within-cluster sum of squares. `n_clusters=3` requests three final groups. Other linkage choices are explored in Activity 2. See the [agglomerative clustering documentation](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.AgglomerativeClustering.html).
 
-# 38. Question 9: Compare the Two Methods
+**Question 8 — Compare the procedures**
 
-Compare the K-Means and hierarchical-clustering plots.
-
-Answer:
-
-1. Do both methods produce three clusters?
-2. Do the cluster boundaries look identical?
-3. Why might two clustering algorithms produce slightly different groupings?
-4. Which method uses centroids as part of its basic algorithm?
-5. Which method builds a hierarchy?
-
-### LLM Hint Prompt
-
-> Compare K-Means and agglomerative hierarchical clustering conceptually. Focus on how the algorithms create clusters rather than simply comparing the final labels.
+Both models return three groups. Must memberships be identical? Explain their different procedures, then describe one similarity or difference in your plots. Matching colors need not represent matching groups.
 
 <details>
 <summary>Solution</summary>
 
-Both methods were asked to produce three clusters.
+Memberships need not be identical. K-Means repeatedly assigns observations to centroids and updates those centers. Agglomerative clustering progressively merges groups using linkage.
 
-Their exact groupings may differ because they use different clustering procedures.
-
-K-Means uses cluster centroids and repeatedly assigns observations to nearby centers.
-
-Hierarchical clustering begins with individual observations and progressively merges clusters.
+Different procedures can produce different partitions of the same data. A difference alone does not prove either result wrong.
 
 </details>
 
----
+### 4.3 Read a simple dendrogram
 
-# 39. The Meaning of "Hierarchical"
+A **dendrogram** displays a hierarchy: leaves are observations, branches join groups, and merge heights show the linkage value at each merge.
 
-The word hierarchical means that the clustering process creates multiple levels of grouping.
-
-Imagine:
-
-```text
-A   B   C   D
-```
-
-Initially:
-
-```text
-{A}
-{B}
-{C}
-{D}
-```
-
-Then perhaps:
-
-```text
-{A,B}
-{C}
-{D}
-```
-
-Then:
-
-```text
-{A,B}
-{C,D}
-```
-
-And eventually:
-
-```text
-{A,B,C,D}
-```
-
-The process creates a hierarchy of possible groupings.
-
-This is different from K-Means, which directly attempts to produce a chosen number of clusters.
-
----
-
-# 40. Dendrograms
-
-<img src="./img/lab1/40.jpg" width="50%">
-
-A hierarchy can be visualized with a **dendrogram**.
-
-A dendrogram shows:
-
-* which observations or groups were merged;
-* the order of merging;
-* the distance or linkage level at which merges occurred.
-
-A simple conceptual dendrogram might look like:
-
-```text
-          ┌───────────────┐
-          │               │
-      ┌───┴───┐       ┌───┴───┐
-      │       │       │       │
-      A       B       C       D
-```
-
-The vertical level of a merge indicates how far apart the clusters were when they were combined.
-
-For Activity 1, the dendrogram is introduced conceptually. Detailed dendrogram analysis can be left for a later activity.
-
----
-
-# 41. Dendrogram Demonstration
-
-If SciPy is available in the Colab environment, a dendrogram can be created.
-
-### Code Cell
+Start with four deliberately simple points so every branch is readable. These are a separate demonstration, not a customer subset.
 
 ```python
-!pip install -q scipy
-```
+X_small = np.array([[1, 1], [1, 2], [8, 8], [8, 9]])
+small_names = ["A", "B", "C", "D"]
+Z_small = linkage(X_small, method="ward")
 
-Then:
-
-### Code Cell
-
-```python
-from scipy.cluster.hierarchy import linkage, dendrogram
-
-Z = linkage(
-    X,
-    method="ward"
-)
-
-plt.figure(figsize=(10, 6))
-
-dendrogram(Z)
-
-plt.title("Hierarchical Clustering Dendrogram")
-plt.xlabel("Observations")
-plt.ylabel("Distance")
-
+plt.figure(figsize=(7, 5))
+dendrogram(Z_small, labels=small_names)
+plt.axhline(y=5, color="red", linestyle="--", label="Example cut")
+plt.xlabel("Observation")
+plt.ylabel("Ward linkage height")
+plt.title("A hierarchy of four observations")
+plt.legend()
 plt.show()
 ```
 
-The `linkage()` function creates the hierarchical clustering structure.
+**Question 9 — Read the hierarchy**
 
-The `dendrogram()` function visualizes it.
+1. Which pairs merge before the final merge?
+2. What does the higher final merge suggest?
+3. How many groups remain if we cut at the dashed line?
 
-For a large dataset, plotting every observation can make the dendrogram difficult to read. The visualization is therefore most useful for understanding the concept at this stage.
+<details>
+<summary>Optional LLM hint</summary>
 
----
+Ask: “Help me read a dendrogram. Ask me to identify leaves, low merges, and branches crossed by a horizontal cut before explaining the result.”
 
-# 42. Question 10: Read the Dendrogram Conceptually
-
-Answer:
-
-1. What do the leaves represent?
-2. What does a merge represent?
-3. What does a higher merge level generally indicate?
-4. How could a dendrogram be used to decide how many clusters to keep?
-
-### LLM Hint Prompt
-
-> Explain how to read a hierarchical-clustering dendrogram at a conceptual level. Focus on leaves, merging, merge height, and how cutting the hierarchy can produce different numbers of clusters.
+</details>
 
 <details>
 <summary>Solution</summary>
 
-The leaves represent the original observations.
+A joins B, and C joins D. These two merge heights are equal, so their display order is unimportant. The higher final merge indicates a larger linkage value for combining the pairs.
 
-A merge represents two observations or groups of observations being combined into a larger cluster.
-
-A higher merge generally indicates that the groups being merged are farther apart according to the chosen linkage distance.
-
-A horizontal cut through the hierarchy can produce different numbers of clusters depending on where the cut is made.
+The dashed line leaves two groups: `{A,B}` and `{C,D}`. The height is determined by Ward linkage, rather than simply being the distance between any two individual observations.
 
 </details>
 
----
-
-# 43. Understanding Cluster Membership
-
-A cluster is not necessarily a natural or permanent category.
-
-It is a grouping produced according to:
-
-* the features supplied;
-* the distance measure;
-* the clustering algorithm;
-* algorithm parameters.
-
-For example:
-
-```text
-Features:
-Age + Income
-```
-
-might produce one grouping.
-
-Using:
-
-```text
-Income + Spending
-```
-
-could produce a different grouping.
-
-Therefore:
-
-> **Clustering results depend on how the data and problem are represented.**
-
----
-
-> [!NOTE]  
-> Agglomerative versus Divisive Clustering
-> Our instances of hierarchical clustering have all been agglomerative, that is, they have been built from the bottom up. While this is typically the most common approach for this type of clustering, it is important to know that it is not the only way a hierarchy can be created. The opposite hierarchical approach, built from the top down, can also be used to create the taxonomy. This approach is called divisive hierarchical clustering and works by starting with all data points in one single cluster and recursively splitting them. While both approaches share similar core concepts, divisive clustering requires algorithms to decide how to split clusters rather than merge them.
-
----
-
-# Module 4: Evaluation, Interpretation & Practical Limitations
-
-# 44. Question 11: Change the Features
-
-Suppose customer data contains:
-
-```text
-Age
-Income
-Spending
-```
-
-A clustering model using:
-
-```text
-Age + Income
-```
-
-produces three clusters.
-
-A different model using:
-
-```text
-Income + Spending
-```
-
-produces different clusters.
-
-Why is this possible?
-
-### LLM Hint Prompt
-
-> Explain why changing the features used by a clustering algorithm can change the resulting clusters. Focus on how the feature space determines distances between observations.
-
-<details>
-<summary>Solution</summary>
-
-Clustering is based on relationships between observations in the feature space.
-
-Changing the features changes the coordinates of the observations and therefore changes the distances between them.
-
-As a result, the algorithm may identify different groups.
-
-</details>
-
----
-
-# 45. A Very Important Issue: Feature Scale
-
-Distance-based clustering is affected by feature scale.
-
-Suppose two features are:
-
-```text
-Age:
-20–80
-
-Income:
-20,000–200,000
-```
-
-The numerical scale of income is much larger.
-
-When Euclidean distance is calculated, income can have a much larger influence than age.
-
-For example:
-
-```text
-Age difference = 5
-
-Income difference = 50,000
-```
-
-The income difference dominates the numerical distance.
-
-This means that feature scaling can be important for clustering methods based on distance.
-
----
-
-# 46. A Small Example of Scale
-
-Suppose:
-
-```text
-Person A:
-Age = 30
-Income = 50,000
-
-Person B:
-Age = 35
-Income = 51,000
-```
-
-Differences:
-
-```text
-Age difference = 5
-Income difference = 1,000
-```
-
-Without scaling, the income difference is numerically much larger.
-
-A distance calculation can therefore be dominated by income.
-
-Scaling transforms the features so that they are on comparable numerical scales.
-
----
-
-# 47. Question 12: Why Can Scale Matter?
-
-Suppose a clustering dataset contains:
-
-```text
-Feature A: values between 0 and 10
-Feature B: values between 0 and 100,000
-```
-
-Answer:
-
-1. Which feature is likely to contribute more to Euclidean distance before scaling?
-2. Why?
-3. Does this mean Feature B is necessarily more important in the real world?
-4. What can be done if both features should contribute more comparably?
-
-### LLM Hint Prompt
-
-> Explain why a feature with values between 0 and 100,000 can dominate Euclidean distance compared with a feature between 0 and 10. Then explain how feature scaling can change the geometry of the data.
-
-<details>
-<summary>Solution</summary>
-
-1. Feature B is likely to contribute more.
-2. Its numerical differences are much larger.
-3. No. Numerical scale does not necessarily represent real-world importance.
-4. Features can be scaled, for example using standardization.
-
-</details>
-
----
-
-# 48. First Clustering Experiment with Scaling
-
-For the Mall Customers dataset, scaling deserves attention because age, income, and spending score use different units and numerical ranges.
-
-However, the concept is important for real datasets.
-
-A common scikit-learn transformer is:
+Now inspect the full customer hierarchy:
 
 ```python
-from sklearn.preprocessing import StandardScaler
-```
-
-It can standardize features.
-
-For example:
-
-```python
-scaler = StandardScaler()
-
-X_scaled = scaler.fit_transform(X)
-```
-
-The scaled data have features expressed relative to their distribution rather than their original units.
-
-A more detailed experiment with scaling will be part of the more advanced clustering activity.
-
----
-
-# 49. K-Means Limitations
-
-K-Means is useful, but it has limitations.
-
-### 1. The number of clusters must be specified
-
-```python
-KMeans(n_clusters=3)
-```
-
-requires a choice of `3`.
-
-### 2. It depends on distance
-
-Distance can be affected by:
-
-* feature scale;
-* the choice of representation;
-* the selected distance assumptions.
-
-### 3. Cluster shape matters
-
-K-Means works particularly naturally when clusters are reasonably compact and separated around centers.
-
-Highly elongated or unusual shapes can be more challenging.
-
-### 4. Outliers can matter
-
-Extreme observations can influence cluster centers.
-
-### 5. Different initializations can produce different results
-
-K-Means uses initialization, which is why the implementation supports multiple initializations through `n_init`. ([scikit-learn.org](https://scikit-learn.org/dev/modules/generated/sklearn.cluster.k_means.html))
-
----
-
-# 50. Hierarchical Clustering Limitations
-
-Hierarchical clustering also has limitations.
-
-For example:
-
-* the choice of linkage affects the result;
-* distance still matters;
-* the method can become computationally expensive for large datasets;
-* interpreting the hierarchy can be difficult;
-* different choices can produce different structures.
-
-It does, however, provide a useful advantage:
-
-> The hierarchy shows relationships at several levels rather than producing only one fixed partition.
-
----
-
-# 51. Question 13: Choosing Between K-Means and Hierarchical Clustering
-
-Consider:
-
-### Problem A
-
-A large dataset contains millions of observations and several numerical features.
-
-### Problem B
-
-A small dataset contains 30 observations and the relationships between the observations are important to inspect.
-
-Which method might be more convenient as a starting point?
-
-Explain why.
-
-### LLM Hint Prompt
-
-> Compare K-Means and hierarchical clustering for a very large dataset versus a very small dataset where the relationships among observations need to be visualized. Discuss computational practicality and interpretability without claiming that one algorithm is universally better.
-
-<details>
-<summary>Solution</summary>
-
-K-Means may be a more practical starting point for a very large dataset because it is designed to perform clustering efficiently.
-
-Hierarchical clustering can be attractive for a small dataset when understanding the relationships between observations and viewing the hierarchy is important.
-
-Neither method is universally best. The appropriate choice depends on the data and objective.
-
-</details>
-
----
-
-# 52. Supervised vs Unsupervised Learning
-
-The main difference can now be summarized.
-
-## Supervised
-
-A target is available.
-
-```text
-X + y
- ↓
-learn
- ↓
-prediction
-```
-
-Examples:
-
-```text
-Classification
-Regression
-```
-
-## Unsupervised
-
-The learning process does not use a target.
-
-```text
-X
- ↓
-discover structure
-```
-
-Examples:
-
-```text
-Clustering
-Anomaly Detection
-Association Rule Learning
-Dimensionality Reduction
-```
-
----
-
-# 53. Clustering vs Classification
-
-<img src="./img/lab1/53.png" width="50%">
-
-These two approaches are especially easy to confuse.
-
-## Classification
-
-Suppose:
-
-```text
-Observation A → Class 0
-Observation B → Class 1
-Observation C → Class 0
-```
-
-The classes are known during training.
-
-The model learns to predict them.
-
-## Clustering
-
-The algorithm receives:
-
-```text
-Observation A
-Observation B
-Observation C
-...
-```
-
-without target labels.
-
-It attempts to discover groups.
-
-Therefore:
-
-> Classification predicts known categories.
-
-> Clustering discovers groups without using known target categories during the clustering process.
-
----
-
-# 54. A Note About Labels
-
-A dataset can contain labels even when an unsupervised algorithm does not use them.
-
-For example, the Iris dataset contains known species.
-
-A clustering experiment can deliberately ignore:
-
-```text
-species
-```
-
-and cluster flowers using:
-
-```text
-sepal length
-sepal width
-petal length
-petal width
-```
-
-The known species can then be used afterward for analysis or comparison.
-
-The labels were not used to train the clustering algorithm.
-
-This distinction matters because:
-
-> **Unsupervised learning means the target labels do not guide the learning process; it does not necessarily mean that no labels exist anywhere in the dataset.**
-
----
-
-# 55. Question 14: Is This Supervised or Unsupervised?
-
-Consider:
-
-```text
-Iris measurements
-        ↓
-K-Means clustering
-        ↓
-Cluster labels
-```
-
-The original Iris species column exists but is not given to K-Means.
-
-Is the clustering process supervised or unsupervised?
-
-### LLM Hint Prompt
-
-> Explain whether a clustering process remains unsupervised when the original dataset contains a known label column but that column is deliberately excluded from the clustering input.
-
-<details>
-<summary>Solution</summary>
-
-It remains unsupervised because the species labels are not used to guide the clustering algorithm.
-
-The algorithm receives the feature values and discovers groups without using the known species as a target.
-
-</details>
-
----
-
-# 56. Cluster Labels Are Not the Same as Target Labels
-
-This distinction is important.
-
-Suppose K-Means returns:
-
-```text
-[0, 0, 1, 2, 2, 1, ...]
-```
-
-These numbers mean:
-
-> The algorithm assigned these observations to internally discovered clusters.
-
-They do not automatically mean:
-
-```text
-0 = setosa
-1 = versicolor
-2 = virginica
-```
-
-There is no guarantee that cluster `0` corresponds to any particular real-world class.
-
-A clustering result must be interpreted based on the feature values and domain context.
-
----
-
-# 57. Question 15: Interpret Cluster Numbers
-
-Suppose K-Means is applied to a dataset with known labels, but the labels are not used during clustering.
-
-The result is:
-
-```text
-Cluster 0
-Cluster 1
-Cluster 2
-```
-
-Can Cluster 0 automatically be called "Class A"?
-
-Explain.
-
-### LLM Hint Prompt
-
-> Explain why unsupervised cluster labels cannot automatically be treated as known class labels. Discuss the difference between an algorithm-created identifier and a meaningful domain category.
-
-<details>
-<summary>Solution</summary>
-
-No.
-
-Cluster numbers are identifiers assigned by the algorithm.
-
-They do not automatically correspond to meaningful domain classes.
-
-A relationship between clusters and known labels would need to be investigated separately.
-
-</details>
-
----
-
-# 58. A First Look at Cluster Interpretation
-
-Suppose clustering is applied to customer data.
-
-After clustering, the following summary is calculated:
-
-| Cluster | Average Age | Average Income | Average Spending |
-| ------- | ----------: | -------------: | ---------------: |
-| 0       |          24 |         30,000 |               15 |
-| 1       |          42 |         55,000 |               45 |
-| 2       |          58 |         80,000 |               20 |
-
-The algorithm only produces cluster identifiers.
-
-The analyst can then interpret the groups:
-
-```text
-Cluster 0:
-younger, lower income, lower spending
-
-Cluster 1:
-middle-aged, medium income, higher spending
-
-Cluster 2:
-older, higher income, lower spending
-```
-
-The labels are created after examining the characteristics.
-
-This illustrates an important point:
-
-> **Clustering discovers groups; interpretation gives those groups meaning.**
-
----
-
-# 59. Question 16: Interpret Clusters
-
-Suppose the following cluster summaries are observed:
-
-| Cluster | Average Age | Average Income | Average Spending |
-| ------- | ----------: | -------------: | ---------------: |
-| 0       |          22 |         25,000 |               20 |
-| 1       |          45 |         60,000 |               70 |
-| 2       |          62 |         90,000 |               25 |
-
-Describe each cluster in a meaningful way.
-
-### LLM Hint Prompt
-
-> Help me interpret three customer clusters from their average age, income, and spending. Do not invent information beyond the table. Describe each group using only the evidence provided.
-
-<details>
-<summary>Solution</summary>
-
-Cluster 0:
-
-> Younger customers with relatively low income and relatively low spending.
-
-Cluster 1:
-
-> Middle-aged customers with medium income and high spending.
-
-Cluster 2:
-
-> Older customers with high income and relatively low spending.
-
-These descriptions are interpretations of the observed feature averages, not names produced by the clustering algorithm.
-
-</details>
-
----
-
-# 60. Does Clustering Find "Truth"?
-
-Clustering should not automatically be interpreted as discovering objectively correct categories.
-
-A clustering algorithm finds structure according to:
-
-```text
-chosen features
-+
-chosen algorithm
-+
-chosen parameters
-+
-chosen distance/similarity assumptions
-```
-
-Different choices can lead to different results.
-
-For example:
-
-```text
-K-Means, K=3
-```
-
-may produce one grouping.
-
-Changing to:
-
-```text
-K-Means, K=4
-```
-
-can produce another.
-
-Changing to:
-
-```text
-Hierarchical clustering
-```
-
-can produce another.
-
-Therefore:
-
-> **A cluster is a useful representation of structure in the data, not necessarily a naturally existing category.**
-
----
-
-# 61. Question 17: Is There Always One Correct Clustering?
-
-Answer:
-
-> If K-Means with `K=3` and hierarchical clustering with three clusters produce slightly different groups, which one is automatically correct?
-
-### LLM Hint Prompt
-
-> Explain why different unsupervised algorithms can produce different but defensible clusterings. Focus on assumptions, distance, features, and the purpose of the analysis.
-
-<details>
-<summary>Solution</summary>
-
-Neither result is automatically "correct."
-
-Different algorithms use different procedures and assumptions.
-
-The appropriate result depends on:
-
-* the data;
-* the chosen features;
-* the algorithm;
-* the distance/linkage approach;
-* and the purpose of the analysis.
-
-Additional evaluation and domain knowledge are often needed.
-
-</details>
-
----
-
-# 62. Mini Experiment: Change the Cluster Spread
-
-So far, the main experiment has used real customer data. Real datasets are useful because they contain practical variables, but they do not let us control exactly how the groups are generated.
-
-For this experiment, we use `make_blobs` from scikit-learn to create **synthetic data**. Synthetic data are generated by a known procedure, which makes them useful for teaching and experimentation:
-
-- we can choose the number of underlying centers;
-- we can control how spread out the observations are;
-- we can repeat the experiment with different settings;
-- we can observe how the difficulty of clustering changes.
-
-The function `make_blobs()` creates groups of points around specified centers. Its `cluster_std` parameter controls the spread of the points around those centers.
-
-- A smaller `cluster_std` produces tighter groups with less overlap.
-- A larger `cluster_std` produces more dispersed groups with more overlap.
-- Greater overlap makes it harder to determine which group an observation belongs to.
-
-This is not intended to claim that real customer data are generated by Gaussian blobs. Instead, it is a controlled experiment that isolates one factor—cluster spread—so that we can understand its effect on clustering.
-
-The original demonstration used:
-
-```python
-cluster_std=1.2
-```
-
-We will now create another dataset with more overlap:
-
-### Code Cell
-
-```python
-from sklearn.datasets import make_blobs
-
-X_overlap, true_generation_labels = make_blobs(
-    n_samples=300,
-    centers=3,
-    cluster_std=2.5,
-    random_state=42
-)
-```
-
-Visualize:
-
-### Code Cell
-
-```python
-plt.figure(figsize=(8, 6))
-
-plt.scatter(
-    X_overlap[:, 0],
-    X_overlap[:, 1]
-)
-
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("Clusters with More Overlap")
-
+Z_customers = linkage(X, method="ward")
+
+plt.figure(figsize=(12, 5))
+dendrogram(Z_customers, no_labels=True)
+plt.xlabel("Customers (individual labels hidden)")
+plt.ylabel("Ward linkage height")
+plt.title("Mall Customers: hierarchical clustering")
 plt.show()
 ```
 
-The variable `true_generation_labels` records which synthetic center was used to generate each point. We do not provide these labels to K-Means; they are retained only because the synthetic generator creates them. This allows us to distinguish the labels used to generate the data from the labels later produced by the clustering algorithm.
+The larger tree is harder to read observation by observation. Focus on major merges. A hierarchy offers several levels of grouping; it does not automatically identify the most useful level.
 
-The important teaching point is that K-Means receives only `X_overlap`, not `true_generation_labels`.
+## 5. Interpreting results and recognizing limitations
 
-Now fit K-Means:
+### 5.1 Describe customer profiles
 
-### Code Cell
+Return to the original K = 3 customer model. Attach its labels to the matching rows and summarize each group:
 
 ```python
-kmeans_overlap = KMeans(
-    n_clusters=3,
-    random_state=42,
-    n_init="auto"
-)
+clustered_customers = X_df.copy()
+clustered_customers["Cluster"] = labels
 
-labels_overlap = kmeans_overlap.fit_predict(
-    X_overlap
-)
+profile = clustered_customers.groupby("Cluster")[feature_names].mean()
+profile.insert(0, "Customers", clustered_customers.groupby("Cluster").size())
+display(profile.round(2))
 ```
 
-Visualize:
+A description such as “relatively high income and low spending score” should follow from these values, not from the cluster number.
 
-### Code Cell
+**Question 10 — Interpret without inventing**
+
+Describe each group in one sentence using the table. Why do these summaries not establish customers' motives or permanent categories? What might change if age were another clustering feature?
+
+<details>
+<summary>Optional LLM hint</summary>
+
+Ask: “Help me describe clusters from their sizes and mean income and spending score. Use only the table's evidence, and ask me what I cannot conclude.”
+
+</details>
+
+<details>
+<summary>Possible answer</summary>
+
+Use relative descriptions supported by your output. A mean summarizes a group; individual customers can differ substantially from that mean.
+
+These features do not establish motives, and grouping depends on modeling choices. Adding age changes the feature space and could change distances and memberships. Its scale would also need consideration.
+
+</details>
+
+### 5.2 Investigate overlapping groups
+
+We now switch explicitly to **synthetic data** for a controlled experiment. Change cluster spread while keeping generation centers and observation count fixed. This does not claim that the customer data were generated this way.
+
+**Predict first:** Will groups be easier to identify when points are tightly concentrated or widely spread?
 
 ```python
-plt.figure(figsize=(8, 6))
+generation_centers = [[-3, 0], [0, 3], [3, 0]]
+fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
 
-plt.scatter(
-    X_overlap[:, 0],
-    X_overlap[:, 1],
-    c=labels_overlap
-)
-
-plt.scatter(
-    kmeans_overlap.cluster_centers_[:, 0],
-    kmeans_overlap.cluster_centers_[:, 1],
-    marker="X",
-    s=200
-)
-
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("K-Means with Overlapping Groups")
-
+for ax, spread in zip(axes, [0.5, 2.5]):
+    X_demo, generation_labels = make_blobs(
+        n_samples=300, centers=generation_centers,
+        cluster_std=spread, random_state=42
+    )
+    demo_model = KMeans(n_clusters=3, random_state=42, n_init=10)
+    demo_labels = demo_model.fit_predict(X_demo)
+    ax.scatter(X_demo[:, 0], X_demo[:, 1], c=demo_labels, cmap="tab10", alpha=0.7)
+    ax.scatter(
+        demo_model.cluster_centers_[:, 0], demo_model.cluster_centers_[:, 1],
+        marker="X", s=160, c="black"
+    )
+    ax.set_title(f"Synthetic data: spread = {spread}")
+    ax.set_xlabel("Feature 1")
+    ax.set_aspect("equal", adjustable="box")
+axes[0].set_ylabel("Feature 2")
+plt.tight_layout()
 plt.show()
 ```
 
----
+Colors show **K-Means assignments**, not generation labels. The generator supplies `generation_labels`, but we never give them to K-Means.
 
-# 63. Question 18: Why Does Overlap Matter?
+**Question 11 — Explain ambiguity**
 
-Compare the original dataset with the overlapping dataset.
-
-Answer:
-
-1. Are the groups easier or harder to distinguish?
-2. Why?
-3. What happens when observations lie between apparent groups?
-4. Does K-Means still produce an answer?
-
-### LLM Hint Prompt
-
-> Explain what happens to clustering when groups overlap heavily. Focus on why some observations become ambiguous and why an algorithm can still assign them to clusters.
+Which experiment has more overlap? Does K-Means still assign every observation? Does receiving a label mean an observation has an unambiguous natural group?
 
 <details>
 <summary>Solution</summary>
 
-The groups become harder to distinguish because observations from different groups are closer together.
-
-Some observations may lie in regions where membership is ambiguous.
-
-K-Means still assigns every observation to one of the requested clusters, even when the boundaries are not obvious.
-
-This is an important limitation: receiving a cluster label does not mean that the observation has an unquestionably natural group membership.
+The larger spread produces more dispersed, overlapping groups. K-Means still assigns every observation, including points between apparent groups. An assignment is a model output, not a guarantee of an obvious natural category.
 
 </details>
 
----
+### 5.3 Cluster data without obvious groups
 
-# 64. Important Insight: Clustering Always Produces a Structure
-
-A clustering algorithm can produce clusters even when the data do not contain clearly separated natural groups.
-
-For example, specifying:
-
-```python
-KMeans(n_clusters=5)
-```
-
-will ask the algorithm to produce five clusters.
-
-That does not prove that the data naturally contain five meaningful groups.
-
-Therefore:
-
-> **Clustering results need to be evaluated and interpreted rather than accepted automatically.**
-
----
-
-# 65. What Happens with Random Data?
-
-Consider data with no obvious groups.
-
-For example:
-
-### Code Cell
+What happens when observations are sampled uniformly across a square, without deliberately creating groups?
 
 ```python
 rng = np.random.default_rng(42)
+X_random = rng.uniform(0, 10, size=(300, 2))
+random_model = KMeans(n_clusters=3, random_state=42, n_init=10)
+random_labels = random_model.fit_predict(X_random)
 
-X_random = rng.uniform(
-    0,
-    10,
-    size=(300, 2)
+fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
+axes[0].scatter(X_random[:, 0], X_random[:, 1], alpha=0.7)
+axes[0].set_title("Uniformly sampled data")
+axes[1].scatter(
+    X_random[:, 0], X_random[:, 1], c=random_labels, cmap="tab10", alpha=0.7
 )
-```
-
-Plot:
-
-### Code Cell
-
-```python
-plt.figure(figsize=(8, 6))
-
-plt.scatter(
-    X_random[:, 0],
-    X_random[:, 1]
-)
-
-plt.xlabel("Feature 1")
-plt.ylabel("Feature 2")
-plt.title("Random Data")
-
+axes[1].set_title("The same data partitioned by K-Means")
+for ax in axes:
+    ax.set_xlabel("Feature 1")
+    ax.set_aspect("equal", adjustable="box")
+axes[0].set_ylabel("Feature 2")
+plt.tight_layout()
 plt.show()
 ```
 
-Now apply K-Means:
+**Question 12 — Distinguish a partition from evidence**
 
-### Code Cell
-
-```python
-random_kmeans = KMeans(
-    n_clusters=3,
-    random_state=42,
-    n_init="auto"
-)
-
-random_labels = random_kmeans.fit_predict(
-    X_random
-)
-```
-
----
-
-# 66. Question 19: Does K-Means Prove That Groups Exist?
-
-After clustering the random data, answer:
-
-> If K-Means produces three clusters, does this prove that the random data naturally contain three meaningful groups?
-
-### LLM Hint Prompt
-
-> Explain why K-Means can partition random data into clusters even when the data were not generated from meaningful groups. Focus on the difference between producing a partition and discovering a meaningful structure.
+Does the colored plot prove the data contain three natural groups? Explain what the algorithm was asked to do.
 
 <details>
 <summary>Solution</summary>
 
-No.
-
-K-Means is instructed to produce three clusters, so it will partition the observations into three groups even if the data do not contain naturally separated groups.
-
-A clustering output is therefore not automatically evidence that meaningful groups exist.
-
-The result must be evaluated and interpreted.
+No. K-Means was asked to partition these observations into three groups and does so even without clearly separated natural groups. Colors make the partition visible; they do not independently validate it.
 
 </details>
 
----
+### 5.4 Recognize the limitations
 
-# 67. What Has Been Learned?
+| Issue | Why it matters |
+|---|---|
+| Chosen K | A K-Means result does not validate the requested number of groups |
+| Features and scale | Different representations change the distances used by both methods |
+| Shape and overlap | K-Means partitions around centers; elongated or overlapping groups may not be represented well |
+| Outliers | Extreme observations can move means and affect grouping |
+| Initialization | Different K-Means starts can lead to different solutions |
+| Linkage and early merges | Agglomerative results depend on linkage; previous merges are not undone |
+| Dataset size | A full hierarchy can become expensive to compute and difficult to display |
+| Interpretation | Mathematical groups do not automatically correspond to useful real-world categories |
 
-The activity has introduced several levels of unsupervised learning.
+## 6. Consolidation and preparation for Part 2
 
-### Level 1: Data
+### 6.1 Compare the two methods
 
-```text
-X
-```
+| Question | K-Means | Agglomerative hierarchical clustering |
+|---|---|---|
+| How are groups formed? | Assign points to centroids and update centers repeatedly | Merge groups repeatedly using linkage |
+| When is the number chosen? | Before fitting | A full hierarchy can be cut afterward; our model requests three final groups |
+| Does it build nested groups? | No | Yes |
+| What do we inspect? | Labels, centroids, and cluster plots | Labels, cluster plots, and a dendrogram |
+| Do features and scale matter? | Yes | Yes |
 
-contains observations without a target guiding the learning process.
+### 6.2 Check your understanding
 
-### Level 2: Similarity
+Answer without code or hints. Explain the reasoning rather than recalling parameter spelling.
 
-Observations can be compared using distance.
-
-### Level 3: Clustering
-
-Similar observations can be grouped.
-
-### Level 4: K-Means
-
-K-Means groups observations around centroids.
-
-### Level 5: Hierarchical clustering
-
-Observations can also be grouped progressively into a hierarchy.
-
----
-
-# 68. K-Means vs Hierarchical Clustering
-
-| Concept                                    | K-Means                                          | Hierarchical Clustering                  |
-| ------------------------------------------ | ------------------------------------------------ | ---------------------------------------- |
-| Main idea                                  | Assign observations to clusters around centroids | Repeatedly merge clusters                |
-| Requires a chosen number of final clusters | Yes                                              | Usually yes for the final partition      |
-| Uses centroids                             | Yes                                              | No centroid-based assignment is required |
-| Builds a hierarchy                         | No                                               | Yes                                      |
-| Common visualization                       | Cluster scatter plot                             | Dendrogram                               |
-| Sensitive to feature scale                 | Yes                                              | Yes                                      |
-| Result depends on algorithm settings       | Yes                                              | Yes                                      |
-
-The two methods can produce similar results, but they do not work in the same way.
-
----
-
-# 69. Regression/Classification vs Clustering
-
-The main difference between supervised and unsupervised learning can now be summarized.
-
-| Supervised Learning  | Unsupervised Learning                   |
-| -------------------- | --------------------------------------- |
-| Uses a known target  | Does not use a target to guide learning |
-| Learns to predict    | Discovers structure                     |
-| Regression           | Clustering                              |
-| Classification       | Anomaly detection                       |
-| Numerical prediction | Association rules                       |
-| Class prediction     | Dimensionality reduction                |
-
-For example:
-
-```text
-Regression:
-
-X → known numerical y
-      ↓
-learn prediction
-
-
-Clustering:
-
-X
-↓
-discover groups
-```
-
----
-
-# 70. Where Clustering Is Used
-
-Clustering can be applied in many situations.
-
-Examples include:
-
-### Customer segmentation
-
-```text
-Customers
-   ↓
-Clustering
-   ↓
-Customer groups
-```
-
-### Document organization
-
-```text
-Documents
-   ↓
-Similarity
-   ↓
-Document clusters
-```
-
-### Image analysis
-
-```text
-Images / image features
-   ↓
-Clustering
-   ↓
-groups of similar images
-```
-
-### Biological data
-
-```text
-Measurements
-   ↓
-Clustering
-   ↓
-groups of similar observations
-```
-
-The interpretation depends on the application.
-
----
-
-# 71. What Clustering Does Not Tell Us Automatically
-
-Clustering does not automatically tell us:
-
-* why the groups exist;
-* whether the groups are scientifically meaningful;
-* whether the number of clusters is correct;
-* whether one clustering algorithm is objectively superior;
-* whether a cluster corresponds to a real-world category.
-
-These questions require additional analysis.
-
----
-
-# 72. Final Reflection
-
-Answer the following questions without immediately looking at the solutions.
-
-### Question 20
-
-What is the difference between supervised and unsupervised learning?
-
-### LLM Hint Prompt
-
-> Help me explain supervised versus unsupervised learning using one regression example and one clustering example. Ask me questions that help me identify where the target is used.
+1. How does clustering differ from classification?
+2. Explain one full K-Means assignment and centroid-update cycle.
+3. Why could changing income units change a clustering?
+4. Why can two runs use different label numbers for the same groups?
+5. What does a horizontal cut through a dendrogram represent?
+6. A researcher has 30 observations and wants to inspect relationships at several levels. Which method would you consider, and why?
+7. Why is a convincing colored scatter plot insufficient evidence of useful groups?
 
 <details>
-<summary>Solution</summary>
+<summary>Suggested answers</summary>
 
-Supervised learning uses a known target during training and learns to predict it.
-
-Unsupervised learning does not use a target to guide the learning process and instead attempts to discover structure in the feature data.
-
-</details>
-
----
-
-### Question 21
-
-What is clustering?
-
-### LLM Hint Prompt
-
-> Help me define clustering in one or two precise sentences. Focus on grouping observations according to similarity rather than predicting known classes.
-
-<details>
-<summary>Solution</summary>
-
-Clustering is an unsupervised-learning approach that groups observations according to their similarity or distance in the selected feature space.
+1. Classification learns from known target categories. Clustering forms groups without those targets guiding fitting.
+2. Assign each point to its nearest current centroid, then calculate the mean coordinates of each group. Repeat because moving centers can change assignments.
+3. Units change income's contribution to distance unless preprocessing compensates for that change.
+4. Numbers are arbitrary identifiers; membership is what matters.
+5. It selects a level in the hierarchy. Observations joined below the cut remain together.
+6. Agglomerative hierarchical clustering is a reasonable candidate because its dendrogram shows nested relationships. Suitability still depends on features and linkage.
+7. K-Means partitions even uniformly sampled data. Useful results need evaluation and interpretation.
 
 </details>
 
----
+### 6.3 Prepare for evaluation
 
-### Question 22
+You have selected features, inspected distances, fitted two clustering methods, and interpreted their outputs. A clustering depends on how the problem is represented and how the algorithm forms groups.
 
-What does `K` mean in K-Means?
+Three questions remain:
 
-### LLM Hint Prompt
+- Which number of clusters is defensible?
+- How can we assess cohesion, separation, and stability?
+- Are the groups useful for the purpose of the analysis?
 
-> Explain what the K in K-Means represents and why changing K changes the clustering result.
-
-<details>
-<summary>Solution</summary>
-
-`K` is the number of clusters the algorithm is asked to create.
-
-Changing K changes the number of groups and can therefore change the cluster assignments.
-
-</details>
-
----
-
-### Question 23
-
-What is a centroid?
-
-### LLM Hint Prompt
-
-> Explain what a centroid represents in K-Means and calculate a simple centroid for three two-dimensional points if useful.
-
-<details>
-<summary>Solution</summary>
-
-A centroid is the mean position of the observations assigned to a cluster.
-
-It has one coordinate for each feature.
-
-</details>
-
----
-
-### Question 24
-
-Why is distance important in K-Means?
-
-### LLM Hint Prompt
-
-> Explain why K-Means needs a notion of distance and how the nearest centroid determines cluster assignment.
-
-<details>
-<summary>Solution</summary>
-
-K-Means assigns observations to the nearest centroid. Therefore, distance determines which cluster an observation is assigned to.
-
-</details>
-
----
-
-### Question 25
-
-Why can feature scaling matter?
-
-### LLM Hint Prompt
-
-> Explain what happens to Euclidean distance when one feature ranges from 0 to 10 and another ranges from 0 to 100,000. Then explain why scaling may be necessary.
-
-<details>
-<summary>Solution</summary>
-
-The feature with the much larger numerical range can dominate the distance calculation.
-
-Scaling can place features on comparable scales so that the clustering result is not determined mainly by numerical units.
-
-</details>
-
----
-
-### Question 26
-
-What is hierarchical clustering?
-
-### LLM Hint Prompt
-
-> Explain agglomerative hierarchical clustering as a sequence of merges. Compare it with K-Means without going into advanced mathematics.
-
-<details>
-<summary>Solution</summary>
-
-Agglomerative hierarchical clustering starts with each observation as its own cluster and progressively merges clusters according to their similarity or linkage distance.
-
-Unlike K-Means, it builds a hierarchy of cluster relationships.
-
-</details>
-
----
-
-### Question 27
-
-Why is a cluster label such as `0` or `1` not a meaningful class name?
-
-### LLM Hint Prompt
-
-> Explain why cluster identifiers are arbitrary and why they should not automatically be interpreted as known domain categories.
-
-<details>
-<summary>Solution</summary>
-
-Cluster numbers are identifiers generated by the algorithm.
-
-They do not have inherent meaning and do not automatically correspond to real-world classes.
-
-</details>
-
----
-
-# 73. Final Knowledge Check
-
-Answer these questions without looking at the solutions.
-
-1. What is unsupervised learning?
-2. What is clustering?
-3. What is a feature?
-4. What is a target?
-5. Why does clustering normally not use a target?
-6. What does Euclidean distance measure?
-7. What does K represent in K-Means?
-8. What is a centroid?
-9. How does K-Means assign an observation to a cluster?
-10. Why can feature scaling affect K-Means?
-11. Why are cluster labels arbitrary?
-12. What is the main idea behind agglomerative hierarchical clustering?
-13. What is a dendrogram?
-14. Why can different algorithms produce different clusters?
-15. Does creating three clusters prove that three natural groups exist?
-16. What is one important limitation of K-Means?
-17. What is one important difference between K-Means and hierarchical clustering?
-
----
-
-# Final Answers
-
-<details>
-<summary>1. What is unsupervised learning?</summary>
-
-Unsupervised learning is machine learning in which the learning process does not use a target variable to guide the discovery of patterns or structure in the data.
-
-</details>
-
-<details>
-<summary>2. What is clustering?</summary>
-
-Clustering groups observations according to similarity or distance in the selected feature space.
-
-</details>
-
-<details>
-<summary>3. What is a feature?</summary>
-
-A feature is an input variable used to describe an observation.
-
-</details>
-
-<details>
-<summary>4. What is a target?</summary>
-
-A target is the value that a supervised-learning model is trained to predict.
-
-</details>
-
-<details>
-<summary>5. Why does clustering normally not use a target?</summary>
-
-Because clustering is an unsupervised task. The purpose is to discover groups from the feature data rather than learn to reproduce known target values.
-
-</details>
-
-<details>
-<summary>6. What does Euclidean distance measure?</summary>
-
-It measures the straight-line distance between two observations in the selected feature space.
-
-</details>
-
-<details>
-<summary>7. What does K represent?</summary>
-
-K represents the number of clusters that K-Means is asked to create.
-
-</details>
-
-<details>
-<summary>8. What is a centroid?</summary>
-
-A centroid is the mean position of the observations assigned to a cluster.
-
-</details>
-
-<details>
-<summary>9. How does K-Means assign an observation?</summary>
-
-It assigns the observation to the nearest cluster centroid according to the distance measure being used.
-
-</details>
-
-<details>
-<summary>10. Why can feature scaling affect K-Means?</summary>
-
-K-Means depends on distances, and a feature with a much larger numerical scale can dominate those distances.
-
-</details>
-
-<details>
-<summary>11. Why are cluster labels arbitrary?</summary>
-
-They are identifiers generated by the algorithm. Cluster `0` has no inherent meaning compared with cluster `1`.
-
-</details>
-
-<details>
-<summary>12. What is agglomerative hierarchical clustering?</summary>
-
-It starts with individual observations and progressively merges nearby observations or clusters to create a hierarchy.
-
-</details>
-
-<details>
-<summary>13. What is a dendrogram?</summary>
-
-A dendrogram is a visual representation of the hierarchy created by hierarchical clustering.
-
-</details>
-
-<details>
-<summary>14. Why can different algorithms produce different clusters?</summary>
-
-Different algorithms use different procedures, assumptions, distance/linkage methods, and parameters.
-
-</details>
-
-<details>
-<summary>15. Does creating three clusters prove three natural groups exist?</summary>
-
-No. An algorithm can be instructed to create three clusters even when the data do not contain three clearly meaningful groups.
-
-</details>
-
-<details>
-<summary>16. Give one K-Means limitation.</summary>
-
-K-Means requires the number of clusters to be specified in advance. Other limitations include sensitivity to scale, outliers, initialization, and cluster shape.
-
-</details>
-
-<details>
-<summary>17. What is one key difference between K-Means and hierarchical clustering?</summary>
-
-K-Means works around cluster centroids and repeatedly updates cluster assignments, while hierarchical clustering progressively merges observations or clusters to create a hierarchy.
-
-</details>
-
----
-
-# 74. Activity Summary
-
-The main workflow introduced in this activity is:
-
-```text
-Data without target
-       ↓
-Explore the feature space
-       ↓
-Think about similarity
-       ↓
-Measure distance
-       ↓
-K-Means
-       ↓
-Cluster assignments
-       ↓
-Centroids
-       ↓
-Visualize and interpret
-       ↓
-Hierarchical clustering
-       ↓
-Compare clustering approaches
-```
-
-The main conceptual distinction is:
-
-```text
-Supervised learning
-
-X + known target
-       ↓
-learn to predict
-
-
-Unsupervised learning
-
-X
-↓
-discover structure
-```
-
-The main clustering distinction is:
-
-```text
-K-Means
-
-Choose K
-   ↓
-Use centroids
-   ↓
-Assign observations
-   ↓
-Update centroids
-
-
-Hierarchical clustering
-
-Start with individual observations
-   ↓
-Merge groups
-   ↓
-Build hierarchy
-```
-
-The important principle is:
-
-> **A clustering algorithm can discover useful structure in data, but the resulting groups are not automatically meaningful or "correct." Their usefulness depends on the data, the features, the algorithm, the parameters, and the purpose of the analysis.**
-
-The next activity can build on this foundation by examining **how to choose K, how scaling affects clustering, how to evaluate clusters, how hierarchical clustering can be explored in greater detail, and how unsupervised learning can also be used for anomaly detection and association rule learning.**
+Activity 2 develops clustering evaluation, scaling experiments, and more detailed hierarchical analysis. Review [Part 1 theory](part1.md) before continuing.
