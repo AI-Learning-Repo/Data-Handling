@@ -477,13 +477,13 @@ $$
 <details>
 <summary>Calculate lift in both directions</summary>
 
-```math
+$$
 \operatorname{lift}(\text{Bread}\rightarrow\text{Butter})=\frac{0.75}{0.50}=1.5
-```
+$$
 
-```math
+$$
 \operatorname{lift}(\text{Butter}\rightarrow\text{Bread})=\frac{0.60}{0.40}=1.5
-```
+$$
 
 The confidence values differ, but the lifts are equal. For the same data, lift is symmetric because it is the joint occurrence proportion divided by the product of the two individual occurrence proportions.
 
