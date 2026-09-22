@@ -1214,7 +1214,9 @@ The data do not always contain one uniquely correct number of clusters, so the c
 
 # 33. Hierarchical Clustering
 
-<img src="./img/lab1/33.jpg" width="50%">
+<!-- <img src="./img/lab1/33.jpg" width="50%"> -->
+
+<img src="./img/lab2/30.png" width="50%">
 
 K-Means is not the only clustering approach.
 
