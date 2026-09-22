@@ -2,7 +2,7 @@
 
 **RAG Part 1 — longer version**
 
-How can a search for *"Where do helicopters land?"* find a sentence about a *"rooftop helipad"*?
+<!-- How can a search for *"Where do helicopters land?"* find a sentence about a *"rooftop helipad"*? -->
 
 In this activity, you will build a search system for **MediCore, a fictional hospital**. It returns stored text that may help answer a question. In Activity 4, a language model will use retrieved text to generate an answer.
 
