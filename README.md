@@ -27,13 +27,13 @@
 
 ### Part 1:
 
-- [Introduction to Unsupervised Learning and Clustering](./material/part1.md)
+- [ Unsupervised Learning and Clustering](./material/part1.md)
 - [Activity 1](./material/activity1.md)
 
 
 ### Part 2: 
 
-- [Unsupervised Learning: Clustering, Anomaly Detection, and Association Rules](./material/part2.md)
+- [Evaluating Clusters and Detecting Anomalies](./material/part2.md)
 - [Activity 2](./material/activity2.md)
 
 
