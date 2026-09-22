@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="390" viewBox="0 0 760 390" role="img" aria-labelledby="title desc">
+<title id="title">A made-up two-dimensional embedding map</title>
+<desc id="desc">Equal-length vectors from a common origin show doctor and physician close in direction on the right, and car and automobile close in direction on the left. These are illustrative coordinates, not model output.</desc>
+<rect width="760" height="390" rx="14" fill="#f5f8fc"/>
+<g font-family="Arial, sans-serif" fill="#17243b">
+<text x="30" y="34" font-size="21" font-weight="bold">A 2D analogy: compare directions</text>
+<text x="30" y="60" font-size="14">Invented coordinates • All four vectors have approximately length 1</text>
+<path d="M90 285H690 M380 305V85" stroke="#a8b5c7" fill="none"/>
+<text x="663" y="309" font-size="13">x</text><text x="365" y="93" font-size="13">y</text>
+<path d="M380 285L606 203 M380 285L593 176" stroke="#216eaa" stroke-width="3"/>
+<path d="M380 285L260 77 M380 285L235 94" stroke="#97552c" stroke-width="3"/>
+<g fill="#216eaa"><circle cx="606" cy="203" r="5"/><circle cx="593" cy="176" r="5"/></g>
+<g fill="#97552c"><circle cx="260" cy="77" r="5"/><circle cx="235" cy="94" r="5"/></g>
+<circle cx="380" cy="285" r="5"/>
+<text x="390" y="308" font-size="13">origin (0, 0)</text>
+<text x="615" y="210" font-size="16">doctor</text>
+<text x="602" y="169" font-size="16">physician</text>
+<text x="205" y="76" font-size="16">car</text>
+<text x="124" y="109" font-size="16">automobile</text>
+<text x="30" y="348" font-size="15">Nearby directions illustrate similarity. The axes have no named meanings.</text>
+<text x="30" y="372" font-size="14">Real MiniLM embeddings have 384 coordinates; this is not a projection of them.</text>
+</g></svg>
