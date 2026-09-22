@@ -443,15 +443,15 @@ For this example, suppose there are 100 transactions:
 **Support** is the proportion of transactions containing an itemset. In this table:
 
 $$
-\operatorname{support}(\{\text{Bread}\})=\frac{40}{100}=0.40
+\text{support}(\{\text{Bread}\}) = \frac{40}{100} = 0.40
 $$
 
 $$
-\operatorname{support}(\{\text{Butter}\})=\frac{50}{100}=0.50
+\text{support}(\{\text{Butter}\}) = \frac{50}{100} = 0.50
 $$
 
 $$
-\operatorname{support}(\{\text{Bread},\text{Butter}\})=\frac{30}{100}=0.30
+\text{support}(\{\text{Bread}, \text{Butter}\}) = \frac{30}{100} = 0.30
 $$
 
 The combined itemset means transactions containing **both** items. Its support is also commonly called the rule's support.
@@ -459,30 +459,30 @@ The combined itemset means transactions containing **both** items. Its support i
 **Confidence** is the fraction of transactions containing the antecedent that also contain the consequent:
 
 $$
-\operatorname{confidence}(\text{Bread}\rightarrow\text{Butter})=\frac{30}{40}=0.75
+\text{confidence}(\text{Bread} \rightarrow \text{Butter}) = \frac{30}{40} = 0.75
 $$
 
 Thus 75% of bread-containing transactions also contain butter. Reversing the rule gives a different confidence:
 
 $$
-\operatorname{confidence}(\text{Butter}\rightarrow\text{Bread})=\frac{30}{50}=0.60
+\text{confidence}(\text{Butter} \rightarrow \text{Bread}) = \frac{30}{50} = 0.60
 $$
 
 **Lift** compares confidence with the consequent's overall support:
 
 $$
-\operatorname{lift}(A\rightarrow B)=\frac{\operatorname{confidence}(A\rightarrow B)}{\operatorname{support}(B)}
+\text{lift}(A \rightarrow B) = \frac{\text{confidence}(A \rightarrow B)}{\text{support}(B)}
 $$
 
 <details>
 <summary>Calculate lift in both directions</summary>
 
 $$
-\operatorname{lift}(\text{Bread}\rightarrow\text{Butter})=\frac{0.75}{0.50}=1.5
+\text{lift}(\text{Bread} \rightarrow \text{Butter}) = \frac{0.75}{0.50} = 1.5
 $$
 
 $$
-\operatorname{lift}(\text{Butter}\rightarrow\text{Bread})=\frac{0.60}{0.40}=1.5
+\text{lift}(\text{Butter} \rightarrow \text{Bread}) = \frac{0.60}{0.40} = 1.5
 $$
 
 The confidence values differ, but the lifts are equal. For the same data, lift is symmetric because it is the joint occurrence proportion divided by the product of the two individual occurrence proportions.
