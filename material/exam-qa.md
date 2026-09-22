@@ -1,12 +1,5 @@
 # Potential Exam Questions: Unsupervised Learning
 
-This question bank supports a **closed-book exam focused on concepts and core ideas** from [Part 1](part1.md) and [Part 2](part2.md). It is a collection of possible questions, not a single exam paper. Some questions assess related ideas in different ways; select a balanced subset rather than using them all.
-
-No question requires writing a complete program, recalling installation commands, remembering dataset column names, or reproducing exact notebook output. Short code is supplied where it helps assess understanding. Quantitative questions use small examples; formulas are provided where the aim is interpretation rather than formula recall.
-
-Sections A–E assess the core clustering and anomaly-detection material. Section F checks high-level awareness of the broader techniques covered in the theory. Section G contains integrated alternatives. Suggested answers and marking guidance follow the questions.
-
-## Table of contents
 
 - [A. Foundations and data representation](#a-foundations-and-data-representation)
 - [B. K-Means and its outputs](#b-k-means-and-its-outputs)
