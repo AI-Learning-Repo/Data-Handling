@@ -196,9 +196,9 @@ Upload `housing.csv` to the Colab session, then run:
 Use this option when the course dataset URL is available:
 
 ```python
-# !wget -O housing.csv www.path_to_dataset/housing.csv
-# housing = pd.read_csv("housing.csv")
-# housing.head()
+!wget -O housing.csvhttps://raw.githubusercontent.com/AI-Learning-Repo/Data-Handling/refs/heads/week6/datasets/housing.csv
+housing = pd.read_csv("housing.csv")
+housing.head()
 ```
 
 For local testing before giving the lab to students, use the course folder path:
