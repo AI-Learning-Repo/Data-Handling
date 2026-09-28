@@ -1469,176 +1469,244 @@ For example, if the business needs categories but we build a numerical regressio
 
 Answer these before opening the solutions.
 
-### Q1. What is the difference between a feature and a target?
+### Q1. Leakage Scenario
+
+A student fills missing `total_bedrooms` values using the median calculated from the full dataset, then performs the train/test split.
+
+Explain the problem and give the corrected workflow.
 
 <details>
 <summary>Solution</summary>
 
-A feature is an input variable used by the model. The target is the value we want to predict in supervised learning.
+This causes data leakage because information from the test set helps define the imputation value.
 
-In this lab, features included columns such as `median_income`, `latitude`, and `ocean_proximity`. The regression target was `median_house_value`.
+Correct workflow:
+
+1. split into training and test sets;
+2. fit the imputer on the training data only;
+3. transform the training data;
+4. transform the test data using the imputer learned from training data.
 
 </details>
 
-### Q2. Why did we use a train/test split for regression?
+### Q2. Correlation Interpretation
+
+Suppose `median_income` has the strongest Pearson correlation with `median_house_value`. A student concludes: "Median income causes house value, so it is the only feature we need."
+
+What is wrong with this conclusion?
 
 <details>
 <summary>Solution</summary>
 
-The model learns from the training data. The test data is held back to evaluate performance on data the model did not use during fitting.
+Pearson correlation measures linear association, not causation.
 
-This helps estimate generalization to new observations.
+A high correlation does not prove that one variable causes the other. It also does not prove that other features are useless. Location, ocean proximity, housing age, and engineered ratios may still add useful information in a multiple-feature model.
 
 </details>
 
-### Q3. What is data leakage?
+### Q3. Polynomial Regression and Generalization
+
+You train three polynomial models:
+
+| Model | Training RMSE | Test RMSE |
+|---|---:|---:|
+| Degree 1 | 82,000 | 84,000 |
+| Degree 2 | 67,000 | 69,000 |
+| Degree 8 | 21,000 | 110,000 |
+
+Which model would you choose and which one is overfitting?
 
 <details>
 <summary>Solution</summary>
 
-Data leakage happens when information that should not be available during training influences the model or preprocessing.
+Degree 2 is the best choice because it has the lowest test RMSE.
 
-Example from this lab: calculating imputation medians using the full dataset before splitting would let the test set influence training preparation.
+Degree 8 is overfitting. Its training RMSE is very low, but its test RMSE is much higher. This means it fits the training data closely but generalizes poorly.
 
 </details>
 
-### Q4. Why did we use median imputation?
+### Q4. Metric Interpretation
+
+A model has:
+
+```text
+MAE  = 49,800
+RMSE = 68,800
+R2   = 0.66
+```
+
+Explain what each value says and why RMSE is larger than MAE.
 
 <details>
 <summary>Solution</summary>
 
-Median imputation fills missing numerical values with the median of available values. It is often more robust than the mean when a feature is skewed or contains extreme values.
+MAE means the average absolute prediction error is about 49,800 house-value units.
 
-In this lab, the median was learned from training data and then applied to both training and test data.
+RMSE is larger because it squares errors before averaging, so large mistakes receive more weight.
+
+R2 compares the model with a mean-prediction baseline. An R2 of 0.66 means the model explains a substantial amount of variation relative to that baseline, but it does not mean 66 percent of predictions are exactly correct.
 
 </details>
 
-### Q5. Why did we use one-hot encoding?
+### Q5. Baseline Comparison
+
+Two models have the following test results:
+
+| Model | RMSE | R2 |
+|---|---:|---:|
+| Training median baseline | 121,600 | -0.07 |
+| Multiple linear regression | 68,800 | 0.66 |
+
+What conclusion is justified?
 
 <details>
 <summary>Solution</summary>
 
-Machine-learning models usually require numerical inputs. `ocean_proximity` contains categories, so one-hot encoding turns it into indicator columns.
+The multiple linear regression model clearly improves over the baseline because it has much lower RMSE and much higher R2 on the same test set.
 
-This avoids imposing a false numerical order on categories.
+The conclusion should still mention limitations: this does not prove causal relationships, and performance depends on whether future data are similar to the test data.
 
 </details>
 
-### Q6. What is a baseline model?
+### Q6. One-Hot Encoding and Test Columns
+
+After one-hot encoding `ocean_proximity`, the test set is missing one category column that appeared in training. Why is this a problem, and how did the lab handle it?
 
 <details>
 <summary>Solution</summary>
 
-A baseline is a simple reference prediction. It helps us decide whether a real model adds value.
+The model expects the same feature columns at prediction time as it saw during fitting.
 
-In this lab, the baseline predicted the training median house value for every test district.
+The lab used `reindex(columns=X_train_cat.columns, fill_value=0)` so the test encoded table has the same columns as the training encoded table. Missing category columns are filled with 0.
 
 </details>
 
-### Q7. What do MAE, RMSE, and R2 measure?
+### Q7. Residual Pattern
+
+In an actual-vs-predicted plot, many expensive districts are predicted far below their actual value. What does this suggest?
 
 <details>
 <summary>Solution</summary>
 
-MAE is the average absolute prediction error.
+It suggests the model may underpredict high-value districts.
 
-RMSE is the square root of the average squared prediction error. It gives larger errors more influence.
-
-R2 compares the model against a mean-prediction baseline and summarizes explained variation relative to that baseline.
+Possible reasons include capped target values, missing important features, nonlinear relationships, or a model that is too simple for that part of the data.
 
 </details>
 
-### Q8. What is the difference between regression and clustering?
+### Q8. Target Use in Regression Versus Clustering
+
+Why is `median_house_value` used as `y` in the regression system but left out of the features used to fit K-Means?
 
 <details>
 <summary>Solution</summary>
 
-Regression is supervised learning. It predicts a numerical target from features.
+In regression, `median_house_value` is the value we want to predict, so it is the supervised target.
 
-Clustering is unsupervised learning. It groups observations based on feature similarity without using a target during fitting.
+In clustering, the goal is to discover district profiles from other characteristics. If `median_house_value` is used as a clustering feature, the groups are partly defined by the target-like value instead of being an independent profile of district characteristics.
 
 </details>
 
-### Q9. Why did we scale features before K-Means?
+### Q9. K-Means Scaling Scenario
+
+Suppose K-Means is fitted using `population`, `median_income`, and `bedrooms_per_room` without scaling. What problem may occur?
 
 <details>
 <summary>Solution</summary>
 
-K-Means uses distance. Features with larger numerical scales can dominate distance calculations.
+Features with larger numerical ranges can dominate Euclidean distance.
 
-Standardization makes features more comparable under Euclidean distance.
+For example, `population` may influence the cluster assignments far more than `bedrooms_per_room` simply because it has larger values. Standardization makes the distance calculation more balanced across selected features.
 
 </details>
 
-### Q10. Why is the lowest inertia not enough to choose K?
+### Q10. Choosing K
+
+You compare K values:
+
+| K | Inertia | Silhouette |
+|---:|---:|---:|
+| 2 | 87,400 | 0.407 |
+| 3 | 72,500 | 0.380 |
+| 4 | 55,700 | 0.378 |
+| 5 | 48,200 | 0.368 |
+
+Why might K=2 be chosen even though K=5 has lower inertia?
 
 <details>
 <summary>Solution</summary>
 
-Inertia usually decreases when K increases because more centroids can fit the data more closely.
+Inertia decreases as K increases, so lower inertia alone is not enough.
 
-If every observation had its own centroid, inertia could become zero, but that would not be a useful summary. We need additional evidence such as elbow shape, silhouette, profiles, and interpretability.
+K=2 has the highest silhouette score in this table and is easier to profile. If the two clusters also produce interpretable district profiles, K=2 is a reasonable choice.
 
 </details>
 
-### Q11. What does a silhouette score describe?
+### Q11. Cluster Profile Interpretation
+
+A cluster has higher average `median_income`, lower `bedrooms_per_room`, and higher average `median_house_value` after clustering. What can and cannot be concluded?
 
 <details>
 <summary>Solution</summary>
 
-Silhouette compares how close an observation is to points in its own cluster versus points in the nearest competing cluster.
+We can describe the cluster profile: districts in that cluster tend to have higher income, lower bedrooms-per-room, and higher house values.
 
-Values near 1 suggest better separation. Values near 0 suggest overlap. Negative values suggest the observation may be closer to another cluster under the selected distance.
+We cannot conclude that the cluster label causes higher house values. Cluster profiles are descriptive and depend on selected features, scaling, and the clustering algorithm.
 
 </details>
 
-### Q12. Why are cluster numbers not meaningful by themselves?
+### Q12. Agglomerative Versus K-Means
+
+K-Means and agglomerative clustering produce similar but not identical groups. Why is that expected?
 
 <details>
 <summary>Solution</summary>
 
-Cluster numbers are arbitrary identifiers. Cluster 0 is not automatically "low" or "best."
+They define clusters differently.
 
-Meaning comes from profiling the observations assigned to each cluster.
+K-Means uses centroids and assigns observations to the nearest centroid. Agglomerative clustering starts with individual observations and merges groups according to a linkage rule. Different algorithms can produce different group boundaries.
 
 </details>
 
-### Q13. Does clustering prove natural groups exist?
+### Q13. Dendrogram Interpretation
+
+In a dendrogram, some merges happen at much larger heights than earlier merges. What does that suggest?
 
 <details>
 <summary>Solution</summary>
 
-No. Clustering algorithms can partition data even when the structure is weak or continuous.
+Large merge heights suggest that groups being joined at that stage are relatively far apart under the chosen distance and linkage method.
 
-Clusters need interpretation and supporting evidence. Producing groups is the beginning of analysis, not the final proof.
+This can help decide where a reasonable cut might be, but it is still an interpretation aid, not proof of natural categories.
 
 </details>
 
-### Q14. Why can outliers be important?
+### Q14. Outlier Decision
+
+A district has an unusually high `population_per_household`. Should it automatically be removed before modeling?
 
 <details>
 <summary>Solution</summary>
 
-Outliers may be errors, rare valid cases, or important unusual observations.
+No. It should be investigated first.
 
-They should be investigated rather than automatically removed.
+It could be a data error, a rare but valid district, or a meaningful unusual case. Removing it without justification can hide important information and change model behavior.
 
 </details>
 
-### Q15. What should be communicated at the end of this project?
+### Q15. Final Project Communication
+
+Write three limitations that should be communicated with the housing regression and clustering results.
 
 <details>
 <summary>Solution</summary>
 
-A good project summary should include:
+Reasonable limitations include:
 
-- the business question;
-- the dataset and row meaning;
-- important EDA findings;
-- preprocessing decisions;
-- model results compared with a baseline;
-- clustering profiles;
-- limitations;
-- assumptions and risks.
+- regression performance is measured on a held-out test set but may change on future data;
+- correlations and coefficients do not prove causation;
+- cluster labels depend on selected features, scaling, K, and algorithm;
+- capped or transformed values affect interpretation;
+- clustering creates profiles, not guaranteed natural categories.
 
 </details>

@@ -118,27 +118,32 @@ Tumor measurements → discover similar measurement profiles
 
 This is unsupervised learning because the clustering algorithm does not use the diagnosis label during fitting.
 
-**Question 2 — Classification or clustering?**
+**Question 2 — Diagnosis-support framing**
 
-A model predicts whether a case is malignant or benign. Is this classification or clustering?
+A stakeholder says: "I do not only want a label. I want to know which mistakes would be most serious if this model supported review." What should you clarify before comparing classifiers?
 
 <details>
 <summary>Solution</summary>
 
-This is classification because the model predicts a known category label.
+You should clarify:
 
-The target contains two possible classes, so it is binary classification.
+- which class should receive special attention;
+- whether false negatives or false positives are more costly;
+- which metrics should be emphasized, such as recall, precision, F1, and the confusion matrix;
+- that the model is decision support, not a replacement for expert judgement.
 
 </details>
 
-**Question 3 — Classification or clustering?**
+**Question 3 — Clustering workflow**
 
-A model groups cases using only measurement similarity and does not use the diagnosis label while fitting. Is this classification or clustering?
+An analyst wants to group cases by measurement similarity, then compare the groups with diagnosis afterward. Why should diagnosis be left out during clustering and used only after the clusters are created?
 
 <details>
 <summary>Solution</summary>
 
-This is clustering because the model discovers groups without using a known target label during fitting.
+If diagnosis is included during clustering, the groups are partly based on the answer label.
+
+Leaving diagnosis out keeps the clustering task focused on measurement similarity. Comparing clusters with diagnosis afterward is an interpretation step, not supervised training.
 
 </details>
 
@@ -1214,261 +1219,235 @@ The system would need careful validation, expert review, ethical review, monitor
 
 ## 7. Final Concept Review and Exam-Style Questions
 
-### Q1. What is classification?
+Answer these before opening the solutions.
+
+### Q1. Baseline Interpretation
+
+The most-frequent baseline has accuracy `0.632` and malignant-class recall `0.000`.
+
+Why can the accuracy look reasonable while the model is useless for identifying malignant cases?
 
 <details>
 <summary>Answer</summary>
 
-Classification is supervised learning where the target is a category or class.
+The baseline always predicts the majority class. If benign cases are more common, it can get many benign cases correct and still never identify malignant cases.
+
+The malignant-class recall is `0.000`, which means it found none of the actual malignant cases. This is why accuracy alone is not enough.
 
 </details>
 
-### Q2. Why is the cancer dataset a binary classification problem?
+### Q2. Metric Choice in a Medical-Support Context
+
+For malignant cases, which metric is especially important if the goal is to avoid missing malignant cases, and why?
 
 <details>
 <summary>Answer</summary>
 
-It has two target classes: malignant and benign.
+Recall for the malignant class is especially important.
+
+It asks: of all truly malignant cases, how many did the model identify as malignant? A low malignant recall means many malignant cases were predicted as benign.
 
 </details>
 
-### Q3. What is the difference between classification and regression?
+### Q3. Confusion Matrix Calculation
 
-<details>
-<summary>Answer</summary>
-
-Classification predicts a class label.
-
-Regression predicts a numerical value.
-
-</details>
-
-### Q4. What is a baseline classifier?
-
-<details>
-<summary>Answer</summary>
-
-A baseline classifier is a simple reference model, such as always predicting the most frequent class.
-
-It helps us decide whether a real model has learned something useful.
-
-</details>
-
-### Q5. What does accuracy measure?
-
-<details>
-<summary>Answer</summary>
-
-Accuracy measures the proportion of predictions that are correct.
-
-</details>
-
-### Q6. Why can accuracy be misleading?
-
-<details>
-<summary>Answer</summary>
-
-Accuracy can hide poor performance on a specific class, especially when classes are imbalanced or when one type of error is more serious than another.
-
-</details>
-
-### Q7. What does precision measure?
-
-<details>
-<summary>Answer</summary>
-
-Precision answers:
+A classifier produces this malignant-focused confusion summary:
 
 ```text
-Of the observations predicted as a class, how many were actually that class?
+Actual malignant predicted malignant: 40
+Actual malignant predicted benign:     3
+Actual benign predicted malignant:     2
+Actual benign predicted benign:       69
+```
+
+Calculate malignant precision and malignant recall.
+
+<details>
+<summary>Answer</summary>
+
+Malignant precision:
+
+```text
+40 / (40 + 2) = 40 / 42 ≈ 0.952
+```
+
+Malignant recall:
+
+```text
+40 / (40 + 3) = 40 / 43 ≈ 0.930
 ```
 
 </details>
 
-### Q8. What does recall measure?
+### Q4. Precision-Recall Tradeoff
+
+Two models have the following malignant-class scores:
+
+| Model | Precision | Recall | F1 |
+|---|---:|---:|---:|
+| A | 0.99 | 0.82 | 0.90 |
+| B | 0.94 | 0.96 | 0.95 |
+
+Which model is more appropriate if missing malignant cases is the larger concern?
 
 <details>
 <summary>Answer</summary>
 
-Recall answers:
+Model B is more appropriate because it has higher malignant recall.
 
-```text
-Of the observations that actually belong to a class, how many did the model identify?
-```
+Model A has higher precision, but it misses more actual malignant cases. If false negatives are the larger concern, recall should receive special attention.
 
 </details>
 
-### Q9. What does F1 measure?
+### Q5. Data Leakage Scenario
+
+A student standardizes all rows first, then performs the train/test split. Explain why this is a problem and how to fix it.
 
 <details>
 <summary>Answer</summary>
 
-F1 combines precision and recall into one metric.
+This leaks test-set information into preprocessing because the scaler learned means and standard deviations from all rows.
 
-It is useful when we want to consider both false positives and false negatives.
+Correct workflow:
 
-</details>
-
-### Q10. What does a confusion matrix show?
-
-<details>
-<summary>Answer</summary>
-
-A confusion matrix shows counts of actual classes versus predicted classes.
-
-The diagonal contains correct predictions. Off-diagonal cells contain mistakes.
+1. split into training and test sets;
+2. fit the scaler on the training features only;
+3. transform the training features;
+4. transform the test features using the same fitted scaler.
 
 </details>
 
-### Q11. Why does KNN need scaling?
+### Q6. KNN Scaling Scenario
+
+Suppose KNN is trained on unscaled cancer measurements. Features such as radius and area have much larger numerical ranges than smoothness. What problem may occur?
 
 <details>
 <summary>Answer</summary>
 
 KNN uses distances.
 
-If features are on very different numerical scales, large-scale features can dominate the distance calculation.
+Large-scale features can dominate the distance calculation, so the nearest neighbors may be chosen mostly because of those features. Scaling makes the selected features more comparable in the distance calculation.
 
 </details>
 
-### Q12. Why does a decision tree not require scaling in the same way as KNN?
+### Q7. Decision Tree Versus KNN
+
+Why can a decision tree be trained on the original feature scales while KNN usually needs scaling?
 
 <details>
 <summary>Answer</summary>
 
-A decision tree uses feature thresholds to split the data.
+A decision tree uses threshold splits on individual features. It does not calculate nearest-neighbor distances.
 
-It does not calculate nearest-neighbor distances, so feature scale does not affect it in the same way.
+KNN calculates distances between observations, so differences in feature scale strongly affect which observations count as nearest.
 
 </details>
 
-### Q13. What does `fit()` do in classification?
+### Q8. Training Accuracy Warning
+
+A decision tree has training accuracy `1.00` and test accuracy `0.82`. What pattern does this suggest?
 
 <details>
 <summary>Answer</summary>
 
-`fit()` trains the classifier using input features and known target labels.
+This suggests possible overfitting.
+
+The model fits the training data perfectly but performs much worse on unseen test data. The training score alone is not enough to judge generalization.
 
 </details>
 
-### Q14. What does `predict()` do in classification?
+### Q9. Probability Interpretation
+
+Logistic regression gives one case `probability_malignant = 0.91`. What can and cannot be concluded?
 
 <details>
 <summary>Answer</summary>
 
-`predict()` uses the trained classifier to assign class labels to new input rows.
+We can conclude that the model estimates a high probability for the malignant class based on the learned feature patterns.
+
+We cannot conclude that the case is definitely malignant. A probability is a model estimate, not proof or a medical decision.
 
 </details>
 
-### Q15. What is data leakage?
+### Q10. Macro Versus Weighted Average
+
+In a classification report, macro F1 is much lower than weighted F1. What can this suggest about class performance?
 
 <details>
 <summary>Answer</summary>
 
-Data leakage occurs when information from the test set or target leaks into training or preprocessing.
+It can suggest that the model performs poorly on one or more smaller classes.
 
-It can make evaluation look better than it really is.
+The weighted average is influenced more by larger classes, while the macro average gives each class equal weight. A gap between them can reveal uneven class performance.
 
 </details>
 
-### Q16. Why do we split before fitting the scaler?
+### Q11. Clustering Without Diagnosis
+
+Why should `diagnosis` be excluded when fitting K-Means, even though it is useful to compare clusters with diagnosis afterward?
 
 <details>
 <summary>Answer</summary>
 
-The scaler learns means and standard deviations.
+Including `diagnosis` would make the clusters partly based on the known answer label.
 
-If it learns them from the full dataset, then test-set information influences preprocessing. We fit it on training data only and apply the learned transformation to the test data.
+For unsupervised profile discovery, clusters should be fitted using measurement features only. Diagnosis can then be used afterward to interpret whether the measurement-based groups relate to known labels.
 
 </details>
 
-### Q17. What is clustering?
+### Q12. Cluster-Diagnosis Crosstab
+
+A cluster contains 90 percent malignant cases. Can we rename that cluster "malignant" and use it as a diagnosis rule?
 
 <details>
 <summary>Answer</summary>
 
-Clustering is unsupervised learning that groups observations based on feature similarity.
+No.
+
+The cluster may be associated with malignant cases, but it is not a supervised classifier and may still contain benign cases. Cluster membership is descriptive and depends on selected features, scaling, K, and algorithm.
 
 </details>
 
-### Q18. Why should diagnosis not be used as a clustering feature?
+### Q13. Choosing K
+
+K=2 has the highest silhouette score, but K=4 gives more detailed groups. What should be considered before choosing K?
 
 <details>
 <summary>Answer</summary>
 
-Diagnosis is the known label.
+Consider silhouette score, inertia/elbow pattern, group sizes, cluster profiles, visual separation, and whether the groups are interpretable for the project purpose.
 
-If we include it in clustering, the clusters are partly based on the answer. For unsupervised profile discovery, we use measurement features only.
+The best K is not chosen by one number alone.
 
 </details>
 
-### Q19. What does inertia measure in K-Means?
+### Q14. Comparing K-Means and Agglomerative Clustering
+
+K-Means and agglomerative clustering produce different cluster assignments for some cases. Why is this not automatically an error?
 
 <details>
 <summary>Answer</summary>
 
-Inertia measures the total squared distance from observations to their assigned cluster centers.
+They use different clustering logic.
+
+K-Means uses centroids. Agglomerative clustering merges observations or groups according to linkage rules. Different algorithms can reasonably produce different boundaries.
 
 </details>
 
-### Q20. What does silhouette score measure?
+### Q15. Final System Limitation
+
+Write three limitations that should be communicated with the cancer classification and clustering results.
 
 <details>
 <summary>Answer</summary>
 
-Silhouette score compares how close observations are to their own cluster versus the nearest other cluster.
+Reasonable limitations include:
 
-Higher values generally indicate better separated clusters under the selected features and distance measure.
-
-</details>
-
-### Q21. Why are cluster labels arbitrary?
-
-<details>
-<summary>Answer</summary>
-
-Cluster numbers are names assigned by the algorithm.
-
-Cluster `0` is not automatically better, worse, benign, or malignant. We must inspect the cluster profiles.
-
-</details>
-
-### Q22. What is a false negative for the malignant class?
-
-<details>
-<summary>Answer</summary>
-
-It is an actual malignant case that the model predicts as benign.
-
-</details>
-
-### Q23. What is a false positive for the malignant class?
-
-<details>
-<summary>Answer</summary>
-
-It is an actual benign case that the model predicts as malignant.
-
-</details>
-
-### Q24. Why compare a model to a baseline?
-
-<details>
-<summary>Answer</summary>
-
-A baseline gives context.
-
-If a model barely improves over a simple baseline, it may not be useful even if its score looks reasonable.
-
-</details>
-
-### Q25. What is the main limitation of this lab system?
-
-<details>
-<summary>Answer</summary>
-
-It is a classroom learning system.
-
-It demonstrates end-to-end classification and clustering concepts, but it is not validated for real medical decision making.
+- high test performance in a classroom dataset does not make a medical device;
+- false negatives and false positives have different practical consequences;
+- probabilities are model estimates, not proof;
+- cluster labels are descriptive, not diagnosis rules;
+- performance may change on future data from a different source;
+- expert validation and governance would be required in real use.
 
 </details>

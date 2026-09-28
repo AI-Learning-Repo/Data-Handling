@@ -715,242 +715,175 @@ Measure comparing within-cluster closeness to nearest competing cluster.
 
 ### Question 1
 
-Why is the cancer lab a classification problem?
+A model has high overall accuracy but low recall for malignant cases. Why is this a serious warning in this lab?
 
 <details>
 <summary>Suggested answer</summary>
 
-The target is a category: malignant or benign. The model predicts a class label, not a numerical value.
+Overall accuracy can hide poor performance on a specific class.
+
+Low malignant recall means the model misses many actual malignant cases. In a diagnosis-support context, that error type is especially important.
 
 </details>
 
 ### Question 2
 
-Why is it binary classification?
+The most-frequent baseline predicts benign for every test case. It achieves moderate accuracy but malignant recall is 0. What does this tell you?
 
 <details>
 <summary>Suggested answer</summary>
 
-There are exactly two target classes: malignant and benign.
+The baseline benefits from class imbalance or majority-class frequency.
+
+It does not identify malignant cases at all, so it is not useful for the main review concern. This shows why baseline comparison and class-specific metrics matter.
 
 </details>
 
 ### Question 3
 
-What is the difference between classification and regression?
+A classifier produces:
+
+```text
+TP for malignant = 38
+FN for malignant = 4
+FP for malignant = 3
+TN for malignant = 69
+```
+
+How would you calculate malignant precision and recall?
 
 <details>
 <summary>Suggested answer</summary>
 
-Classification predicts a category or class label. Regression predicts a numerical value.
+Precision:
+
+```text
+38 / (38 + 3)
+```
+
+Recall:
+
+```text
+38 / (38 + 4)
+```
+
+Precision focuses on predictions made as malignant. Recall focuses on actual malignant cases found by the model.
 
 </details>
 
 ### Question 4
 
-Why do we need a baseline classifier?
+Why should a scaler be fitted after the train/test split rather than before it?
 
 <details>
 <summary>Suggested answer</summary>
 
-A baseline gives a simple reference point. It helps us decide whether a real classifier has learned useful patterns beyond a trivial strategy.
+The scaler learns means and standard deviations.
+
+If it is fitted before splitting, test-set information influences preprocessing. This is data leakage and can make evaluation too optimistic.
 
 </details>
 
 ### Question 5
 
-Why can accuracy be misleading?
+A KNN classifier performs worse before scaling than after scaling. Explain why this is expected.
 
 <details>
 <summary>Suggested answer</summary>
 
-Accuracy can hide which class is being misclassified. If one class is much more common, a model can have high accuracy while performing poorly on the less common or more important class.
+KNN uses distances between observations.
+
+Without scaling, features with larger numerical ranges can dominate the distance calculation. Scaling makes features more comparable, so nearest neighbors are based on a more balanced representation.
 
 </details>
 
 ### Question 6
 
-What does precision for malignant cases mean?
+A decision tree has much higher training accuracy than test accuracy. What pattern does this suggest?
 
 <details>
 <summary>Suggested answer</summary>
 
-It means: among cases predicted as malignant, what proportion were actually malignant?
+It suggests possible overfitting.
+
+The tree may have learned training-specific patterns that do not generalize well to unseen test observations.
 
 </details>
 
 ### Question 7
 
-What does recall for malignant cases mean?
+Why might two classifiers with similar accuracy lead to different practical choices?
 
 <details>
 <summary>Suggested answer</summary>
 
-It means: among cases that were actually malignant, what proportion did the model identify as malignant?
+They may make different types of errors.
+
+One model may have better malignant recall while another has better precision. In a medical-support context, the cost of false negatives and false positives matters, so accuracy alone is not enough.
 
 </details>
 
 ### Question 8
 
-What does F1 measure?
+Why should diagnosis be excluded when fitting clusters, but allowed in a crosstab after clustering?
 
 <details>
 <summary>Suggested answer</summary>
 
-F1 combines precision and recall into one metric. It is useful when we care about balancing both types of performance.
+Diagnosis is the known label.
+
+If it is used during clustering, the groups are partly built from the answer. If it is used afterward, it helps interpret whether measurement-based clusters relate to known diagnosis.
 
 </details>
 
 ### Question 9
 
-Why is a confusion matrix useful?
+K=2 has the highest silhouette score, while K=4 creates smaller, more detailed groups. Why is choosing K not purely automatic?
 
 <details>
 <summary>Suggested answer</summary>
 
-It shows which classes were predicted correctly and which classes were confused with each other. It reveals error types that accuracy alone can hide.
+K should be chosen using several pieces of evidence: silhouette, inertia, group sizes, profiles, plots, and interpretability.
+
+A higher-detail K is not automatically better if the groups are unstable, hard to explain, or poorly separated.
 
 </details>
 
 ### Question 10
 
-In this lab, why do we sometimes use `pos_label=0`?
+One cluster contains mostly malignant cases. Why should it not be used directly as a diagnosis rule?
 
 <details>
 <summary>Suggested answer</summary>
 
-Because class `0` is malignant in this dataset. We use `pos_label=0` when we want precision, recall, and F1 to focus on malignant cases.
+The cluster was created without supervised training on diagnosis.
+
+It may contain a mix of malignant and benign cases, and the cluster depends on selected features, scaling, K, and algorithm. It can support interpretation, but it is not a validated diagnosis rule.
 
 </details>
 
 ### Question 11
 
-Why should scaling be fitted on the training data only?
+Macro F1 is lower than weighted F1. What does this suggest?
 
 <details>
 <summary>Suggested answer</summary>
 
-The scaler learns means and standard deviations. If it learns them from the full dataset, test-set information influences preprocessing. That is data leakage.
+It suggests that performance may be weaker on a smaller class.
+
+Macro average gives each class equal importance. Weighted average gives larger classes more influence, so it can look better when the model performs well on the majority class.
 
 </details>
 
 ### Question 12
 
-Why does KNN need scaling?
+What limitations should be stated before presenting this lab as a real medical system?
 
 <details>
 <summary>Suggested answer</summary>
 
-KNN uses distances. If features have very different numerical scales, a large-scale feature can dominate the distance calculation.
+It is a classroom review system, not a validated medical system.
 
-</details>
-
-### Question 13
-
-How does a decision tree make predictions?
-
-<details>
-<summary>Suggested answer</summary>
-
-A decision tree follows a sequence of feature-based splits. Each split sends an observation down a branch until it reaches a leaf with a predicted class.
-
-</details>
-
-### Question 14
-
-Why is logistic regression a classifier?
-
-<details>
-<summary>Suggested answer</summary>
-
-Despite its name, logistic regression estimates class probabilities and converts them into class predictions.
-
-</details>
-
-### Question 15
-
-What is the difference between macro and weighted averages?
-
-<details>
-<summary>Suggested answer</summary>
-
-Macro average gives each class equal importance. Weighted average gives more influence to classes with more observations.
-
-</details>
-
-### Question 16
-
-Why should `diagnosis` not be used as a clustering feature?
-
-<details>
-<summary>Suggested answer</summary>
-
-`diagnosis` is the known label. If we include it in clustering, the clusters are partly based on the answer. For unsupervised profile discovery, we use measurement features only.
-
-</details>
-
-### Question 17
-
-What does inertia measure in K-Means?
-
-<details>
-<summary>Suggested answer</summary>
-
-Inertia measures the total squared distance between observations and their assigned cluster centers.
-
-</details>
-
-### Question 18
-
-Why is the lowest inertia not enough to choose K?
-
-<details>
-<summary>Suggested answer</summary>
-
-Inertia usually decreases as K increases. A larger K can always make clusters more compact, so we also need interpretability and other evidence such as silhouette score.
-
-</details>
-
-### Question 19
-
-What does silhouette score tell us?
-
-<details>
-<summary>Suggested answer</summary>
-
-It compares how close observations are to their own cluster versus the nearest other cluster. Higher values suggest better separated clusters under the chosen features and distance measure.
-
-</details>
-
-### Question 20
-
-Why are cluster labels arbitrary?
-
-<details>
-<summary>Suggested answer</summary>
-
-Cluster numbers are names assigned by the algorithm. Cluster `0` is not automatically malignant, benign, better, or worse. We must inspect the cluster profiles.
-
-</details>
-
-### Question 21
-
-Why is comparing clusters with diagnosis useful but limited?
-
-<details>
-<summary>Suggested answer</summary>
-
-It is useful because it helps us interpret whether measurement-based groups relate to known diagnosis. It is limited because clustering is not supervised prediction, and clusters can contain mixed diagnoses.
-
-</details>
-
-### Question 22
-
-Why is Lab 2 not a medical diagnosis system?
-
-<details>
-<summary>Suggested answer</summary>
-
-It is a classroom learning system. A real medical system would require expert validation, safety review, documentation, monitoring, and appropriate clinical governance.
+Real use would require expert validation, careful evaluation on appropriate data, documentation, safety review, monitoring, and clinical governance.
 
 </details>

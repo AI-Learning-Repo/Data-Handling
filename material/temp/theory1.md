@@ -530,57 +530,72 @@ Measure comparing within-cluster closeness to nearest competing cluster.
 
 ### Question 1
 
-Why is the business objective important before choosing a model?
+Suppose a team asks for "a housing AI system" but does not say whether it needs price estimates, district groups, or anomaly flags. Why is this not enough information to choose a model?
 
 <details>
 <summary>Suggested answer</summary>
 
-The business objective determines what output is useful, what errors matter, what data is available, and how the model will be evaluated.
+The requested output determines the ML task.
+
+Price estimates suggest regression. District groups suggest clustering. Anomaly flags suggest a different kind of analysis. Without clarifying the objective, the model may produce an output that does not support the real decision.
 
 </details>
 
 ### Question 2
 
-Why is `median_house_value` the target in regression but not a clustering feature?
+The correlation between `median_income` and `median_house_value` is strong. Why should this be treated as evidence for modeling, not as proof of causation or final feature selection?
 
 <details>
 <summary>Suggested answer</summary>
 
-In regression, the goal is to predict `median_house_value`, so it is the supervised target.
+Pearson correlation measures linear association.
 
-In clustering, the goal is to discover district groups from other characteristics. Including `median_house_value` would make the clusters partly defined by the value we are trying to leave out.
+It does not prove that income causes house value. It also does not prove that other features are useless. A multiple-feature model may use location, ocean proximity, housing age, and engineered ratios together.
 
 </details>
 
 ### Question 3
 
-Why should imputation be fitted on training data only?
+You see this pattern:
+
+```text
+Training RMSE = 20,000
+Test RMSE     = 95,000
+```
+
+What does it suggest, and why is the test result more important for model choice?
 
 <details>
 <summary>Suggested answer</summary>
 
-Fitting imputation on all data lets the test set influence preprocessing. This is data leakage.
+This suggests overfitting.
+
+The model fits the training data very well but generalizes poorly to unseen data. Test RMSE is more important because it estimates performance on observations not used during fitting.
 
 </details>
 
 ### Question 4
 
-Why is a baseline useful?
+A student chooses the model with the lowest training RMSE. Why can this be a poor decision?
 
 <details>
 <summary>Suggested answer</summary>
 
-A baseline gives a simple reference point. A model should improve meaningfully over it to justify its complexity.
+A low training RMSE can mean the model has fit noise or accidental patterns in the training data.
+
+Model choice should be based on test performance, comparison with a baseline, and interpretation of errors. A model with slightly higher training error may generalize better.
 
 </details>
 
 ### Question 5
 
-Why is clustering interpretation different from classification evaluation?
+K-Means produces two clusters. One cluster has higher income and higher average house value after profiling. What can you conclude, and what should you avoid claiming?
 
 <details>
 <summary>Suggested answer</summary>
 
-Classification predictions can be compared with known labels. In clustering, there is usually no supplied correct group label, so we rely on geometry, profiles, plots, and usefulness.
+You can describe the cluster profile: the districts assigned to that cluster tend to have higher income and higher house value.
+
+You should avoid claiming that the cluster causes high values or that the two clusters are guaranteed natural categories. The result depends on selected features, scaling, K, and algorithm.
 
 </details>
