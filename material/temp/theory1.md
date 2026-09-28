@@ -17,7 +17,7 @@ The purpose is to refresh the main ideas from weeks 2-5 in one connected story. 
 - [9. Underfitting, Overfitting, and Generalization](#9-underfitting-overfitting-and-generalization)
 - [10. Clustering System](#10-clustering-system)
 - [11. Clustering Evaluation and Interpretation](#11-clustering-evaluation-and-interpretation)
-- [12. Real-World Notes from the Review Material](#12-real-world-notes-from-the-review-material)
+- [12. Real-World Project Notes](#12-real-world-project-notes)
 - [13. Concepts to Remember](#13-concepts-to-remember)
 - [14. Review Questions](#14-review-questions)
 
@@ -49,7 +49,7 @@ Interpretation and limitations
 
 The housing lab follows this idea, but with beginner-friendly tools.
 
-The review material in `review-end2end` uses a richer professional workflow. It includes ideas such as pipelines, model tuning, and production monitoring. Those are useful real-world ideas, but Lab 1 keeps the required implementation within what was covered in weeks 2-5.
+The housing lab follows this idea using beginner-friendly tools and visible steps.
 
 ## 2. From Business Objective to ML Task
 
@@ -90,7 +90,7 @@ Important columns include:
 | `median_house_value` | Regression target |
 | `ocean_proximity` | Categorical location descriptor |
 
-The review material highlights a practical point: real datasets often contain preprocessed or capped values. For example, `median_income` is not raw income in ordinary currency units, and `median_house_value` has an upper cap.
+This dataset also highlights a practical point: real datasets often contain preprocessed or capped values. For example, `median_income` is not raw income in ordinary currency units, and `median_house_value` has an upper cap.
 
 That does not make the dataset unusable. It means analysts must understand how the data was created before interpreting model outputs.
 
@@ -183,7 +183,7 @@ bedrooms_per_room = total_bedrooms / total_rooms
 population_per_household = population / households
 ```
 
-These features connect to a real modeling idea from the review material: good features often come from understanding what the raw columns mean.
+These features connect to a real modeling idea: good features often come from understanding what the raw columns mean.
 
 Feature engineering should be motivated by the problem, not done randomly.
 
@@ -427,14 +427,12 @@ For example:
 
 Profiles support descriptions. They do not prove causes or natural categories.
 
-## 12. Real-World Notes from the Review Material
+## 12. Real-World Project Notes
 
-The `review-end2end` material is useful for the following ideas.
-
-### Useful Ideas Kept
+Lab 1 uses a simplified version of real project thinking.
 
 **Frame the problem before modeling.**  
-The review material emphasizes asking what the business objective is before choosing the model.
+Ask what the business objective is before choosing the model.
 
 **Understand the current solution.**  
 A baseline or current human process gives context for evaluating whether a model is useful.
@@ -443,31 +441,16 @@ A baseline or current human process gives context for evaluating whether a model
 Real projects require knowing where data comes from, what each row means, and what each column represents.
 
 **Explore before modeling.**  
-The review material uses geographic plots, target distributions, and correlations to understand the housing data.
+Use geographic plots, target distributions, and correlations to understand the housing data before training a model.
 
 **Understand capped and transformed values.**  
 The dataset includes capped or scaled values. This affects interpretation.
 
 **Use clustering as a housing-data idea.**  
-The review material connects location and district similarity. Lab 1 uses clustering directly to create district profiles.
+Location and district similarity are natural housing-data questions. Lab 1 uses clustering directly to create district profiles.
 
 **Present limitations.**  
 A useful project summary explains what worked, what did not, and what assumptions remain.
-
-### Useful Ideas Excluded from Required Lab Mechanics
-
-The review material also contains advanced tools. These are excluded from Lab 1 because they were not required in weeks 2-5:
-
-- scikit-learn `Pipeline`;
-- `ColumnTransformer`;
-- custom transformers;
-- grid search;
-- random search;
-- cross-validation as required implementation;
-- confidence intervals;
-- production deployment code.
-
-Some real-world ideas such as feature selection and production monitoring can be discussed later as context, but they are not required lab mechanics.
 
 ## 13. Concepts to Remember
 

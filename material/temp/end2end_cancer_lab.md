@@ -4,8 +4,6 @@
 This lab reviews weeks 2-5 through a second realistic end-to-end system.
 Lab 1 focused on housing regression and clustering.
 Lab 2 focuses on cancer classification and clustering.
-
-The matching Theory 2 file will be written after review. This file is the practical lab.
 -->
 
 - [1. From a Business Question to Machine Learning Tasks](#1-from-a-business-question-to-machine-learning-tasks)
@@ -1199,9 +1197,7 @@ In a real project, engineers and analysts usually:
 9. inspect errors, not only overall scores;
 10. explain limitations clearly.
 
-For this lab, we deliberately keep the implementation simple. We do not use pipelines, grid search, cross-validation, custom transformers, or deployment monitoring as required mechanics.
-
-Those are useful real-world ideas, but the goal here is to review the concepts covered in class.
+This lab keeps the implementation simple and visible. The goal is to review the concepts covered in class and understand the reasoning behind each step.
 
 **Question 25 — Real-world limitation**
 

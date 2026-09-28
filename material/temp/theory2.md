@@ -619,19 +619,7 @@ In real projects, engineers would also think about:
 - how results would be reviewed by domain experts;
 - whether performance changes over time.
 
-These are important real-world ideas, but they are not required lab mechanics here.
-
-The lab deliberately excludes required implementation of:
-
-- scikit-learn `Pipeline`;
-- `ColumnTransformer`;
-- custom transformers;
-- grid search;
-- random search;
-- cross-validation as a required step;
-- deployment monitoring code.
-
-Those topics can be discussed as context later, but the required student work stays within the week 2-5 concepts.
+These are important real-world ideas. In this lab, the focus stays on the concepts already practiced in class: data understanding, train/test evaluation, baselines, classification models, metrics, clustering, and interpretation limits.
 
 ## 13. Concepts to Remember
 
