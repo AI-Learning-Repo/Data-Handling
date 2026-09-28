@@ -219,10 +219,7 @@ The best question is not necessarily the most difficult question. It is a questi
 Because project groups have different numbers of members, we use a **Team Average** rather than a raw total.
 
 $$
-\text{Final Group Score}
-=
-\frac{\text{Total Points Earned by All Group Members}}
-{\text{Number of Members in the Group}}
+\text{Final Group Score}=\frac{\text{Total Points Earned by All Group Members}}{\text{Number of Members in the Group}}
 $$
 
 This prevents larger groups from receiving an automatic advantage simply because they have more representatives.
@@ -238,11 +235,7 @@ Suppose Group A has three members:
 Then:
 
 $$
-\text{Group A Score}
-=
-\frac{10.7+10.0+11.0}{3}
-=
-\mathbf{10.57}
+\text{Group A Score}=\frac{10.7+10.0+11.0}{3}=\mathbf{10.57}
 $$
 
 ---

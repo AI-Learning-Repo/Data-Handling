@@ -1,9 +1,9 @@
 # This Week in Brief
 
 > [!IMPORTANT]  
-> - Group submissions
-> - Individual Submissions
-> - Course Feedback
+> - Group submissions (OMA)
+> - Individual Submissions (OMA)
+> - Course Feedback (OMA)
 
 ----
 
@@ -17,9 +17,9 @@
 ## Morning:
 
 * **09:00–09:15:** Briefing
-  * [Task Introduction](./material/presentations.md)
+  * [Task Introduction](./material/Jigsaw-Challenge.md)
   * [About Recording](./material/recording.md) 
-  * [Presentation template](./material/Presentation-template.pdf)
+  * [Presentation template](./material/presentation-template.md)
 * **09:15–09:45 (30 min):** Phase 1: Home Team Strategy & AI Defense Prep
 * **09:45–10:10:** Break
 * **10:10–11:25 (75 min):** Phase 2: Jigsaw Breakout Tables & Peer Review
