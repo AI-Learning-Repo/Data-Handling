@@ -16,15 +16,16 @@
 
 ## Morning:
 
-* **09:00–09:15:** Briefing
+* **09:00–09:15:** 
+  * Briefing
   * [Task Introduction](./material/Jigsaw-Challenge.md)
   * [Presentation template](./material/presentation-template.md)
   * [About Recording](./material/recording.md)   
-* **09:15–09:45 (30 min):** Phase 1: Home Team Strategy & AI Defense Prep
+* **09:15–09:45 (30 min):** [Phase 1: Home Team Strategy & AI Defense Prep](./material/Jigsaw-Challenge.md#phase-1-home-team-strategy--ai-defense-prep)
 * **09:45–10:10:** Break
-* **10:10–11:25 (75 min):** Phase 2: Jigsaw Breakout Tables & Peer Review
+* **10:10–11:25 (75 min):** [Phase 2: Jigsaw Breakout Tables & Peer Review](./material/Jigsaw-Challenge.md#phase-2-the-jigsaw-breakout-tables)
 * **11:25–11:35:** Break & Score Compilation
-* **11:35–12:00:** Presentation 1: Finalist Group 1
+* **11:35–12:00:** [Phase 3: Presentation 1: Finalist Group 1](./material/Jigsaw-Challenge.md#phase-3--4-plenary-finalist-showcase)
 * **12:00–13:00:** Lunch Break
 
 ----

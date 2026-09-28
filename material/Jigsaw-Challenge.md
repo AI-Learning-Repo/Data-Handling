@@ -1,11 +1,8 @@
 # Mini-Project Showcase & Jigsaw Challenge
 
 
-## What Is the Goal of Today's Activity?
 
-The goal is not simply to give a presentation.
-
-By the end of the Jigsaw, you should be able to:
+The goal is not simply to give a presentation. By the end of the Jigsaw, you should be able to:
 
 1. Explain the main ideas behind your own project.
 2. Explain basic RAG and fine-tuning concepts in your own words.
