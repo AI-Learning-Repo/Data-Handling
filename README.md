@@ -18,8 +18,8 @@
 
 * **09:00–09:15:** Briefing
   * [Task Introduction](./material/Jigsaw-Challenge.md)
-  * [About Recording](./material/recording.md) 
   * [Presentation template](./material/presentation-template.md)
+  * [About Recording](./material/recording.md)   
 * **09:15–09:45 (30 min):** Phase 1: Home Team Strategy & AI Defense Prep
 * **09:45–10:10:** Break
 * **10:10–11:25 (75 min):** Phase 2: Jigsaw Breakout Tables & Peer Review

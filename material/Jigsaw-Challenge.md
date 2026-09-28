@@ -1,6 +1,22 @@
 # Mini-Project Showcase & Jigsaw Challenge
 
 
+## What Is the Goal of Today's Activity?
+
+The goal is not simply to give a presentation.
+
+By the end of the Jigsaw, you should be able to:
+
+1. Explain the main ideas behind your own project.
+2. Explain basic RAG and fine-tuning concepts in your own words.
+3. Compare RAG and fine-tuning at an introductory level.
+4. Identify common limitations and failure modes.
+5. Ask useful technical questions about another team's work.
+6. Learn from the different approaches taken by your classmates.
+
+
+---
+
 ## Phase 1: Home Team Strategy & AI Defense Prep
 
 **30 minutes**
@@ -279,17 +295,3 @@ After the Jigsaw round, the scores will be compiled and the **Top 3 Finalist Gro
 
 The finalist groups will present to the full class, followed by questions, feedback, and concluding remarks.
 
----
-
-## What Is the Goal of Today's Activity?
-
-The goal is not simply to give a presentation.
-
-By the end of the Jigsaw, you should be able to:
-
-1. Explain the main ideas behind your own project.
-2. Explain basic RAG and fine-tuning concepts in your own words.
-3. Compare RAG and fine-tuning at an introductory level.
-4. Identify common limitations and failure modes.
-5. Ask useful technical questions about another team's work.
-6. Learn from the different approaches taken by your classmates.
