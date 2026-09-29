@@ -76,7 +76,7 @@ Look up your Group Number in the Table Assignment Chart.
 | **Table 1** |     4    | **Group 2, Group 7, Group 8, Group 10**  |
 | **Table 2** |     4    | **Group 1, Group 5, Group 9, Group 10** |
 | **Table 3** |     4    | **Group 4, Group 5, Group 7, Group 10** |
-| **Table 4** |     4    | **Group 2, Group 3, Group 6, Group 9**  |
+| **Table 4** |     4    | **Group 2, Group 3, Group 6**  |
 | **Table 5** |     4    | **Group 1, Group 3, Group 8, Group 11**  |
 | **Table 6** |     4    | **Group 2, Group 4, Group 5, Group 10**  |
 | **Table 7** |     4    | **Group 2, Group 6, Group 7, Group 9**   |
