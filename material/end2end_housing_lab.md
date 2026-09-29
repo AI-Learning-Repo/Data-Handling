@@ -153,7 +153,6 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from sklearn.model_selection import train_test_split
-from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
@@ -170,7 +169,7 @@ sns.set_theme(style="whitegrid")
 - `numpy` helps with numerical arrays.
 - `matplotlib` and `seaborn` create plots for EDA and interpretation.
 - `train_test_split` separates data used for learning from data used for evaluation.
-- `SimpleImputer` fills missing values using a statistic learned from training data.
+- pandas `median()` and `fillna()` handle missing values using values calculated from training data.
 - `LinearRegression` fits a regression model.
 - `PolynomialFeatures` creates squared and interaction terms for polynomial regression.
 - MAE, RMSE, and R2 evaluate numerical predictions.
@@ -180,7 +179,7 @@ sns.set_theme(style="whitegrid")
 
 ### 2.2 Load the data
 
-Students will run this lab in Google Colab. There are two simple ways to make the CSV available.
+You will run this lab in Google Colab. There are two simple ways to make the CSV available.
 
 **Option A: upload the CSV manually**
 
@@ -201,7 +200,7 @@ Use this option when the course dataset URL is available:
 # housing.head()
 ```
 
-The cell below loads `housing.csv` if it is in the current notebook folder. If you are running from the course repository, it also checks `datasets/housing.csv`.
+The cell below loads `housing.csv` if it is in the current notebook folder. If you are running from the course repository, it also checks `datasets/housing.csv` and `../datasets/housing.csv`.
 
 ```python
 from pathlib import Path
@@ -210,6 +209,8 @@ if Path("housing.csv").exists():
     housing = pd.read_csv("housing.csv")
 elif Path("datasets/housing.csv").exists():
     housing = pd.read_csv("datasets/housing.csv")
+elif Path("../datasets/housing.csv").exists():
+    housing = pd.read_csv("../datasets/housing.csv")
 else:
     raise FileNotFoundError(
         "Could not find housing.csv. Upload it to the notebook session "
@@ -314,7 +315,7 @@ If `total_bedrooms` has missing values, why should we not simply ignore the issu
 
 Many machine-learning algorithms cannot work directly with missing values. Missingness can also tell us something about data quality.
 
-We need to decide how to handle missing values. In this lab, we use median imputation for numerical features, but we fit the imputer only on the training data to avoid leakage.
+We need to decide how to handle missing values. In this lab, we fill missing numerical values with medians calculated from the training data only, to avoid leakage.
 
 </details>
 
@@ -574,7 +575,7 @@ print("y shape:", y.shape)
 
 ### 5.2 Split before learned preprocessing
 
-Split the data before fitting imputers or models.
+Split the data before calculating training replacement values or fitting models.
 
 ```python
 X_train, X_test, y_train, y_test = train_test_split(
@@ -691,34 +692,25 @@ It is an association inside the model, not proof of causation.
 
 Now use several numerical features and the categorical feature.
 
-First, impute missing numerical values. Fit the imputer on training data only.
+First, fill missing numerical values. Calculate the medians from training data only.
 
 ```python
-num_imputer = SimpleImputer(strategy="median")
+numeric_medians = X_train[numeric_features].median()
 
-X_train_num = pd.DataFrame(
-    num_imputer.fit_transform(X_train[numeric_features]),
-    columns=numeric_features,
-    index=X_train.index,
-)
+X_train_num = X_train[numeric_features].fillna(numeric_medians)
+X_test_num = X_test[numeric_features].fillna(numeric_medians)
 
-X_test_num = pd.DataFrame(
-    num_imputer.transform(X_test[numeric_features]),
-    columns=numeric_features,
-    index=X_test.index,
-)
-
-print("Missing values after training imputation:")
+print("Missing values after filling training data:")
 print(X_train_num.isna().sum().sum())
-print("Missing values after test imputation:")
+print("Missing values after filling test data:")
 print(X_test_num.isna().sum().sum())
 ```
 
 **Code explanation**
 
-- `fit_transform()` learns medians from the training data and applies them to training data.
-- `transform()` applies the same learned medians to test data.
-- We do not fit a new imputer on the test set.
+- `X_train[numeric_features].median()` calculates medians from the training data only.
+- `fillna(numeric_medians)` fills missing values using those training medians.
+- We do not calculate new medians from the test set.
 
 Next, one-hot encode the categorical feature.
 
@@ -1471,27 +1463,27 @@ Answer these before opening the solutions.
 
 ### Q1. Leakage Scenario
 
-A student fills missing `total_bedrooms` values using the median calculated from the full dataset, then performs the train/test split.
+Someone fills missing `total_bedrooms` values using the median calculated from the full dataset, then performs the train/test split.
 
 Explain the problem and give the corrected workflow.
 
 <details>
 <summary>Solution</summary>
 
-This causes data leakage because information from the test set helps define the imputation value.
+This causes data leakage because information from the test set helps define the replacement value.
 
 Correct workflow:
 
 1. split into training and test sets;
-2. fit the imputer on the training data only;
-3. transform the training data;
-4. transform the test data using the imputer learned from training data.
+2. calculate the median on the training data only;
+3. fill missing training values using the training median;
+4. fill missing test values using the same training median.
 
 </details>
 
 ### Q2. Correlation Interpretation
 
-Suppose `median_income` has the strongest Pearson correlation with `median_house_value`. A student concludes: "Median income causes house value, so it is the only feature we need."
+Suppose `median_income` has the strongest Pearson correlation with `median_house_value`. Someone concludes: "Median income causes house value, so it is the only feature we need."
 
 What is wrong with this conclusion?
 

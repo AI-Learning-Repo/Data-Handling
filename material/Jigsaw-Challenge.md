@@ -18,7 +18,7 @@ The goal is not simply to give a presentation. By the end of the Jigsaw, you sho
 
 **30 minutes**
 
-Meet with your project group and prepare for the breakout tables.
+Meet with your project group and:
 
 ### 1. Rehearse Your 12-Minute Deck
 
@@ -44,11 +44,11 @@ Prepare a **1-page Technical Defense Cheat Sheet** for your team members.
 
 **Important:** AI is a preparation tool. During your actual presentation and technical defense, you must explain concepts in your own words.
 
-**Live AI use is not permitted during the breakout presentation/defense.**
+**Live AI use is not permitted during the presentation/defense.**
 
 Also remember: AI-generated answers should be checked against the course material and your **actual project results**.
 
-### 3. Assign Breakout Tables
+### 3. Assign Tables
 
 Look up your Group Number in the Table Assignment Chart.
 
@@ -71,7 +71,7 @@ Look up your Group Number in the Table Assignment Chart.
 
 ---
 
-## Phase 2: The Jigsaw Breakout Tables
+## Phase 2: The Jigsaw Tables
 
 **75 minutes**
 
@@ -79,7 +79,7 @@ At about **10:10**, disperse to your assigned table.
 
 Each table follows the same format:
 
-**10-122 minutes presentation + technical Q&A = 15 minutes per presenter.**
+**10-12 minutes presentation + technical Q&A = 15 minutes per presenter.**
 
 ### Your Two Roles
 
@@ -87,8 +87,8 @@ Each table follows the same format:
 
 * Share your screen.
 * Present your group's project.
-* Demo your prototype where appropriate.
-* Explain your RAG and/or fine-tuning approach.
+* Demo your prototype.
+* Explain your RAG and fine-tuning approach.
 * Answer questions from your peers.
 * Be honest about limitations, failures, and things that did not work.
 
@@ -107,7 +107,7 @@ While other students present:
 
 ### Listener Requirement
 
-During the breakout session, **every student must:**
+During the session, **every student must:**
 
 * ask at least **one substantive technical question**;
 * identify at least **one RAG insight** from another project;
@@ -122,9 +122,7 @@ Focus on asking questions that help the group understand the technical choices.
 
 Tables 7 and  8 have four students, so the presentation/Q&A portion takes approximately **60 minutes**.
 
-Use the remaining **15 minutes** for the **Table Synthesis Challenge**.
-
-Together, identify:
+Use the remaining **15 minutes** to identify:
 
 1. **One RAG insight** from the projects you heard.
 2. **One fine-tuning lesson** from the projects you heard.
@@ -137,7 +135,7 @@ Be prepared to share your synthesis if asked.
 
 ## Course Question Pool
 
-Use these questions during Phase 1 preparation and during Q&A at your breakout tables.
+Use these questions during Phase 1 preparation and during Q&A at your tables.
 
 ### A. Core Comparison
 
@@ -208,7 +206,7 @@ The listeners' ratings are averaged to produce the presenter's base Presentation
 
 ### 2. Peer Badges: +2 Points Each
 
-At the end of the breakout round, each table awards two badges.
+At the end of the round, each table awards three badges.
 
 **Master Explainer: +2 pt**s
 
@@ -219,7 +217,7 @@ Awarded to the presenter who demonstrated the strongest combination of:
 * ability to answer questions;
 * honest explanation of limitations and failures.
 
-**Concept Connector: +2 pts**
+**Concept Connector: 2 x +2 pts**
 
 Awarded to **two listeners** who asked the question that most effectively connected a project to the core course concepts (**Max 2 badges per table**).
 
@@ -255,7 +253,7 @@ $$
 
 ## Random Check
 
-After the Jigsaw round, some students will receive **one question selected at random from the Course Question Pool**.
+After the Jigsaw round, some students **may** receive **one question selected at random from the Course Question Pool**.
 
 This is an **individual check of understanding**.
 

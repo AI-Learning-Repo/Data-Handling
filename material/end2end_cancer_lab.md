@@ -194,7 +194,7 @@ sns.set_theme(style="whitegrid")
 
 ### 2.2 Load the data
 
-This dataset is built into scikit-learn, so students can run it directly in Google Colab.
+This dataset is built into scikit-learn, so you can run it directly in Google Colab.
 
 ```python
 cancer = load_breast_cancer()
@@ -1301,7 +1301,7 @@ Model A has higher precision, but it misses more actual malignant cases. If fals
 
 ### Q5. Data Leakage Scenario
 
-A student standardizes all rows first, then performs the train/test split. Explain why this is a problem and how to fix it.
+Someone standardizes all rows first, then performs the train/test split. Explain why this is a problem and how to fix it.
 
 <details>
 <summary>Answer</summary>

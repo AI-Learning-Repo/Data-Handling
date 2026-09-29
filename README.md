@@ -17,8 +17,7 @@
 ## Morning:
 
 * **09:00–09:15:** 
-  * Briefing
-  * [Task Introduction](./material/Jigsaw-Challenge.md)
+  * [Briefing & Task Introduction](./material/Jigsaw-Challenge.md)
   * [Presentation template](./material/presentation-template.md)
   * [About Recording](./material/recording.md)   
 * **09:15–09:45 (30 min):** [Phase 1: Home Team Strategy & AI Defense Prep](./material/Jigsaw-Challenge.md#phase-1-home-team-strategy--ai-defense-prep)
