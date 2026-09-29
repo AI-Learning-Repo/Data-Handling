@@ -54,8 +54,9 @@ Look up your Group Number in the Table Assignment Chart.
 
 **Send exactly one representative to each table where your group is listed.**
 
-**Table Assignment Chart**
 
+**Table Assignment Chart**
+<!-- 
 |    Table    | Capacity | Groups Present at This Table                      |
 | :---------: | :------: | :------------------------------------------------ |
 | **Table 1** |     5    | **Group 2, Group 4, Group 7, Group 8, Group 10**  |
@@ -66,6 +67,21 @@ Look up your Group Number in the Table Assignment Chart.
 | **Table 6** |     5    | **Group 2, Group 4, Group 5, Group 6, Group 10**  |
 | **Table 7** |     5    | **Group 2, Group 6, Group 7, Group 9**   |
 | **Table 8** |     4    | **Group 1, Group 4, Group 5, Group 6**            |
+
+**Important:** Each group must send one representative to every table where its group number appears. 
+-->
+
+|    Table    | Capacity | Groups Present at This Table                      |
+| :---------: | :------: | :------------------------------------------------ |
+| **Table 1** |     4    | **Group 2, Group 7, Group 8, Group 10**  |
+| **Table 2** |     4    | **Group 1, Group 5, Group 9, Group 10** |
+| **Table 3** |     4    | **Group 4, Group 5, Group 7, Group 10** |
+| **Table 4** |     4    | **Group 2, Group 3, Group 6, Group 9**  |
+| **Table 5** |     4    | **Group 1, Group 3, Group 8, Group 11**  |
+| **Table 6** |     4    | **Group 2, Group 4, Group 5, Group 10**  |
+| **Table 7** |     4    | **Group 2, Group 6, Group 7, Group 9**   |
+| **Table 8** |     4    | **Group 1, Group 4, Group 5, Group 6**            |
+| **Table 9** |     4    | **Group 6, Group 7, Group 10, Group 11**            |
 
 **Important:** Each group must send one representative to every table where its group number appears.
 
