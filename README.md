@@ -21,8 +21,7 @@
 - [Week 3: Lecture notes and activities]
 - [Week 4: Lecture notes and activities]
 - [Week 5: Lecture notes and activities]
-- [Week 6: Lecture notes and activities]
-- [Week 7: Lecture notes and activities]
+- [Weeks 6-7: Lecture notes and activities]
 - [Week 8: Lecture notes and activities]
 
 
@@ -34,7 +33,6 @@
 [Week 3: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week3
 [Week 4: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week4
 [Week 5: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week5
-[Week 6: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week6
-[Week 7: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week7
+[Weekw 6-7: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week6-7
 [Week 8: Lecture notes and activities]:https://github.com/AI-Learning-Repo/Data-Handling/tree/week8
 <!-- [Zoom Recordings]:https://metropoliafi-my.sharepoint.com/:f:/g/personal/samiben_metropolia_fi/IgBa4hOZUthmQ65PMbugFdbFAa673YpndNb3ZAmqTGYURK8?e=a5cjYq -->
