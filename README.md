@@ -32,9 +32,26 @@
 ## Afternoon:
 
 * **13:00–14:00:** Presentations 2 & 3: Finalist Groups 2 & 3, followed by feedback
-* **14:00–16:00:** End-to-End ML Systems: 
-  * [Regression](./material/end2end_housing_lab.md) 
-  * [Classification](./material/end2end_cancer_lab.md)
+* **14:00–16:00:** [Exam Question Design and Review](./material/exam-review.md) 
+
+----
+
+## Supplementary End-to-End ML Systems (not part of the exam)
+
+As a supplement to the course material, two complete end-to-end machine learning systems are provided for independent study. Each system includes:
+
+* a complete task description;
+* a sample solution;
+* supporting questions with answers;
+* an example of how the different components of a classical ML workflow fit together.
+
+The purpose is to provide additional examples of how an end-to-end classical ML system can be designed, from problem formulation through to the final solution, and to **compensate for the cancelled session.**
+
+These systems are for **independent study and review** and are **not part of the exam**. The specific tasks and solutions will not be assessed in the exam.
+
+
+* [Regression](./material/end2end_housing_lab.md) 
+* [Classification](./material/end2end_cancer_lab.md)
 
 <!-- 
 

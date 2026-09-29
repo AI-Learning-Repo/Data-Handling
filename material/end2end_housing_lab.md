@@ -90,7 +90,7 @@ Possible uses include:
 
 In practice, the machine-learning model is not the whole business solution. It is one component in a larger decision process.
 
-**Question 1 — Business objective versus model objective**
+**Question 1: Business objective versus model objective**
 
 Why is "build a model" not enough as a project objective?
 
@@ -118,7 +118,7 @@ For regression, `median_house_value` is the target. The model learns from exampl
 
 For clustering, we deliberately do **not** use `median_house_value` as a fitting feature. We use selected district characteristics to discover groups, then we may inspect house value afterward as part of interpretation.
 
-**Question 2 — Regression or clustering?**
+**Question 2: Regression or clustering?**
 
 A housing analyst asks: "Given a district's income, population, location, and housing age, estimate its median house value." Is this regression or clustering?
 
@@ -129,7 +129,7 @@ This is regression because the goal is to predict a numerical target: `median_ho
 
 </details>
 
-**Question 3 — Regression or clustering?**
+**Question 3: Regression or clustering?**
 
 A housing analyst asks: "Without using house values, group districts that have similar income, household, population, and location characteristics." Is this regression or clustering?
 
@@ -181,22 +181,20 @@ sns.set_theme(style="whitegrid")
 
 You will run this lab in Google Colab. There are two simple ways to make the CSV available.
 
-**Option A: upload the CSV manually**
+**Option A: download the CSV with `wget`**
+
+```python
+!wget -O housing.csv https://raw.githubusercontent.com/AI-Learning-Repo/Data-Handling/refs/heads/week6-7/datasets/housing.csv
+housing = pd.read_csv("housing.csv")
+housing.head()
+```
+
+**Option B: upload the CSV manually**
 
 Upload `housing.csv` to the Colab session, then run:
 
 ```python
 # housing = pd.read_csv("/content/housing.csv")
-# housing.head()
-```
-
-**Option B: download the CSV with `wget`**
-
-Use this option when the course dataset URL is available:
-
-```python
-# !wget -O housing.csv www.path_to_dataset/housing.csv
-# housing = pd.read_csv("housing.csv")
 # housing.head()
 ```
 
@@ -271,7 +269,7 @@ print("Categorical columns:")
 print(categorical_columns)
 ```
 
-**Question 4 — Features and target**
+**Question 4: Features and target**
 
 Why should `median_house_value` not be included as an input feature when training a model to predict `median_house_value`?
 
@@ -306,7 +304,7 @@ print("Duplicate rows:", duplicate_count)
 - `sum()` counts missing values per column.
 - `duplicated()` identifies repeated rows.
 
-**Question 5 — Missing values**
+**Question 5: Missing values**
 
 If `total_bedrooms` has missing values, why should we not simply ignore the issue?
 
@@ -336,7 +334,7 @@ plt.show()
 housing["median_house_value"].describe()
 ```
 
-**Question 6 — Target distribution**
+**Question 6: Target distribution**
 
 What should you notice about the maximum value of `median_house_value`? Why might that matter?
 
@@ -387,7 +385,7 @@ plt.show()
 - `corr()` calculates Pearson correlation between numerical columns.
 - A heatmap helps compare many pairwise correlations.
 
-**Question 7 — Correlation and causation**
+**Question 7: Correlation and causation**
 
 If `median_income` is strongly correlated with `median_house_value`, can we conclude that changing income alone causes house value to change?
 
@@ -416,7 +414,7 @@ plt.title("House value by ocean proximity")
 plt.show()
 ```
 
-**Question 8 — Categorical variables**
+**Question 8: Categorical variables**
 
 Why should we not encode categories such as `NEAR BAY = 1`, `<1H OCEAN = 2`, and `INLAND = 3` as ordinary numbers for a linear model?
 
@@ -453,7 +451,7 @@ for col in columns_to_boxplot:
 housing[columns_to_boxplot].describe()
 ```
 
-**Question 9 — Outliers**
+**Question 9: Outliers**
 
 Should we automatically delete districts with very high `total_rooms` or `population`?
 
@@ -522,7 +520,7 @@ for col in engineered_features:
     plt.show()
 ```
 
-**Question 10 — Feature engineering**
+**Question 10: Feature engineering**
 
 Why might `rooms_per_household` be more useful than `total_rooms`?
 
@@ -589,7 +587,7 @@ print("Training rows:", len(X_train))
 print("Test rows:", len(X_test))
 ```
 
-**Question 11 — Leakage**
+**Question 11: Leakage**
 
 Why should we split before calculating the median used to fill missing values?
 
@@ -634,7 +632,7 @@ pd.DataFrame(results)
 - `np.full()` creates one repeated prediction for every test row.
 - The helper function calculates MAE, RMSE, and R2.
 
-**Question 12 — Why use a baseline?**
+**Question 12: Why use a baseline?**
 
 Why is it not enough to say that a model has an RMSE of 80,000?
 
@@ -675,7 +673,7 @@ print("Coefficient for median_income:", simple_model.coef_[0])
 - `fit()` learns the intercept and coefficient from training data.
 - `predict()` generates predictions for test features.
 
-**Question 13 — Coefficient interpretation**
+**Question 13: Coefficient interpretation**
 
 What does the coefficient for `median_income` mean in this simple model?
 
@@ -739,7 +737,7 @@ print("Prepared training shape:", X_train_ready.shape)
 print("Prepared test shape:", X_test_ready.shape)
 ```
 
-**Question 14 — One-hot encoding**
+**Question 14: One-hot encoding**
 
 Why must the prepared training and test feature tables have the same columns?
 
@@ -824,7 +822,7 @@ results_df
 - `transform()` is used on the test data so the same transformation is applied.
 - The model is still `LinearRegression`, but it receives an expanded feature table.
 
-**Question 15 — Polynomial regression**
+**Question 15: Polynomial regression**
 
 Why can polynomial regression model curved relationships even though it uses `LinearRegression()`?
 
@@ -901,7 +899,7 @@ generalization_df.sort_values("Test RMSE")
 - A model with very low training error but much higher test error may be overfitting.
 - The best practical model is usually chosen using test performance, not training performance alone.
 
-**Question 16 — Model comparison**
+**Question 16: Model comparison**
 
 Which model performs best on the test set? Which metric supports your answer?
 
@@ -914,7 +912,7 @@ The important point is to compare models on the same test set using the same met
 
 </details>
 
-**Question 17 — Underfitting and overfitting**
+**Question 17: Underfitting and overfitting**
 
 Suppose a model has high training RMSE and high test RMSE. Is that more likely underfitting or overfitting?
 
@@ -927,7 +925,7 @@ The model is not performing well even on the data it was trained on, so it may b
 
 </details>
 
-**Question 18 — Training error versus test error**
+**Question 18: Training error versus test error**
 
 Why should we not automatically choose the model with the lowest training RMSE?
 
@@ -940,7 +938,7 @@ The test set is more useful for estimating how the model may perform on unseen o
 
 </details>
 
-**Question 19 — MAE and RMSE**
+**Question 19: MAE and RMSE**
 
 Why is RMSE often larger than MAE?
 
@@ -953,7 +951,7 @@ MAE averages absolute errors more directly. If a model makes some very large mis
 
 </details>
 
-**Question 20 — R2**
+**Question 20: R2**
 
 Does `R2 = 0.65` mean that 65 percent of individual predictions are correct?
 
@@ -1012,7 +1010,7 @@ plt.show()
 - Residuals are errors: `actual - predicted`.
 - A residual plot helps us see whether errors show systematic patterns.
 
-**Question 21 — Residual interpretation**
+**Question 21: Residual interpretation**
 
 What does a positive residual mean?
 
@@ -1042,7 +1040,7 @@ coef_table = pd.DataFrame({
 coef_table
 ```
 
-**Question 22 — Coefficients in multiple regression**
+**Question 22: Coefficients in multiple regression**
 
 Why should coefficient interpretation be more careful in a multiple-feature model than in a simple one-feature model?
 
@@ -1069,7 +1067,7 @@ Clustering asks:
 
 For clustering, we do not supply `median_house_value` as a target. We also do not use it as a clustering feature. After fitting clusters, we can inspect house values to help describe the groups.
 
-**Question 20 — Why remove the target?**
+**Question 20: Why remove the target?**
 
 Why should `median_house_value` not be included in the clustering features if our goal is to discover district profiles based on other characteristics?
 
@@ -1123,7 +1121,7 @@ display(scaled_check.mean().round(6))
 display(scaled_check.std(ddof=0).round(6))
 ```
 
-**Question 21 — Scaling**
+**Question 21: Scaling**
 
 Why is scaling important for K-Means in this clustering task?
 
@@ -1195,7 +1193,7 @@ plt.show()
 - Silhouette compares how close observations are to their own cluster versus other clusters.
 - A higher silhouette is useful evidence, not absolute proof of meaningful groups.
 
-**Question 22 — Choosing K**
+**Question 22: Choosing K**
 
 Which K would you investigate further? Use both inertia and silhouette evidence.
 
@@ -1253,7 +1251,7 @@ pd.crosstab(
 ).round(3)
 ```
 
-**Question 23 — Cluster profiles**
+**Question 23: Cluster profiles**
 
 What can a cluster profile support? What can it not prove?
 
@@ -1295,7 +1293,7 @@ plt.legend(title="Cluster")
 plt.show()
 ```
 
-**Question 24 — Map interpretation**
+**Question 24: Map interpretation**
 
 If clusters appear geographically separated, does that prove geography caused the clusters?
 
@@ -1363,7 +1361,7 @@ plt.show()
 - Agglomerative clustering starts with individual observations and repeatedly merges groups.
 - The two methods can produce different groups even with the same features and number of clusters.
 
-**Question 25 — Different algorithms**
+**Question 25: Different algorithms**
 
 If K-Means and agglomerative clustering produce different memberships, does that automatically mean one is wrong?
 
@@ -1396,7 +1394,7 @@ plt.ylabel("Ward linkage height")
 plt.show()
 ```
 
-**Question 26 — Dendrogram**
+**Question 26: Dendrogram**
 
 What does a high merge in a dendrogram suggest?
 
@@ -1444,7 +1442,7 @@ In real work, engineers and analysts also ask:
 
 This lab does not implement advanced engineering infrastructure. The goal is to understand the reasoning and core workflow using concepts covered in class.
 
-**Question 27 — Real-world assumptions**
+**Question 27: Real-world assumptions**
 
 Why should we check assumptions before building a model?
 

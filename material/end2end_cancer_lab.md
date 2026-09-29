@@ -83,7 +83,7 @@ Possible uses include:
 
 This lab is for learning machine learning. It is not a medical device, and it must not be treated as medical advice.
 
-**Question 1 — Business objective versus model objective**
+**Question 1: Business objective versus model objective**
 
 Why is the business objective not the same thing as the model objective?
 
@@ -118,7 +118,7 @@ Tumor measurements → discover similar measurement profiles
 
 This is unsupervised learning because the clustering algorithm does not use the diagnosis label during fitting.
 
-**Question 2 — Diagnosis-support framing**
+**Question 2: Diagnosis-support framing**
 
 A stakeholder says: "I do not only want a label. I want to know which mistakes would be most serious if this model supported review." What should you clarify before comparing classifiers?
 
@@ -134,7 +134,7 @@ You should clarify:
 
 </details>
 
-**Question 3 — Clustering workflow**
+**Question 3: Clustering workflow**
 
 An analyst wants to group cases by measurement similarity, then compare the groups with diagnosis afterward. Why should diagnosis be left out during clustering and used only after the clusters are created?
 
@@ -244,7 +244,7 @@ df.head()
 - `describe()` summarizes numerical columns.
 - `head()` shows example rows.
 
-**Question 4 — Row meaning**
+**Question 4: Row meaning**
 
 What does one row represent in this dataset?
 
@@ -275,7 +275,7 @@ print("Classes:")
 print(df[[target, readable_target]].drop_duplicates().sort_values(target))
 ```
 
-**Question 5 — Features and target**
+**Question 5: Features and target**
 
 Why should `diagnosis` and `diagnosis_name` not be included as input features?
 
@@ -308,7 +308,7 @@ print("Duplicate rows:", duplicate_count)
 - Duplicates may distort model evaluation if repeated cases appear in both training and test sets.
 - This dataset is already clean, but we still check.
 
-**Question 6 — Data quality**
+**Question 6: Data quality**
 
 If this dataset has no missing values, why do we still check for them?
 
@@ -348,7 +348,7 @@ class_percentages
 - Class balance matters because accuracy can be misleading when one class is much more common.
 - The most frequent class also gives a useful baseline.
 
-**Question 7 — Baseline thinking**
+**Question 7: Baseline thinking**
 
 If most cases are benign, why might a classifier with high accuracy still be weak?
 
@@ -425,7 +425,7 @@ plt.show()
 - Scatterplots help us see whether classes are separated in two selected features.
 - We do not expect two features to explain everything.
 
-**Question 8 — EDA and modeling**
+**Question 8: EDA and modeling**
 
 Why is it useful to compare feature distributions by diagnosis before training a classifier?
 
@@ -474,7 +474,7 @@ plt.show()
 - Because `diagnosis` is coded as `0` and `1`, correlation with the target gives an initial view of linear association with the class code.
 - This does not replace classifier evaluation.
 
-**Question 9 — Correlation limitation**
+**Question 9: Correlation limitation**
 
 Why should we not choose the classifier only from Pearson correlations?
 
@@ -534,7 +534,7 @@ print(y_test.value_counts().sort_index())
 - `random_state=42` makes the split reproducible.
 - `stratify=y` keeps class proportions similar in train and test sets.
 
-**Question 10 — Stratification**
+**Question 10: Stratification**
 
 Why is `stratify=y` useful in classification?
 
@@ -585,7 +585,7 @@ pd.DataFrame(results)
 - `strategy="most_frequent"` always predicts the majority class from the training data.
 - We use `pos_label=0` so precision, recall, and F1 focus on the malignant class.
 
-**Question 11 — Positive class**
+**Question 11: Positive class**
 
 Why might we focus precision and recall on the malignant class?
 
@@ -628,7 +628,7 @@ X_train_scaled.head()
 - `transform()` applies the same learned scaling to test data.
 - We do not fit a new scaler on the test set.
 
-**Question 12 — Leakage**
+**Question 12: Leakage**
 
 Why should the scaler be fitted on the training data only?
 
@@ -667,7 +667,7 @@ pd.DataFrame(results)
 - `predict()` returns class labels for the test data.
 - Logistic regression is used here as a classifier, not as a regression model.
 
-**Question 13 — Logistic regression**
+**Question 13: Logistic regression**
 
 Why is logistic regression used for classification even though its name contains "regression"?
 
@@ -706,7 +706,7 @@ pd.DataFrame(results)
 - KNN depends on distances, so scaling matters.
 - The model needs the training observations when making predictions because it compares new cases to stored cases.
 
-**Question 14 — KNN and scaling**
+**Question 14: KNN and scaling**
 
 Why can KNN perform poorly when features are not scaled?
 
@@ -760,7 +760,7 @@ plt.show()
 - `max_depth=4` limits tree complexity.
 - The tree is trained on unscaled features because decision trees do not depend on distance calculations in the same way as KNN.
 
-**Question 15 — Decision tree**
+**Question 15: Decision tree**
 
 How does a decision tree make a classification?
 
@@ -796,7 +796,7 @@ print(classification_report(
 - F1 combines precision and recall.
 - The classification report gives metrics for each class.
 
-**Question 16 — Accuracy**
+**Question 16: Accuracy**
 
 Why is accuracy alone not always enough?
 
@@ -809,7 +809,7 @@ It can hide which class is being misclassified. In medical-support problems, the
 
 </details>
 
-**Question 17 — Precision and recall**
+**Question 17: Precision and recall**
 
 In this lab, what is the difference between precision for malignant cases and recall for malignant cases?
 
@@ -865,7 +865,7 @@ cm_df
 - Diagonal values are correct predictions.
 - Off-diagonal values are mistakes.
 
-**Question 18 — False negative in context**
+**Question 18: False negative in context**
 
 For the malignant class, what would it mean if an actual malignant case is predicted as benign?
 
@@ -906,7 +906,7 @@ probability_df.head(10)
 - `predict_proba()` returns estimated probabilities for each class.
 - A probability is not a guarantee. It is the model's estimate under its learned patterns.
 
-**Question 19 — Probability interpretation**
+**Question 19: Probability interpretation**
 
 If the model gives `probability_malignant = 0.90`, does that prove the case is malignant?
 
@@ -931,7 +931,7 @@ Clustering asks a different question:
 
 This may help analysts inspect measurement profiles. It does not replace diagnosis.
 
-**Question 20 — Target in clustering**
+**Question 20: Target in clustering**
 
 Should `diagnosis` be used as a clustering feature?
 
@@ -1025,7 +1025,7 @@ plt.show()
 - Silhouette compares separation and cohesion.
 - These metrics guide interpretation; they do not prove that the clusters are clinically meaningful.
 
-**Question 21 — K selection**
+**Question 21: K selection**
 
 Why should we not simply choose the largest K because it has the lowest inertia?
 
@@ -1088,7 +1088,7 @@ plt.show()
 - Cluster `0` is not automatically better or worse than cluster `1`.
 - A profile table helps us describe how clusters differ.
 
-**Question 22 — Cluster labels**
+**Question 22: Cluster labels**
 
 Does cluster `0` mean "benign" and cluster `1` mean "malignant"?
 
@@ -1125,7 +1125,7 @@ pd.crosstab(cluster_df["cluster"], cluster_df[readable_target])
 - This is interpretation, not supervised training.
 - If one cluster has many malignant cases, we can describe that pattern, but we should not claim the cluster is a diagnosis rule.
 
-**Question 23 — Interpretation limit**
+**Question 23: Interpretation limit**
 
 Why is it useful but risky to compare clusters with diagnosis labels?
 
@@ -1172,7 +1172,7 @@ plt.show()
 - Both depend on selected features and scaling.
 - Agreement between methods can support an interpretation, but it still does not prove that clusters are clinically meaningful.
 
-**Question 24 — Comparing clustering methods**
+**Question 24: Comparing clustering methods**
 
 Why might K-Means and agglomerative clustering create different clusters?
 
@@ -1204,7 +1204,7 @@ In a real project, engineers and analysts usually:
 
 This lab keeps the implementation simple and visible. The goal is to review the concepts covered in class and understand the reasoning behind each step.
 
-**Question 25 — Real-world limitation**
+**Question 25: Real-world limitation**
 
 Why is a high test score not enough to declare this system ready for medical use?
 
