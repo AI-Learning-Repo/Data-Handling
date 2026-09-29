@@ -132,7 +132,7 @@ During the session, **every student must:**
 
 Focus on asking questions that help the group understand the technical choices.
 
----
+<!-- ---
 
 ## Special Note for Tables 7 and  8
 
@@ -145,7 +145,7 @@ Use the remaining **15 minutes** to identify:
 3. **One notable failure or limitation.**
 4. **One sentence explaining when RAG and fine-tuning would be appropriate.**
 
-Be prepared to share your synthesis if asked.
+Be prepared to share your synthesis if asked. -->
 
 ---
 
