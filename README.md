@@ -9,6 +9,14 @@
 
 ---
 
+### Exam Recording Instructions
+
+* *Recording Requirement*: The Exam must be recorded on your local machine.  
+* *Upload recording*: After the session, Zoom will save the recording to your computer. Please upload the recordings  to  SharePoint and submit the link to OMA. If you are unable to upload due to permission or account issues, please email me. I will then provide a direct upload folder for you.
+* *How to Record*: Follow the steps outlined in [Recording with Zoom](./material/recording.md). We will review these instructions together before starting the exam.  
+
+---
+
 ### Morning:  
 
 * Closed Book Exam: **Option A, Option B and Option C**
@@ -21,10 +29,6 @@
   * Regression: 30% 
   * Classification: 30% 
   * Unsupervised Learning: 15% 
-* Exam Recording Instructions
-  * *Recording Requirement*: The Exam must be recorded on your local machine.  
-  * *Upload recording*: After the session, Zoom will save the recording to your computer. Please upload the recordings  to  SharePoint and submit the link to OMA. If you are unable to upload due to permission or account issues, please email me. I will then provide a direct upload folder for you.
-  * *How to Record*: Follow the steps outlined in [Recording with Zoom](./material/recording.md). We will review these instructions together before starting the exam.  
 
 <!-- The percentages indicate the distribution of marks across the four topics in the exam. They do not represent the proportion of questions taken from each topic's selected questions. -->
 
