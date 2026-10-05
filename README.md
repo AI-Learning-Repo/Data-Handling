@@ -14,7 +14,7 @@
 * Closed Book Exam: **Option A, Option B and Option C**
   * **Time:** 9:00–12:00
   * **Room:** MMA106
-  * **Enrolment key**: ML-NN-2026
+  * **Enrolment key**: `ML-NN-2026`
   * **Exam Paswword** ??
 * Exam topics and weighting
   * Data and Exploratory Data Analysis (EDA): 25% 
